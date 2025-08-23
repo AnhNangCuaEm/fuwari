@@ -1,0 +1,22 @@
+[
+  {
+    "id": "7438b6f2-8f57-4d0e-ab8f-3b0bce0795ab",
+    "email": "abc@gmail.com",
+    "name": "aa",
+    "password": "$2b$12$kwQ0xm02zaUjhbiFqRoaauUy8zw.wUjktt9T50rycvVU4y29FpYKy",
+    "provider": "credentials",
+    "createdAt": "2025-08-20T14:28:35.449Z",
+    "updatedAt": "2025-08-20T14:28:35.449Z",
+    "role": "admin"
+  },
+  {
+    "id": "e82a7b21-a6d9-4462-bdda-f50a092fe1b4",
+    "email": "thanhhailth1412@gmail.com",
+    "name": "Ánh Nắng Của Em",
+    "role": "admin",
+    "provider": "google",
+    "image": "https://lh3.googleusercontent.com/a/ACg8ocLGASoDy0J9sy-_DqQLBAdjHHnkzy2rj14IFmtb1dF-bGcz6Mi7=s96-c",
+    "createdAt": "2025-08-20T15:24:26.106Z",
+    "updatedAt": "2025-08-23T13:20:57.709Z"
+  }
+]

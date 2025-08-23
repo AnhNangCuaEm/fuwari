@@ -21,7 +21,7 @@ CREATE TABLE `users` (
 	`name` VARCHAR(255) NOT NULL,
 	`email` VARCHAR(255) NOT NULL,
 	`phone` VARCHAR(20) NOT NULL,
-	`password_hash` VARCHAR(255) NOT NULL COMMENT 'Lưu mật khẩu đã được hash',
+	`password_hash` VARCHAR(255) NOT NULL COMMENT 'Store hashed password',
 	`role` ENUM('admin', 'user') NOT NULL DEFAULT 'user',
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(`id`)
@@ -100,7 +100,7 @@ CREATE TABLE `order_items` (
 	`order_id` INTEGER NOT NULL,
 	`product_id` INTEGER NOT NULL,
 	`quantity` INTEGER NOT NULL,
-	`price` DECIMAL(12,2) NOT NULL COMMENT 'Giá sản phẩm tại thời điểm mua',
+	`price` DECIMAL(12,2) NOT NULL COMMENT 'Product price at time of purchase',
 	PRIMARY KEY(`id`)
 );
 
