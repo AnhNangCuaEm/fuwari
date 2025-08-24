@@ -67,24 +67,33 @@ export default function Home() {
           )}
         </div>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-4xl mb-4">🧁</div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Cupcake</h3>
-            <p className="text-gray-600">Cupcakes with various flavors and toppings</p>
-          </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-4xl mb-4">🍰</div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Cream cake</h3>
-            <p className="text-gray-600">Delicious fresh cream cakes for special occasions in life</p>
-          </div>
+        <div className="flex flex-col items-center">
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-md p-6 text-center">
+              <div className="text-4xl mb-4">🧁</div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Cupcake</h3>
+              <p className="text-gray-600">Cupcakes with various flavors and toppings</p>
+            </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-4xl mb-4">🍪</div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Cookie</h3>
-            <p className="text-gray-600">Crispy and delicious cookies made from natural ingredients</p>
+            <div className="bg-white rounded-lg shadow-md p-6 text-center">
+              <div className="text-4xl mb-4">🍰</div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Cream cake</h3>
+              <p className="text-gray-600">Delicious fresh cream cakes for special occasions in life</p>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md p-6 text-center">
+              <div className="text-4xl mb-4">🍪</div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Cookie</h3>
+              <p className="text-gray-600">Crispy and delicious cookies made from natural ingredients</p>
+            </div>
           </div>
+          <Link
+            href="/products"
+            className="btn mt-4"
+          >
+            商品一覧へ
+          </Link>
         </div>
       </div>
       <Footer />

@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Cupcake",
+        "description": "Delicious vanilla cupcake with buttercream frosting.",
+        "price": 100,
+        "image": "/cupcake.webp"
+    },
+    {
+        "id": 2,
+        "name": "Brownie",
+        "description": "Rich chocolate brownie with walnuts.",
+        "price": 200,
+        "image": "/brownie.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Cookie",
+        "description": "Chewy chocolate chip cookie.",
+        "price": 300,
+        "image": "/cookie.webp"
+    }
+]

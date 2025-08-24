@@ -114,15 +114,6 @@ export default function NavMenu() {
                                         ⚙️ Admin Dashboard
                                     </Link>
                                 </li>
-                                <li className="border-b border-gray-100 last:border-b-0">
-                                    <Link
-                                        href="/admin/users"
-                                        className="block px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600"
-                                        onClick={() => setIsOpen(false)}
-                                    >
-                                        👥 ユーザー管理
-                                    </Link>
-                                </li>
                             </>
                         )}
 
