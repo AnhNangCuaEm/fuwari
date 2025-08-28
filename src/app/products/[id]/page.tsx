@@ -1,23 +1,34 @@
+'use client';
+
+import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import { ModelViewer } from '@/components/ui/ModelViewer';
 import { getProductById } from '@/lib/products';
+import { useState } from 'react';
 
 interface ProductDetailPageProps {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
-    const productId = parseInt(params.id);
+    const resolvedParams = React.use(params);
+    const productId = parseInt(resolvedParams.id);
     const product = getProductById(productId);
+    const [showModel, setShowModel] = useState(true);
 
     if (!product) {
         notFound();
     }
+
+    const toggleView = () => {
+        setShowModel(!showModel);
+    };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex flex-col">
@@ -34,16 +45,70 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 </nav>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Product Image */}
+                    {/* Product 3D Model */}
                     <div className="space-y-4">
-                        <div className="overflow-hidden rounded-lg shadow-lg">
-                            <Image
-                                src={product.image}
-                                alt={product.name}
-                                width={600}
-                                height={400}
-                                className="w-full h-96 object-cover"
-                            />
+                        <div className="overflow-hidden rounded-lg shadow-lg bg-white">
+                            {product.modelPath && showModel ? (
+                                <ModelViewer 
+                                    modelPath={product.modelPath}
+                                    className="w-full h-96"
+                                />
+                            ) : (
+                                <div className="w-full h-96 flex items-center justify-center bg-gray-100">
+                                    <Image
+                                        src={product.image}
+                                        alt={product.name}
+                                        width={384}
+                                        height={384}
+                                        className="max-w-full max-h-full object-contain rounded-lg"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        {/* Toggle Button */}
+                        <div className="text-center">
+                            {product.modelPath ? (
+                                <button 
+                                    onClick={toggleView}
+                                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300"
+                                    title={showModel ? "画像を表示" : "3Dモデルに切り替え"}
+                                >
+                                    {showModel ? (
+                                        <>
+                                            <Image
+                                                src={product.image}
+                                                alt={`${product.name} thumbnail`}
+                                                width={40}
+                                                height={32}
+                                                className="rounded opacity-70"
+                                            />
+                                            <span className="text-sm font-medium text-gray-600">画像</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="w-10 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded flex items-center justify-center">
+                                                <svg 
+                                                    className="w-5 h-5 text-white" 
+                                                    fill="none" 
+                                                    stroke="currentColor" 
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                                </svg>
+                                            </div>
+                                            <span className="text-sm font-medium text-gray-600">3D Model</span>
+                                        </>
+                                    )}
+                                </button>
+                            ) : (
+                                <Image
+                                    src={product.image}
+                                    alt={product.name}
+                                    width={100}
+                                    height={80}
+                                    className="inline-block rounded-lg shadow-sm opacity-60"
+                                />
+                            )}
                         </div>
                     </div>
 
@@ -111,11 +176,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 }
 
 // Generate static params for static generation to improve performance (optional)
-export async function generateStaticParams() {
-    const { getAllProducts } = await import('@/lib/products');
-    const products = getAllProducts();
+// export async function generateStaticParams() {
+//     const { getAllProducts } = await import('@/lib/products');
+//     const products = getAllProducts();
 
-    return products.map((product) => ({
-        id: product.id.toString(),
-    }));
-}
+//     return products.map((product) => ({
+//         id: product.id.toString(),
+//     }));
+// }
