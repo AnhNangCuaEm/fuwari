@@ -9,6 +9,9 @@ import Header from '@/components/layout/Header';
 import { ModelViewer } from '@/components/ui/ModelViewer';
 import { getProductById } from '@/lib/products';
 import { useState } from 'react';
+import { Product } from '@/types/product';
+import { useCart } from '@/lib/hooks/useCart';
+
 
 interface ProductDetailPageProps {
     params: Promise<{
@@ -21,6 +24,18 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     const productId = parseInt(resolvedParams.id);
     const product = getProductById(productId);
     const [showModel, setShowModel] = useState(true);
+    const { addToCart } = useCart();
+
+    const handleAddToCart = (product: Product, e: React.MouseEvent) => {
+        e.preventDefault() // Prevent the Link navigation
+        addToCart({
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            image: product.image
+        })
+    }
 
     if (!product) {
         notFound();
@@ -140,8 +155,15 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                             </div>
 
                             <div className="space-y-4">
-                                <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 font-semibold">
-                                    カートに追加
+                                <button
+                                    onClick={(e) => handleAddToCart(product, e)}
+                                    disabled={product.quantity === 0}
+                                    className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${product.quantity > 0
+                                            ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                        }`}
+                                >
+                                    {product.quantity > 0 ? 'カートに追加' : '売り切れ'}
                                 </button>
 
                                 <button className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300 font-semibold">
