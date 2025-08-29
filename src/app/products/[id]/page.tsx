@@ -30,6 +30,16 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         setShowModel(!showModel);
     };
 
+    const getStockStatus = (quantity: number) => {
+        if (quantity === 0) {
+            return { text: '在庫なし', color: 'text-red-600' };
+        } else if (quantity < 10) {
+            return { text: '残りわずか', color: 'text-orange-500' };
+        } else {
+            return { text: '在庫あり', color: 'text-green-600' };
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex flex-col">
             <Header />
@@ -49,7 +59,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                     <div className="space-y-4">
                         <div className="overflow-hidden rounded-lg shadow-lg bg-white">
                             {product.modelPath && showModel ? (
-                                <ModelViewer 
+                                <ModelViewer
                                     modelPath={product.modelPath}
                                     className="w-full h-96"
                                 />
@@ -68,7 +78,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                         {/* Toggle Button */}
                         <div className="text-center">
                             {product.modelPath ? (
-                                <button 
+                                <button
                                     onClick={toggleView}
                                     className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300"
                                     title={showModel ? "画像を表示" : "3Dモデルに切り替え"}
@@ -87,10 +97,10 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                     ) : (
                                         <>
                                             <div className="w-10 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded flex items-center justify-center">
-                                                <svg 
-                                                    className="w-5 h-5 text-white" 
-                                                    fill="none" 
-                                                    stroke="currentColor" 
+                                                <svg
+                                                    className="w-5 h-5 text-white"
+                                                    fill="none"
+                                                    stroke="currentColor"
                                                     viewBox="0 0 24 24"
                                                 >
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -123,7 +133,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
                         <div className="border-t border-gray-200 pt-6">
                             <div className="flex items-center justify-between mb-6">
-                                <span className="text-sm text-gray-500">Giá:</span>
+                                <span className="text-sm text-gray-500">価格:</span>
                                 <span className="text-3xl font-bold text-green-600">
                                     {product.price.toLocaleString('ja-JP')} &yen;
                                 </span>
@@ -150,7 +160,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">在庫状況:</span>
-                                    <span className="font-medium text-green-600">在庫あり</span>
+                                    <span className={`font-medium ${getStockStatus(product.quantity).color}`}>{getStockStatus(product.quantity).text}</span>
                                 </div>
                             </div>
                         </div>
