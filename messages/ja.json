@@ -1,0 +1,42 @@
+{
+  "common": {
+    "loading": "ローディング...",
+    "welcome": "こんにちは",
+    "login": "ログイン", 
+    "signup": "アカウントを作成",
+    "logout": "ログアウト",
+    "myPage": "プロフィール",
+    "products": "商品一覧",
+    "cart": "カート",
+    "admin": "管理者",
+    "contact": "お問い合わせ",
+    "about": "について"
+  },
+  "home": {
+    "title": "🍰 Fuwari Sweet Shop 🍰",
+    "subtitle": "スイーツショップへようこそ！",
+    "welcomeMessage": "あなたは成功裏にログインしました。私たちのショップを探索してください！",
+    "loginPrompt": "ログインまたはサインアップしてください 🎉"
+  },
+  "products": {
+    "cupcake": {
+      "title": "カップケーキ",
+      "description": "さまざまなフレーバーとトッピングのカップケーキ"
+    },
+    "creamCake": {
+      "title": "クリームケーキ",
+      "description": "特別な日のための美味しいフレッシュクリームケーキ"
+    },
+    "cookie": {
+      "title": "クッキー",
+      "description": "自然素材から作られたサクサクで美味しいクッキー"
+    }
+  },
+  "auth": {
+    "signInTitle": "ログイン",
+    "signUpTitle": "アカウント作成",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "name": "お名前"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "welcome": "Hello",
+    "login": "Login", 
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "myPage": "Profile",
+    "products": "Products",
+    "cart": "Cart",
+    "admin": "Admin",
+    "contact": "Contact",
+    "about": "About"
+  },
+  "home": {
+    "title": "🍰 Fuwari Sweet Shop 🍰",
+    "subtitle": "Welcome to our sweet shop!",
+    "welcomeMessage": "You have successfully logged in. Explore our shop!",
+    "loginPrompt": "Please login or sign up 🎉"
+  },
+  "products": {
+    "cupcake": {
+      "title": "Cupcake",
+      "description": "Cupcakes with various flavors and toppings"
+    },
+    "creamCake": {
+      "title": "Cream cake", 
+      "description": "Delicious fresh cream cakes for special occasions in life"
+    },
+    "cookie": {
+      "title": "Cookie",
+      "description": "Crispy and delicious cookies made from natural ingredients"
+    }
+  },
+  "auth": {
+    "signInTitle": "Sign In",
+    "signUpTitle": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name"
+  }
+}

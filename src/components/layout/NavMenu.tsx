@@ -1,18 +1,20 @@
 'use client'
 
-import Link from "next/link"
+import {Link} from "@/i18n/navigation"
 import { Sling as Hamburger } from 'hamburger-react'
 import { useState } from "react"
 import { useCurrentUser } from "@/lib/hooks/useAuth"
 import { signOut } from "next-auth/react"
 import CartDrawer from "@/components/cart/CartDrawer"
 import { useCart } from "@/lib/hooks/useCart"
+import {useTranslations} from 'next-intl'
 
 export default function NavMenu() {
     const [isOpen, setIsOpen] = useState(false)
     const [isCartOpen, setIsCartOpen] = useState(false)
     const { user, isAuthenticated, isLoading } = useCurrentUser()
     const { getTotalItems } = useCart()
+    const t = useTranslations()
 
     const isAdmin = user?.role === 'admin'
 
@@ -100,11 +102,20 @@ export default function NavMenu() {
                 </li>
                 <li className="border-b border-gray-100 last:border-b-0">
                     <Link
+                        href="/products"
+                        className="block px-4 py-3 hover:bg-gray-50 transition-colors"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        🛍️ {t('common.products')}
+                    </Link>
+                </li>
+                <li className="border-b border-gray-100 last:border-b-0">
+                    <Link
                         href="/about"
                         className="block px-4 py-3 hover:bg-gray-50 transition-colors"
                         onClick={() => setIsOpen(false)}
                     >
-                        ℹ️ About
+                        ℹ️ {t('common.about')}
                     </Link>
                 </li>
                 <li className="border-b border-gray-100 last:border-b-0">
@@ -113,7 +124,7 @@ export default function NavMenu() {
                         className="block px-4 py-3 hover:bg-gray-50 transition-colors"
                         onClick={() => setIsOpen(false)}
                     >
-                        📞 Contact
+                        📞 {t('common.contact')}
                     </Link>
                 </li>
 
@@ -126,7 +137,7 @@ export default function NavMenu() {
                                 className="block px-4 py-3 hover:bg-gray-50 transition-colors"
                                 onClick={() => setIsOpen(false)}
                             >
-                                👤 プロフィール
+                                👤 {t('common.myPage')}
                             </Link>
                         </li>
 
@@ -138,7 +149,7 @@ export default function NavMenu() {
                                         className="block px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600 font-semibold"
                                         onClick={() => setIsOpen(false)}
                                     >
-                                        ⚙️ Admin Dashboard
+                                        ⚙️ {t('common.admin')} Dashboard
                                     </Link>
                                 </li>
                             </>
@@ -149,7 +160,7 @@ export default function NavMenu() {
                                 onClick={handleSignOut}
                                 className="w-full text-left block px-4 py-3 hover:bg-red-50 transition-colors text-red-600"
                             >
-                                🚪 ログアウト
+                                🚪 {t('common.logout')}
                             </button>
                         </li>
                     </>
@@ -161,7 +172,7 @@ export default function NavMenu() {
                                 className="block px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600"
                                 onClick={() => setIsOpen(false)}
                             >
-                                🔐 ログイン
+                                🔐 {t('common.login')}
                             </Link>
                         </li>
                     </>
@@ -171,7 +182,7 @@ export default function NavMenu() {
                 {isLoading && (
                     <li className="border-b border-gray-100">
                         <div className="px-4 py-3 text-gray-500 text-center">
-                            <div className="animate-pulse">読み込み中...</div>
+                            <div className="animate-pulse">{t('common.loading')}</div>
                         </div>
                     </li>
                 )}
