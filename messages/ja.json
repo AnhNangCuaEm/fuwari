@@ -18,6 +18,10 @@
     "welcomeMessage": "あなたは成功裏にログインしました。私たちのショップを探索してください！",
     "loginPrompt": "ログインまたはサインアップしてください 🎉"
   },
+  "breadcrumb": {
+    "home": "ホームに戻る",
+    "products": "商品一覧に戻る"
+  },
   "products": {
     "cupcake": {
       "title": "カップケーキ",
@@ -30,6 +34,20 @@
     "cookie": {
       "title": "クッキー",
       "description": "自然素材から作られたサクサクで美味しいクッキー"
+    }
+  },
+  "shopping": {
+    "cart": {
+      "title": "カート",
+      "addToCart": "カートに追加",
+      "emptyMessage": "カートは空です",
+      "checkoutButton": "チェックアウト"
+    },
+    "detail": "詳細を見る",
+    "stock": {
+      "stock": "在庫",
+      "inStock": "在庫あり",
+      "outOfStock": "在庫なし"
     }
   },
   "auth": {

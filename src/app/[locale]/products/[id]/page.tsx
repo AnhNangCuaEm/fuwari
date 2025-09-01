@@ -11,6 +11,7 @@ import { getProductById } from '@/lib/products';
 import { useState } from 'react';
 import { Product } from '@/types/product';
 import { useCart } from '@/lib/hooks/useCart';
+import { useTranslations } from 'next-intl';
 
 
 interface ProductDetailPageProps {
@@ -25,6 +26,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     const product = getProductById(productId);
     const [showModel, setShowModel] = useState(true);
     const { addToCart } = useCart();
+    const t = useTranslations();
 
     const handleAddToCart = (product: Product, e: React.MouseEvent) => {
         e.preventDefault() // Prevent the Link navigation
@@ -65,7 +67,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                         href="/products"
                         className="btn text-white hover:bg-gray-700"
                     >
-                        ← 商品一覧へ戻る
+                        {t("breadcrumb.products")}
                     </Link>
                 </nav>
 

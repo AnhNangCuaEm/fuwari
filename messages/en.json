@@ -2,7 +2,7 @@
   "common": {
     "loading": "Loading...",
     "welcome": "Hello",
-    "login": "Login", 
+    "login": "Login",
     "signup": "Sign Up",
     "logout": "Logout",
     "myPage": "Profile",
@@ -18,18 +18,36 @@
     "welcomeMessage": "You have successfully logged in. Explore our shop!",
     "loginPrompt": "Please login or sign up 🎉"
   },
+  "breadcrumb": {
+    "home": "Back to Home",
+    "products": "Back to Products"
+  },
   "products": {
     "cupcake": {
       "title": "Cupcake",
       "description": "Cupcakes with various flavors and toppings"
     },
     "creamCake": {
-      "title": "Cream cake", 
+      "title": "Cream cake",
       "description": "Delicious fresh cream cakes for special occasions in life"
     },
     "cookie": {
       "title": "Cookie",
       "description": "Crispy and delicious cookies made from natural ingredients"
+    }
+  },
+  "shopping": {
+    "cart": {
+      "title": "Cart",
+      "addToCart": "Add to Cart",
+      "emptyMessage": "Your cart is empty",
+      "checkoutButton": "Checkout"
+    },
+    "detail": "View Details",
+    "stock": {
+      "stock": "Stock",
+      "inStock": "In Stock",
+      "outOfStock": "Out of Stock"
     }
   },
   "auth": {

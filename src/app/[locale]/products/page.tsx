@@ -7,10 +7,12 @@ import Header from '@/components/layout/Header';
 import { getAllProducts } from '@/lib/products';
 import { Product } from '@/types/product';
 import { useCart } from '@/lib/hooks/useCart';
+import { useTranslations } from 'next-intl';
 
 export default function ProductsPage() {
     const products = getAllProducts();
     const { addToCart } = useCart()
+    const t = useTranslations();
 
     const handleAddToCart = (product: Product, e: React.MouseEvent) => {
         e.preventDefault() // Prevent the Link navigation
@@ -32,7 +34,7 @@ export default function ProductsPage() {
                         href="/"
                         className="btn text-white hover:bg-gray-700"
                     >
-                        ← ホームへ戻る
+                        {t("breadcrumb.home")}
                     </Link>
                 </nav>
                 <h1 className="text-3xl font-bold text-center mb-8">商品</h1>
@@ -68,22 +70,21 @@ export default function ProductsPage() {
                                     </span>
                                 </div>
                                 <div className="flex gap-2">
-                                    <Link 
+                                    <Link
                                         href={`/products/${product.id}`}
                                         className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium text-center transition-colors"
                                     >
-                                        詳細を見る
+                                        {t("shopping.detail")}
                                     </Link>
                                     <button
                                         onClick={(e) => handleAddToCart(product, e)}
                                         disabled={product.quantity === 0}
-                                        className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
-                                            product.quantity > 0 
-                                                ? 'bg-orange-500 hover:bg-orange-600 text-white' 
+                                        className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${product.quantity > 0
+                                                ? 'bg-orange-500 hover:bg-orange-600 text-white'
                                                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                        }`}
+                                            }`}
                                     >
-                                        {product.quantity > 0 ? 'カートに追加' : '売り切れ'}
+                                        {product.quantity > 0 ? t("shopping.cart.addToCart") : t("shopping.stock.outOfStock")}
                                     </button>
                                 </div>
                             </div>
