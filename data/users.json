@@ -8,6 +8,7 @@
     "createdAt": "2025-08-20T14:28:35.449Z",
     "updatedAt": "2025-09-05T11:09:28.012Z",
     "role": "user",
+    "status": "active",
     "phone": "09012345678",
     "address": "",
     "image": "/uploads/avatar-cb046685-5df7-4a4a-a169-d9b1c32b4406.jpg"
@@ -17,6 +18,7 @@
     "email": "thanhhailth1412@gmail.com",
     "name": "Ánh Nắng Của Em",
     "role": "admin",
+    "status": "active",
     "provider": "google",
     "image": "https://lh3.googleusercontent.com/a/ACg8ocLGASoDy0J9sy-_DqQLBAdjHHnkzy2rj14IFmtb1dF-bGcz6Mi7=s96-c",
     "createdAt": "2025-08-20T15:24:26.106Z",

@@ -53,6 +53,7 @@ export async function createUser(userData: RegisterData): Promise<User> {
     name: userData.name,
     password: hashedPassword,
     role: userData.role,
+    status: 'active',
     provider: 'credentials',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -83,6 +84,7 @@ export async function createGoogleUser(profile: { email: string; name: string; p
     email: profile.email,
     name: profile.name,
     role: 'user', // Default role for new users
+    status: 'active',
     provider: 'google',
     image: profile.picture,
     createdAt: new Date().toISOString(),
@@ -102,6 +104,11 @@ export async function verifyPassword(email: string, password: string): Promise<U
     return null;
   }
 
+  //Check status
+  if (user.status === 'banned') {
+    throw new Error('ACCOUNT_BANNED');
+  }
+
   const isValidPassword = await bcrypt.compare(password, user.password);
   return isValidPassword ? user : null;
 }
@@ -115,6 +122,21 @@ export async function updateUserRole(userId: string, newRole: 'user' | 'admin'):
   }
   
   users[userIndex].role = newRole;
+  users[userIndex].updatedAt = new Date().toISOString();
+  
+  await saveUsers(users);
+  return users[userIndex];
+}
+
+export async function updateUserStatus(userId: string, newStatus: 'active' | 'banned'): Promise<User | null> {
+  const users = await getUsers();
+  const userIndex = users.findIndex(user => user.id === userId);
+  
+  if (userIndex === -1) {
+    return null;
+  }
+  
+  users[userIndex].status = newStatus;
   users[userIndex].updatedAt = new Date().toISOString();
   
   await saveUsers(users);

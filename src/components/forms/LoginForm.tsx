@@ -18,6 +18,30 @@ export default function LoginForm() {
     setError('');
 
     try {
+      //Check credentials via API first
+      const verifyResponse = await fetch('/api/auth/verify-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyResponse.ok) {
+        //Handle errors
+        if (verifyData.error === 'ACCOUNT_BANNED') {
+          setError('アカウントが一時停止されています。管理者にお問い合わせください。');
+        } else if (verifyData.error === 'EMAIL_OR_PASSWORD_INVALID') {
+          setError('Emailかパスワードが正しくありません');
+        } else {
+          setError('ログイン中にエラーが発生しました');
+        }
+        return;
+      }
+
+      //If valid, proceed to sign in
       const result = await signIn('credentials', {
         email,
         password,
@@ -25,12 +49,13 @@ export default function LoginForm() {
       });
 
       if (result?.error) {
-        setError('Emailかパスワードが正しくありません');
+        setError('ログイン中にエラーが発生しました');
       } else {
         router.push('/');
       }
     } catch (error) {
-      setError('ログイン中にエラーが発生しました: ' + error);
+      console.error('Login error:', error);
+      setError('ログイン中にエラーが発生しました');
     } finally {
       setIsLoading(false);
     }

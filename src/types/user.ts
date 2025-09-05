@@ -8,6 +8,7 @@ export interface User {
   image?: string;
   phone?: string;
   address?: string;
+  status: 'active' | 'banned';
   createdAt: string;
   updatedAt: string;
 }
@@ -22,5 +23,6 @@ export interface RegisterData {
   email: string;
   password: string;
   role: 'user' | 'admin';
+  status?: 'active' | 'banned';
   confirmPassword: string;
 }

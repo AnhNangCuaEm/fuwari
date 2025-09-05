@@ -16,6 +16,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null
         }
 
+        //Just check is uer exists
         const user = await verifyPassword(
           credentials.email as string,
           credentials.password as string
@@ -48,6 +49,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: profile.name!,
             picture: profile.picture,
           })
+          
+          // Check if the Google user is banned
+          if (googleUser.status === 'banned') {
+            return false;
+          }
           
           // Update user object with data from database
           user.id = googleUser.id
