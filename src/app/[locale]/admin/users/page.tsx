@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { User } from '@/types/user'
+import UserManagerModal from '@/components/ui/UserManagerModal'
 
 interface UsersResponse {
   users: User[]
@@ -14,6 +15,8 @@ export default function UsersManagement() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     fetchUsers()
@@ -35,6 +38,22 @@ export default function UsersManagement() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleUserDetail = (user: User) => {
+    setSelectedUser(user)
+    setIsModalOpen(true)
+  }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+    setSelectedUser(null)
+  }
+
+  const handleUserUpdate = (updatedUser: User) => {
+    setUsers(users.map(user => 
+      user.id === updatedUser.id ? updatedUser : user
+    ))
   }
 
   if (loading) {
@@ -70,7 +89,7 @@ export default function UsersManagement() {
           ユーザー管理
         </h1>
         <div className="text-sm text-gray-600">
-          合計: {users.length} ユーザー
+          合計: {users.length}
         </div>
       </div>
 
@@ -86,6 +105,9 @@ export default function UsersManagement() {
               </th>
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
                 権限
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                ステータス
               </th>
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
                 Provider
@@ -129,6 +151,15 @@ export default function UsersManagement() {
                     {user.role === 'admin' ? 'Admin' : 'User'}
                   </span>
                 </td>
+                <td className="px-4 py-2">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    user.status === 'banned' 
+                      ? 'bg-red-100 text-red-800' 
+                      : 'bg-green-100 text-green-800'
+                  }`}>
+                    {user.status === 'banned' ? 'Banned' : 'Active'}
+                  </span>
+                </td>
                 <td className="px-4 py-2 text-sm text-gray-600">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     user.provider === 'google' 
@@ -142,7 +173,10 @@ export default function UsersManagement() {
                   {new Date(user.createdAt).toLocaleDateString('vi-VN')}
                 </td>
                 <td className="px-4 py-2">
-                  <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                  <button 
+                    onClick={() => handleUserDetail(user)}
+                    className="text-blue-600 hover:bg-gray-200 hover:cursor-pointer text-sm font-medium p-1 rounded-md transition-colors duration-200"
+                  >
                     詳細
                   </button>
                 </td>
@@ -159,6 +193,13 @@ export default function UsersManagement() {
           </div>
         </div>
       )}
+
+      <UserManagerModal
+        user={selectedUser}
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onUserUpdate={handleUserUpdate}
+      />
     </div>
   )
 }

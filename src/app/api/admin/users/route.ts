@@ -18,6 +18,8 @@ export async function GET() {
       status: user.status,
       provider: user.provider,
       image: user.image,
+      phone: user.phone,
+      address: user.address,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     }))
