@@ -56,5 +56,29 @@
     "email": "メールアドレス",
     "password": "パスワード",
     "name": "お名前"
+  },
+  "mypage": {
+    "title": "マイページ",
+    "subtitle": "個人情報と設定を管理",
+    "profilePicture": "プロフィール画像",
+    "profilePictureDesc": "カメラアイコンをクリックして新しいアバターをアップロード",
+    "fullName": "氏名",
+    "fullNamePlaceholder": "氏名を入力してください",
+    "emailAddress": "メールアドレス",
+    "emailPlaceholder": "メールアドレスを入力してください",
+    "phoneNumber": "電話番号",
+    "phonePlaceholder": "電話番号を入力してください",
+    "address": "住所",
+    "addressPlaceholder": "住所を入力してください",
+    "reset": "リセット",
+    "saveChanges": "変更を保存",
+    "saving": "保存中...",
+    "updateSuccess": "プロフィールが正常に更新されました！",
+    "updateError": "プロフィールの更新に失敗しました。もう一度お試しください。",
+    "validationError": "以下のエラーを修正してください",
+    "fileSizeError": "ファイルサイズは5MB未満である必要があります",
+    "fileTypeError": "画像ファイルを選択してください",
+    "avatarUploadSuccess": "アバターが正常にアップロードされました！",
+    "avatarUploadError": "アバターのアップロードに失敗しました。もう一度お試しください。"
   }
 }

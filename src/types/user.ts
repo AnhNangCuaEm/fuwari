@@ -6,6 +6,8 @@ export interface User {
   password?: string; // Optional for Google OAuth users
   provider: 'credentials' | 'google';
   image?: string;
+  phone?: string;
+  address?: string;
   createdAt: string;
   updatedAt: string;
 }

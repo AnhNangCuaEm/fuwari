@@ -56,5 +56,29 @@
     "email": "Email",
     "password": "Password",
     "name": "Name"
+  },
+  "mypage": {
+    "title": "My Profile",
+    "subtitle": "Manage your personal information and preferences",
+    "profilePicture": "Profile Picture",
+    "profilePictureDesc": "Click the camera icon to upload a new avatar",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "emailAddress": "Email Address",
+    "emailPlaceholder": "Enter your email address",
+    "phoneNumber": "Phone Number",
+    "phonePlaceholder": "Enter your phone number",
+    "address": "Address",
+    "addressPlaceholder": "Enter your address",
+    "reset": "Reset",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "updateSuccess": "Profile updated successfully!",
+    "updateError": "Failed to update profile. Please try again.",
+    "validationError": "Please fix the errors below",
+    "fileSizeError": "File size must be less than 5MB",
+    "fileTypeError": "Please select an image file",
+    "avatarUploadSuccess": "Avatar uploaded successfully!",
+    "avatarUploadError": "Failed to upload avatar. Please try again."
   }
 }
