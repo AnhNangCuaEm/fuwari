@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -26,7 +27,7 @@ export default function LoginForm() {
       if (result?.error) {
         setError('Emailかパスワードが正しくありません');
       } else {
-        router.push('/mypage');
+        router.push('/');
       }
     } catch (error) {
       setError('ログイン中にエラーが発生しました: ' + error);
@@ -36,7 +37,7 @@ export default function LoginForm() {
   };
 
   const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl: '/mypage' });
+    signIn('google', { callbackUrl: '/' });
   };
 
   return (
@@ -129,9 +130,9 @@ export default function LoginForm() {
 
       <p className="mt-4 text-center text-sm text-gray-600">
         まだアカウントをお持ちでないですか？{' '}
-        <a href="/auth/signup" className="text-blue-600 hover:text-blue-500">
+        <Link href="/auth/signup" className="text-blue-600 hover:text-blue-500">
           今すぐ登録
-        </a>
+        </Link>
       </p>
     </div>
   );

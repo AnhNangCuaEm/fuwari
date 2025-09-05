@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -148,9 +149,9 @@ export default function RegisterForm() {
 
       <p className="mt-4 text-center text-sm text-gray-600">
         すでにアカウントをお持ちですか？{' '}
-        <a href="/auth/signin" className="text-blue-600 hover:text-blue-500">
+        <Link href="/auth/signin" className="text-blue-600 hover:text-blue-500">
           今すぐログイン
-        </a>
+        </Link>
       </p>
     </div>
   );
