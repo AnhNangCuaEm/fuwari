@@ -9,6 +9,8 @@ import Footer from '@/components/layout/Footer';
 import ImageCropModal from '@/components/ui/ImageCropModal';
 import { useTranslations } from 'next-intl';
 import { validateAllFields } from '@/lib/validation';
+import Link from 'next/link';
+
 import '@/css/mypage.css';
 
 interface UserProfile {
@@ -266,9 +268,17 @@ export default function Mypage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
-      <main className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <main className="container mx-auto px-4 py-16 flex-1">
+        <nav className="mb-8">
+                    <Link
+                        href="/"
+                        className="btn text-white hover:bg-gray-700"
+                    >
+                        {t("breadcrumb")}
+                    </Link>
+                </nav>
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>

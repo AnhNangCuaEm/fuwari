@@ -58,6 +58,7 @@
     "name": "Name"
   },
   "mypage": {
+    "breadcrumb": "Back to Home",
     "title": "My Profile",
     "subtitle": "Manage your personal information and preferences",
     "profilePicture": "Profile Picture",

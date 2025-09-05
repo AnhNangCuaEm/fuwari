@@ -2,7 +2,7 @@
   "common": {
     "loading": "ローディング...",
     "welcome": "こんにちは",
-    "login": "ログイン", 
+    "login": "ログイン",
     "signup": "アカウントを作成",
     "logout": "ログアウト",
     "myPage": "プロフィール",
@@ -58,6 +58,7 @@
     "name": "お名前"
   },
   "mypage": {
+    "breadcrumb": "ホームに戻る",
     "title": "マイページ",
     "subtitle": "個人情報と設定を管理",
     "profilePicture": "プロフィール画像",
