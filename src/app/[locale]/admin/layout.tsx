@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/lib/auth-utils"
-import AdminMenu from "@/components/layout/AdminMenu"
+import AdminSidebar from "@/components/layout/AdminSidebar"
 
 export default async function AdminLayout({
     children,
@@ -9,19 +9,15 @@ export default async function AdminLayout({
     await requireAdmin()
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="bg-white shadow-sm border-b">
-                <div className="container mx-auto px-4 py-4">
-                    <div className="flex items-center justify-between">
-                        <h1 className="text-xl font-semibold text-gray-800">
-                            Admin Panel
-                        </h1>
-                        <AdminMenu />
-                    </div>
-                </div>
-            </div>
-            <div className="container mx-auto px-4 py-6">
-                {children}
+        <div className="flex min-h-screen bg-gray-100">
+            {/* Sidebar */}
+            <AdminSidebar />
+            
+            {/* Main Content */}
+            <div className="flex-1 overflow-hidden">
+                <main className="p-6">
+                    {children}
+                </main>
             </div>
         </div>
     )

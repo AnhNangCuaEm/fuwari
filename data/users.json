@@ -7,7 +7,7 @@
     "provider": "credentials",
     "createdAt": "2025-08-20T14:28:35.449Z",
     "updatedAt": "2025-08-20T14:28:35.449Z",
-    "role": "admin"
+    "role": "user"
   },
   {
     "id": "e82a7b21-a6d9-4462-bdda-f50a092fe1b4",
@@ -17,6 +17,6 @@
     "provider": "google",
     "image": "https://lh3.googleusercontent.com/a/ACg8ocLGASoDy0J9sy-_DqQLBAdjHHnkzy2rj14IFmtb1dF-bGcz6Mi7=s96-c",
     "createdAt": "2025-08-20T15:24:26.106Z",
-    "updatedAt": "2025-08-23T13:48:00.429Z"
+    "updatedAt": "2025-09-05T03:14:36.454Z"
   }
 ]
