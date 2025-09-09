@@ -1,6 +1,6 @@
 'use client'
 
-import {Link} from "@/i18n/navigation"
+import { Link } from "@/i18n/navigation"
 import { Sling as Hamburger } from 'hamburger-react'
 import { useState } from "react"
 import { useCurrentUser } from "@/lib/hooks/useAuth"
@@ -8,7 +8,7 @@ import { signOut } from "next-auth/react"
 import CartDrawer from "@/components/cart/CartDrawer"
 import LanguageModal from "@/components/ui/LanguageModal"
 import { useCart } from "@/lib/hooks/useCart"
-import {useTranslations} from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 export default function NavMenu() {
     const [isOpen, setIsOpen] = useState(false)
@@ -26,13 +26,42 @@ export default function NavMenu() {
     }
 
     return (
-        <nav className="relative flex">
+        <nav className="relative flex gap-2">
+            {/*Search - Always visible */}
             <div className="md:flex items-center">
-                <button 
+                <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg className="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </div>
+                    <input type="text"
+                        placeholder="商品検索..."
+                        className="w-48 py-1 px-2 pl-9 bg-white border border-gray-300 rounded-3xl" />
+                </div>
+            </div>
+
+            {/*Notifications - Always visible */}
+            <div className="md:flex items-center">
+                <button>
+                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-800 hover:text-gray-900 hover:cursor-pointer transition-colors">
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M12 2C8.318 2 5.5 4.818 5.5 8.5V12.5C5.5 13.5 5 14 4 14.5C3.5 14.7 3.2 15.2 3.2 15.8C3.2 16.5 3.7 17 4.4 17H19.6C20.3 17 20.8 16.5 20.8 15.8C20.8 15.2 20.5 14.7 20 14.5C19 14 18.5 13.5 18.5 12.5V8.5C18.5 4.818 15.682 2 12 2Z" fill="currentColor" />
+                            <path d="M10.5 19C10.5 20.38 11.62 21.5 13 21.5C14.38 21.5 15.5 20.38 15.5 19H10.5Z" fill="currentColor" />
+                        </g>
+                    </svg>
+                </button>
+            </div>
+
+            {/* Cart Button - Always visible */}
+            <div className="md:flex items-center">
+                <button
                     className="group relative"
                     onClick={() => setIsCartOpen(true)}
                 >
-                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-orange-400  group-hover:text-orange-700 transition-colors">
+                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-800  group-hover:text-gray-900 hover:cursor-pointer transition-colors">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -191,17 +220,17 @@ export default function NavMenu() {
                     </li>
                 )}
             </ul>
-            
+
             {/* Cart Drawer */}
-            <CartDrawer 
-                isOpen={isCartOpen} 
-                onClose={() => setIsCartOpen(false)} 
+            <CartDrawer
+                isOpen={isCartOpen}
+                onClose={() => setIsCartOpen(false)}
             />
 
             {/* Language Modal */}
-            <LanguageModal 
-                isOpen={isLanguageModalOpen} 
-                onClose={() => setIsLanguageModalOpen(false)} 
+            <LanguageModal
+                isOpen={isLanguageModalOpen}
+                onClose={() => setIsLanguageModalOpen(false)}
             />
         </nav>
     )
