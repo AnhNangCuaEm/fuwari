@@ -10,7 +10,9 @@
     "cart": "カート",
     "admin": "管理者",
     "contact": "お問い合わせ",
-    "about": "について"
+    "about": "について",
+    "language": "言語",
+    "selectLanguage": "言語を選択"
   },
   "home": {
     "title": "🍰 Fuwari Sweet Shop 🍰",

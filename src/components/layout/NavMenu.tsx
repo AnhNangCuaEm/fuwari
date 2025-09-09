@@ -6,12 +6,14 @@ import { useState } from "react"
 import { useCurrentUser } from "@/lib/hooks/useAuth"
 import { signOut } from "next-auth/react"
 import CartDrawer from "@/components/cart/CartDrawer"
+import LanguageModal from "@/components/ui/LanguageModal"
 import { useCart } from "@/lib/hooks/useCart"
 import {useTranslations} from 'next-intl'
 
 export default function NavMenu() {
     const [isOpen, setIsOpen] = useState(false)
     const [isCartOpen, setIsCartOpen] = useState(false)
+    const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false)
     const { user, isAuthenticated, isLoading } = useCurrentUser()
     const { getTotalItems } = useCart()
     const t = useTranslations()
@@ -25,17 +27,6 @@ export default function NavMenu() {
 
     return (
         <nav className="relative flex">
-            {/* User Info Display */}
-            {/* {isAuthenticated && user && (
-                <div className="hidden md:flex items-center mr-4 text-sm text-gray-600">
-                    <span className="mr-2">Hi, <strong>{user.name}</strong></span>
-                    {isAdmin && (
-                        <span className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
-                            Admin
-                        </span>
-                    )}
-                </div>
-            )} */}
             <div className="md:flex items-center">
                 <button 
                     className="group relative"
@@ -128,6 +119,19 @@ export default function NavMenu() {
                     </Link>
                 </li>
 
+                {/* Language Selector */}
+                <li className="border-b border-gray-100 last:border-b-0">
+                    <button
+                        onClick={() => {
+                            setIsLanguageModalOpen(true)
+                            setIsOpen(false)
+                        }}
+                        className="w-full text-left block px-4 py-3 hover:bg-gray-50 transition-colors"
+                    >
+                        🌐 {t('common.language')}
+                    </button>
+                </li>
+
                 {/* User-specific menu items */}
                 {isAuthenticated ? (
                     <>
@@ -192,6 +196,12 @@ export default function NavMenu() {
             <CartDrawer 
                 isOpen={isCartOpen} 
                 onClose={() => setIsCartOpen(false)} 
+            />
+
+            {/* Language Modal */}
+            <LanguageModal 
+                isOpen={isLanguageModalOpen} 
+                onClose={() => setIsLanguageModalOpen(false)} 
             />
         </nav>
     )
