@@ -2,12 +2,13 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ConditionalAuthContent } from "@/components/auth/AuthGuards";
 import { getCurrentUser } from "@/lib/auth-utils";
+import Link from "next/link";
 
 export default async function ContactPage() {
     const currentUser = await getCurrentUser();
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen flex flex-col">
             <Header />
             <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 flex-1">
                 <div className="max-w-2xl w-full text-center">
@@ -39,12 +40,12 @@ export default async function ContactPage() {
                                 <p className="text-gray-600 mb-4">
                                     あなたはまだログインしていません。最適なサポートを受けるには、まずログインしてください。
                                 </p>
-                                <a
+                                <Link
                                     href="/auth/signin"
                                     className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                                 >
                                     今すぐログイン
-                                </a>
+                                </Link>
                             </div>
                         )}
                     </div>
