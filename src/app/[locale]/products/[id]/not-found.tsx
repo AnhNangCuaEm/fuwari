@@ -4,7 +4,7 @@ import Header from '@/components/layout/Header';
 
 export default function NotFound() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex flex-col">
+        <div className="min-h-screen flex flex-col">
             <Header />
             <div className="container mx-auto px-4 py-16 flex-1">
                 <div className="text-center">
