@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import {Link} from '@/i18n/navigation';
+import {useTranslations} from 'next-intl';
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ export default function RegisterForm() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const router = useRouter();
+  const t = useTranslations();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -56,9 +58,9 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+    <div className="max-w-md mx-auto bg-white rounded-4xl shadow-md p-6">
       <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-        アカウントを作成
+        {t('common.signup')}
       </h2>
 
       {error && (
@@ -76,7 +78,7 @@ export default function RegisterForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            名前
+            {t('auth.name')}
           </label>
           <input
             type="text"
@@ -86,13 +88,13 @@ export default function RegisterForm() {
             onChange={handleChange}
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="やまだ ふわり"
+            placeholder={t('auth.namePlaceholder')}
           />
         </div>
 
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            Email
+            {t('auth.email')}
           </label>
           <input
             type="email"
@@ -108,7 +110,7 @@ export default function RegisterForm() {
 
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-            パスワード
+            {t('auth.password')}
           </label>
           <input
             type="password"
@@ -118,13 +120,13 @@ export default function RegisterForm() {
             onChange={handleChange}
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="8文字以上のパスワード"
+            placeholder={t('auth.passwordPlaceholder')}
           />
         </div>
 
         <div>
           <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-            パスワードの確認
+            {t('auth.confirmPassword')}
           </label>
           <input
             type="password"
@@ -143,14 +145,14 @@ export default function RegisterForm() {
           disabled={isLoading}
           className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? 'アカウントを作成中...' : '登録'}
+          {isLoading ? t('auth.signingup') : t('common.signup')}
         </button>
       </form>
 
       <p className="mt-4 text-center text-sm text-gray-600">
-        すでにアカウントをお持ちですか？{' '}
+        {t('auth.dontHaveAccount')}{' '}
         <Link href="/auth/signin" className="text-blue-600 hover:text-blue-500">
-          今すぐログイン
+          {t('common.signin')}
         </Link>
       </p>
     </div>
