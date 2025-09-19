@@ -2,7 +2,7 @@
   "common": {
     "loading": "Loading...",
     "welcome": "Hello",
-    "login": "Login",
+    "signin": "Sign In",
     "signup": "Sign Up",
     "logout": "Logout",
     "myPage": "Profile",
@@ -53,11 +53,19 @@
     }
   },
   "auth": {
-    "signInTitle": "Sign In",
+    "or": "or",
     "signUpTitle": "Sign Up",
+    "signing": "Signing in...",
+    "googleSignIn": "Sign in with Google",
     "email": "Email",
     "password": "Password",
-    "name": "Name"
+    "name": "Name",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signupnow": "Sign up now",
+    "accountbanned": "Your account has been suspended. Please contact the administrator.",
+    "invalidcredentials": "Invalid email or password.",
+    "loginerror": "An error occurred while logging in."
   },
   "mypage": {
     "breadcrumb": "Back to Home",

@@ -2,7 +2,7 @@
   "common": {
     "loading": "ローディング...",
     "welcome": "こんにちは",
-    "login": "ログイン",
+    "signin": "ログイン",
     "signup": "アカウントを作成",
     "logout": "ログアウト",
     "myPage": "プロフィール",
@@ -53,11 +53,19 @@
     }
   },
   "auth": {
-    "signInTitle": "ログイン",
+    "or": "または",
     "signUpTitle": "アカウント作成",
+    "signing": "ログイン中...",
+    "googleSignIn": "Googleでログイン",
     "email": "メールアドレス",
     "password": "パスワード",
-    "name": "お名前"
+    "name": "お名前",
+    "dontHaveAccount": "アカウントをお持ちでないですか？",
+    "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
+    "signupnow": "今すぐ登録",
+    "accountbanned": "アカウントが一時停止されています。管理者にお問い合わせください。",
+    "invalidcredentials": "無効なメールアドレスまたはパスワード。",
+    "loginerror": "ログイン中にエラーが発生しました。"
   },
   "mypage": {
     "breadcrumb": "ホームに戻る",

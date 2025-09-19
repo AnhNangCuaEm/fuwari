@@ -205,7 +205,7 @@ export default function NavMenu() {
                                 className="block px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600"
                                 onClick={() => setIsOpen(false)}
                             >
-                                🔐 {t('common.login')}
+                                🔐 {t('common.signin')}
                             </Link>
                         </li>
                     </>
