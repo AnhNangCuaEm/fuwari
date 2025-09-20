@@ -14,7 +14,7 @@
         "description": "Rich chocolate brownie with walnuts.",
         "price": 200,
         "quantity": 2,
-        "image": "/2dimage/cupcake.webp",
+        "image": "/2dimage/brownie.jpg",
         "modelPath": "/3dmodels/brownie/scene.gltf"
     },
     {

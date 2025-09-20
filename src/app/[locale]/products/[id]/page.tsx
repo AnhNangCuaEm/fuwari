@@ -105,7 +105,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                             <Image
                                                 src={product.image}
                                                 alt={`${product.name} thumbnail`}
-                                                width={40}
+                                                width={32}
                                                 height={32}
                                                 className="rounded opacity-70"
                                             />
