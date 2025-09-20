@@ -28,7 +28,7 @@ export default function ProductsPage() {
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
-            <div className="container mx-auto px-4 py-16 flex-1">
+            <div className="container mx-auto px-4 py-8 flex-1">
                 <nav className="mb-8">
                     <Link
                         href="/"

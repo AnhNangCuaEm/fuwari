@@ -270,7 +270,7 @@ export default function Mypage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="container mx-auto px-4 py-16 flex-1">
+      <main className="container mx-auto px-4 py-8 flex-1">
         <nav className="mb-8">
                     <Link
                         href="/"
