@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export default function Footer() {
     return (
-        <footer className="relative pt-16 pb-4">
+        <footer className="relative pt-16 pb-2">
             {/* SVG Background */}
             <svg 
             width="100%" 

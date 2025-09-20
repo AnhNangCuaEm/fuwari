@@ -11,6 +11,7 @@ export default function Header() {
                     alt="Fuwari Sweet Shop Logo"
                     width={150}
                     height={100}
+                    className='sm:w-36 w-28'
                 />
             </Link>
 
