@@ -5,7 +5,7 @@
         "description": "Delicious vanilla cupcake with buttercream frosting.",
         "price": 100,
         "quantity": 10,
-        "image": "/cupcake.webp",
+        "image": "/2dimage/cupcake.webp",
         "modelPath": "/3dmodels/cupcake/scene.gltf"
     },
     {
@@ -14,7 +14,7 @@
         "description": "Rich chocolate brownie with walnuts.",
         "price": 200,
         "quantity": 2,
-        "image": "/brownie.jpg",
+        "image": "/2dimage/cupcake.webp",
         "modelPath": "/3dmodels/brownie/scene.gltf"
     },
     {
@@ -23,7 +23,7 @@
         "description": "Chewy chocolate chip cookie.",
         "price": 300,
         "quantity": 0,
-        "image": "/cookie.webp",
+        "image": "/2dimage/cookie.webp",
         "modelPath": "/3dmodels/cookie/scene.gltf"
     }
 ]
