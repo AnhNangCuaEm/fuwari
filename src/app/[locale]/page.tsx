@@ -2,8 +2,8 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 // import { useSession } from 'next-auth/react';
-import {Link} from '@/i18n/navigation';
-import {useTranslations} from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
   // const { data: session, status } = useSession();
