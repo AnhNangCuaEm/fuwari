@@ -25,9 +25,12 @@ export default function SignInPage() {
         <LoginForm />
       </div>
 
-      <p className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center text-xs sm:text-sm text-black select-none z-10 px-4">
-        {new Date().getFullYear()} © Fuwari Sweet Shop. All rights reserved.
-      </p>
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center z-10 px-4">
+        <p className="text-center text-xs sm:text-sm text-black select-none">
+          {new Date().getFullYear()} © Fuwari Sweet Shop.{' '}
+          <span className="whitespace-nowrap">All rights reserved.</span>
+        </p>
+      </div>
     </div>
   );
 }

@@ -54,7 +54,6 @@
   },
   "auth": {
     "or": "or",
-    "signUpTitle": "Sign Up",
     "signing": "Signing in...",
     "googleSignIn": "Sign in with Google",
     "name": "Name",
