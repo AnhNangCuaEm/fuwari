@@ -72,16 +72,16 @@ export default function ProductsPage() {
                                 <div className="flex gap-2">
                                     <Link
                                         href={`/products/${product.id}`}
-                                        className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium text-center transition-colors"
+                                        className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium text-center transition-colors cursor-pointer"
                                     >
                                         {t("shopping.detail")}
                                     </Link>
                                     <button
                                         onClick={(e) => handleAddToCart(product, e)}
                                         disabled={product.quantity === 0}
-                                        className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${product.quantity > 0
+                                        className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer ${product.quantity > 0
                                                 ? 'bg-orange-500 hover:bg-orange-600 text-white'
-                                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                                : 'bg-gray-300 text-gray-500 cursor-not-allowed!'
                                             }`}
                                     >
                                         {product.quantity > 0 ? t("shopping.cart.addToCart") : t("shopping.stock.outOfStock")}

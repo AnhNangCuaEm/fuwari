@@ -28,21 +28,17 @@ export default function NavMenu() {
     return (
         <nav className="relative flex gap-2">
             {/*Search - Always visible */}
-            <div className="md:flex items-center">
-                <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
+            <div className="flex items-center">
+                <button className="flex items-center font-bold gap-2 px-4 py-1 rounded-4xl bg-white cursor-pointer">
+                    {t('common.search')}
+                    <div className="relative">
+                        <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                     </div>
-                    <input type="text"
-                        placeholder="商品検索..."
-                        className="w-48 py-1 px-2 pl-9 bg-white border border-gray-300 rounded-3xl" />
-                </div>
+                </button>
             </div>
 
             {/*Notifications - Always visible */}
-            <div className="md:flex items-center">
+            <div className="flex items-center">
                 <button>
                     <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-800 hover:text-gray-900 hover:cursor-pointer transition-colors">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -56,7 +52,7 @@ export default function NavMenu() {
             </div>
 
             {/* Cart Button - Always visible */}
-            <div className="md:flex items-center">
+            <div className="flex items-center">
                 <button
                     className="group relative"
                     onClick={() => setIsCartOpen(true)}

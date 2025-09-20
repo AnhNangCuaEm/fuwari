@@ -12,7 +12,8 @@
     "contact": "Contact",
     "about": "About",
     "language": "Language",
-    "selectLanguage": "Select Language"
+    "selectLanguage": "Select Language",
+    "search": "Search"
   },
   "home": {
     "title": "🍰 Fuwari Sweet Shop 🍰",
@@ -42,7 +43,8 @@
     "cart": {
       "title": "Cart",
       "addToCart": "Add to Cart",
-      "checkoutButton": "Checkout"
+      "checkoutButton": "Checkout",
+      "viewCart": "View Cart"
     },
     "detail": "View Details",
     "stock": {
@@ -53,6 +55,7 @@
   },
   "cart": {
     "title": "Shopping Cart",
+    "items": "Items",
     "cartItems": "Cart Items",
     "orderDetails": "Order Details",
     "product": "Product",
@@ -66,6 +69,7 @@
     "free": "Free",
     "freeDeliverMsg": "🎉 Free shipping applied!",
     "emptyMessage": "Your cart is currently empty.",
+    "emptySuggestion": "Add some delicious treats!",
     "continueShopping": "Continue Shopping",
     "viewProducts": "View Products",
     "checkout": "Proceed to Checkout",
