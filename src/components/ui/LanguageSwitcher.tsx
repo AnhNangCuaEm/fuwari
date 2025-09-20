@@ -10,7 +10,21 @@ export default function LanguageSwitcher() {
   const pathname = usePathname();
 
   const handleLocaleChange = (newLocale: string) => {
-    router.replace(pathname, {locale: newLocale});
+    // Save current cart state before language switch
+    try {
+      const currentCart = localStorage.getItem('fuwari-cart')
+      if (currentCart) {
+        // Temporarily store cart in a backup key
+        localStorage.setItem('fuwari-cart-backup', currentCart)
+      }
+    } catch (error) {
+      console.error('Error backing up cart before locale change:', error)
+    }
+    
+    // Small delay to ensure localStorage operations complete
+    setTimeout(() => {
+      router.replace(pathname, {locale: newLocale});
+    }, 10);
   };
 
   return (

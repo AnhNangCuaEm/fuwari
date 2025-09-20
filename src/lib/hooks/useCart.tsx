@@ -19,24 +19,80 @@ interface CartContextType {
     clearCart: () => void
     getTotalItems: () => number
     getTotalPrice: () => number
+    debugCartState: () => void
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
     const [cartItems, setCartItems] = useState<CartItem[]>([])
+    const [isLoaded, setIsLoaded] = useState(false)
 
     // Load cart from localStorage on mount
     useEffect(() => {
-        const savedCart = localStorage.getItem('cart')
-        if (savedCart) {
-            setCartItems(JSON.parse(savedCart))
+        try {
+            let savedCart = localStorage.getItem('fuwari-cart')
+            
+            // Check for backup cart data (from language switching)
+            const backupCart = localStorage.getItem('fuwari-cart-backup')
+            if (backupCart && (!savedCart || savedCart === '[]')) {
+                savedCart = backupCart
+                localStorage.setItem('fuwari-cart', backupCart)
+                localStorage.removeItem('fuwari-cart-backup')
+            }
+            
+            if (savedCart) {
+                const parsedCart = JSON.parse(savedCart)
+                setCartItems(parsedCart)
+            }
+        } catch (error) {
+            console.error('Error loading cart from localStorage:', error)
+            localStorage.removeItem('fuwari-cart')
+            localStorage.removeItem('fuwari-cart-backup')
         }
+        setIsLoaded(true)
     }, [])
 
-    // Save cart to localStorage whenever it changes
+    // Save cart to localStorage whenever it changes (only after initial load)
     useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cartItems))
+        if (isLoaded) {
+            try {
+                localStorage.setItem('fuwari-cart', JSON.stringify(cartItems))
+            } catch (error) {
+                console.error('Error saving cart to localStorage:', error)
+            }
+        }
+    }, [cartItems, isLoaded])
+
+    // Listen for storage events to sync cart across tabs and handle external changes
+    useEffect(() => {
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === 'fuwari-cart' && e.newValue !== null) {
+                try {
+                    const newCartItems = JSON.parse(e.newValue)
+                    setCartItems(newCartItems)
+                } catch (error) {
+                    console.error('Error parsing cart from storage event:', error)
+                }
+            }
+        }
+
+        const handleBeforeUnload = () => {
+            // Ensure cart is saved before page unloads
+            try {
+                localStorage.setItem('fuwari-cart', JSON.stringify(cartItems))
+            } catch (error) {
+                console.error('Error saving cart before unload:', error)
+            }
+        }
+
+        window.addEventListener('storage', handleStorageChange)
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange)
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        }
     }, [cartItems])
 
     const addToCart = (item: Omit<CartItem, 'quantity'>) => {
@@ -84,6 +140,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)
     }
 
+    const debugCartState = () => {
+        console.log('Cart Debug Info:', {
+            cartItems,
+            itemCount: cartItems.length,
+            totalItems: getTotalItems(),
+            totalPrice: getTotalPrice(),
+            localStorage: localStorage.getItem('fuwari-cart'),
+            backup: localStorage.getItem('fuwari-cart-backup')
+        })
+    }
+
     const value: CartContextType = {
         cartItems,
         addToCart,
@@ -91,7 +158,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeFromCart,
         clearCart,
         getTotalItems,
-        getTotalPrice
+        getTotalPrice,
+        debugCartState
     }
 
     return (
