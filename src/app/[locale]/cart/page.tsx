@@ -3,10 +3,12 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
-import Link from "next/link";
+import {Link} from '@/i18n/navigation';
+import {useTranslations} from 'next-intl';
 import { useCart } from "@/lib/hooks/useCart";
 
 export default function CartPage() {
+    const t = useTranslations();
     const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart()
 
     const getSubtotal = () => {
@@ -34,30 +36,30 @@ export default function CartPage() {
             <Header />
 
             <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-8">Shopping カート</h1>
+                <h1 className="text-3xl text-center font-bold text-gray-900 mb-8">{t("cart.title")}</h1>
 
                 {cartItems.length === 0 ? (
                     <div className="text-center py-16">
                         <div className="text-6xl mb-4">🛒</div>
-                        <h2 className="text-2xl font-semibold text-gray-600 mb-2">カートにアイテムがありません</h2>
-                        <p className="text-gray-500 mb-6">美味しいお菓子を追加しましょう！</p>
+                        <h2 className="text-2xl font-semibold text-gray-600 mb-2">{t("cart.emptyMessage")}</h2>
+                        <p className="text-gray-500 mb-6">{t("cart.continueShopping")}</p>
                         <Link
                             href="/products"
-                            className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                            className="inline-block bg-[#D6B884] hover:bg-[#CC8409] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
                         >
-                            商品を閲覧
+                            {t("cart.viewProducts")}
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
                         {/* Left Column - Cart Items */}
                         <div className="lg:col-span-2">
-                            <div className="bg-white rounded-lg shadow-sm">
+                            <div className="">
                                 <div className="p-6 border-b">
-                                    <h2 className="text-xl font-semibold">カートアイテム ({cartItems.length})</h2>
+                                    <h2 className="text-xl font-semibold">{t("cart.cartItems")} ({cartItems.length})</h2>
                                 </div>
 
-                                <div className="divide-y divide-gray-200">
+                                <div className="divide-y divide-black border-b">
                                     {cartItems.map((item) => (
                                         <div key={item.id} className="p-6 flex items-center space-x-4">
                                             <div className="flex-shrink-0">
@@ -79,14 +81,14 @@ export default function CartPage() {
                                                     <div className="flex items-center space-x-3">
                                                         <button
                                                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                            className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                                                            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer"
                                                         >
                                                             -
                                                         </button>
                                                         <span className="font-medium">{item.quantity}</span>
                                                         <button
                                                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                            className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+                                                            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer"
                                                         >
                                                             +
                                                         </button>
@@ -98,9 +100,9 @@ export default function CartPage() {
                                                         </span>
                                                         <button
                                                             onClick={() => removeFromCart(item.id)}
-                                                            className="text-red-500 hover:text-red-700 text-sm font-medium"
+                                                            className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
                                                         >
-                                                            削除
+                                                            {t("cart.remove")}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -113,55 +115,55 @@ export default function CartPage() {
 
                         {/* Right Column - Order Summary */}
                         <div className="lg:col-span-1">
-                            <div className="bg-white rounded-lg shadow-sm sticky top-8">
+                            <div className="bg-[#FAF3E0] shadow-sm sticky top-8">
                                 <div className="p-6 border-b">
-                                    <h2 className="text-xl font-semibold">注文詳細</h2>
+                                    <h2 className="text-xl font-semibold">{t("cart.orderDetails")}</h2>
                                 </div>
 
                                 <div className="p-6 space-y-4">
 
                                     <div className="flex justify-between">
-                                        <span>個数</span>
+                                        <span>{t("cart.totalItems")}</span>
                                         <span>{getItems()}</span>
                                     </div>
 
                                     <div className="flex justify-between">
-                                        <span>小計</span>
+                                        <span>{t("cart.subtotal")}</span>
                                         <span>¥{getSubtotal()}</span>
                                     </div>
 
                                     <div className="flex justify-between">
-                                        <span>税金 (10%)</span>
+                                        <span>{t("cart.tax")}</span>
                                         <span>¥{getTax()}</span>
                                     </div>
 
                                     <div className="flex justify-between">
-                                        <span>送料</span>
-                                        <span>{getShipping() === 0 ? '無料' : `¥${getShipping()}`}</span>
+                                        <span>{t("cart.shipping")}</span>
+                                        <span>{getShipping() === 0 ? t("cart.free") : `¥${getShipping()}`}</span>
                                     </div>
 
                                     {getSubtotal() > 500 && (
                                         <div className="text-sm text-green-600">
-                                            🎉 無料配送が適用されました！
+                                            {t("cart.freeDeliverMsg")}
                                         </div>
                                     )}
 
                                     <hr className="my-4" />
 
                                     <div className="flex justify-between text-lg font-bold">
-                                        <span>Total</span>
+                                        <span>{t("cart.total")}</span>
                                         <span className="text-orange-600">¥{getTotal()}</span>
                                     </div>
 
-                                    <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold transition-colors mt-6">
-                                        購入手続き
+                                    <button className="w-full bg-[#D6B884] hover:bg-[#CC8409] text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer">
+                                        {t("cart.checkout")}
                                     </button>
 
                                     <Link
                                         href="/products"
-                                        className="block w-full text-center border border-gray-300 hover:border-gray-400 py-3 rounded-lg font-semibold transition-colors"
+                                        className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors cursor-pointer"
                                     >
-                                        買い物を続ける
+                                        {t("cart.continueShopping")}
                                     </Link>
                                 </div>
                             </div>

@@ -42,7 +42,6 @@
     "cart": {
       "title": "Cart",
       "addToCart": "Add to Cart",
-      "emptyMessage": "Your cart is empty",
       "checkoutButton": "Checkout"
     },
     "detail": "View Details",
@@ -51,6 +50,26 @@
       "inStock": "In Stock",
       "outOfStock": "Out of Stock"
     }
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "cartItems": "Cart Items",
+    "orderDetails": "Order Details",
+    "product": "Product",
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "tax": "Tax (10%)",
+    "subtotal": "Subtotal",
+    "totalItems": "Total Items",
+    "shipping": "Shipping fee",
+    "free": "Free",
+    "freeDeliverMsg": "🎉 Free shipping applied!",
+    "emptyMessage": "Your cart is currently empty.",
+    "continueShopping": "Continue Shopping",
+    "viewProducts": "View Products",
+    "checkout": "Proceed to Checkout",
+    "remove": "Remove"
   },
   "auth": {
     "or": "or",
