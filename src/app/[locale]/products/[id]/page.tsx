@@ -55,19 +55,19 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
     const getStockStatus = (quantity: number) => {
         if (quantity === 0) {
-            return { 
-                text: locale === 'en' ? 'Out of Stock' : '在庫なし', 
-                color: 'text-red-600' 
+            return {
+                text: locale === 'en' ? 'Out of Stock' : '在庫なし',
+                color: 'text-red-600'
             };
         } else if (quantity < 10) {
-            return { 
-                text: locale === 'en' ? 'Limited Stock' : '残りわずか', 
-                color: 'text-orange-500' 
+            return {
+                text: locale === 'en' ? 'Limited Stock' : '残りわずか',
+                color: 'text-orange-500'
             };
         } else {
-            return { 
-                text: locale === 'en' ? 'In Stock' : '在庫あり', 
-                color: 'text-green-600' 
+            return {
+                text: locale === 'en' ? 'In Stock' : '在庫あり',
+                color: 'text-green-600'
             };
         }
     };
@@ -87,74 +87,90 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 </nav>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Product 3D Model */}
-                    <div className="space-y-4">
-                        <div className="overflow-hidden rounded-lg shadow-lg bg-white">
-                            {product.modelPath && showModel ? (
-                                <ModelViewer
-                                    modelPath={product.modelPath}
-                                    className="w-full h-96"
-                                />
-                            ) : (
-                                <div className="w-full h-96 flex items-center justify-center bg-gray-100">
+                    {/* Left Column - 3D Model and Related Products */}
+                    <div className="space-y-8">
+                        {/* Product 3D Model */}
+                        <div className="space-y-4">
+                            <div className="overflow-hidden rounded-lg shadow-lg bg-white">
+                                {product.modelPath && showModel ? (
+                                    <ModelViewer
+                                        modelPath={product.modelPath}
+                                        className="w-full h-96"
+                                    />
+                                ) : (
+                                    <div className="w-full h-96 flex items-center justify-center bg-gray-100">
+                                        <Image
+                                            src={product.image}
+                                            alt={getLocalizedText(product.name, product.engName)}
+                                            width={384}
+                                            height={384}
+                                            className="max-w-full max-h-full object-contain rounded-lg"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                            {/* Toggle Button */}
+                            <div className="text-center">
+                                {product.modelPath ? (
+                                    <button
+                                        onClick={toggleView}
+                                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300"
+                                        title={showModel ? "画像を表示" : "3Dモデルに切り替え"}
+                                    >
+                                        {showModel ? (
+                                            <>
+                                                <Image
+                                                    src={product.image}
+                                                    alt={`${product.name} thumbnail`}
+                                                    width={32}
+                                                    height={32}
+                                                    className="rounded opacity-70"
+                                                />
+                                                <span className="text-sm font-medium text-gray-600">画像</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="w-10 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded flex items-center justify-center">
+                                                    <svg
+                                                        className="w-5 h-5 text-white"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                                    </svg>
+                                                </div>
+                                                <span className="text-sm font-medium text-gray-600">3D Model</span>
+                                            </>
+                                        )}
+                                    </button>
+                                ) : (
                                     <Image
                                         src={product.image}
-                                        alt={getLocalizedText(product.name, product.engName)}
-                                        width={384}
-                                        height={384}
-                                        className="max-w-full max-h-full object-contain rounded-lg"
+                                        alt={product.name}
+                                        width={100}
+                                        height={80}
+                                        className="inline-block rounded-lg shadow-sm opacity-60"
                                     />
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
-                        {/* Toggle Button */}
-                        <div className="text-center">
-                            {product.modelPath ? (
-                                <button
-                                    onClick={toggleView}
-                                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300"
-                                    title={showModel ? "画像を表示" : "3Dモデルに切り替え"}
+
+                        {/* Related Products Section - Hidden on mobile, shown on desktop */}
+                        <div className="hidden lg:block border-t border-gray-200 pt-8">
+                            <h2 className="text-2xl font-bold mb-6">関連商品</h2>
+                            <div className="text-center py-8">
+                                <Link
+                                    href="/products"
+                                    className="inline-block bg-blue-100 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-200 transition-colors duration-300"
                                 >
-                                    {showModel ? (
-                                        <>
-                                            <Image
-                                                src={product.image}
-                                                alt={`${product.name} thumbnail`}
-                                                width={32}
-                                                height={32}
-                                                className="rounded opacity-70"
-                                            />
-                                            <span className="text-sm font-medium text-gray-600">画像</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div className="w-10 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded flex items-center justify-center">
-                                                <svg
-                                                    className="w-5 h-5 text-white"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                                </svg>
-                                            </div>
-                                            <span className="text-sm font-medium text-gray-600">3D Model</span>
-                                        </>
-                                    )}
-                                </button>
-                            ) : (
-                                <Image
-                                    src={product.image}
-                                    alt={product.name}
-                                    width={100}
-                                    height={80}
-                                    className="inline-block rounded-lg shadow-sm opacity-60"
-                                />
-                            )}
+                                    すべての製品を見る
+                                </Link>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Product Info */}
+                    {/* Right Column - Product Info */}
                     <div className="space-y-6">
                         <div>
                             <h1 className="text-3xl font-bold mb-4">
@@ -178,8 +194,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                     onClick={(e) => handleAddToCart(product, e)}
                                     disabled={product.quantity === 0}
                                     className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${product.quantity > 0
-                                            ? 'bg-orange-500 hover:bg-orange-600 text-white'
-                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                        ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                         }`}
                                 >
                                     {product.quantity > 0 ? t('shopping.addToCartBtn') : t('shopping.soldOut')}
@@ -212,7 +228,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                 <h3 className="text-lg font-semibold mb-4">{t('shopping.ingredients')}</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {(locale === 'en' && product.engIngredients ? product.engIngredients : product.ingredients)?.map((ingredient, index) => (
-                                        <span 
+                                        <span
                                             key={index}
                                             className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
                                         >
@@ -240,7 +256,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                             </h4>
                                             <div className="mt-2 flex flex-wrap gap-2">
                                                 {(locale === 'en' && product.engAllergens ? product.engAllergens : product.allergens)?.map((allergen, index) => (
-                                                    <span 
+                                                    <span
                                                         key={index}
                                                         className="px-2 py-1 bg-red-100 text-red-800 rounded text-sm font-medium"
                                                     >
@@ -256,8 +272,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                     </div>
                 </div>
 
-                {/* Related Products Section (Optional) */}
-                <div className="mt-12 border-t border-gray-200 pt-8">
+                {/* Related Products Section - Shown on mobile only */}
+                <div className="lg:hidden mt-12 border-t border-gray-200 pt-8">
                     <h2 className="text-2xl font-bold mb-6">関連商品</h2>
                     <div className="text-center py-8">
                         <Link
@@ -268,6 +284,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                         </Link>
                     </div>
                 </div>
+
             </div>
             <Footer />
         </div>
