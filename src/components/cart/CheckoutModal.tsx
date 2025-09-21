@@ -171,6 +171,34 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
       }
 
       // Success!
+      
+      // Auto-save shipping info to profile if user wants
+      try {
+        if (session?.user) {
+          const shouldUpdateProfile = customerInfo.fullName !== session.user.name ||
+                                    customerInfo.phone !== '' ||
+                                    customerInfo.address !== '' ||
+                                    customerInfo.city !== '' ||
+                                    customerInfo.postalCode !== '';
+
+          if (shouldUpdateProfile) {
+            await fetch('/api/user/profile', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: customerInfo.fullName,
+                phone: customerInfo.phone,
+                address: customerInfo.address,
+                city: customerInfo.city,
+                postalCode: customerInfo.postalCode,
+              }),
+            });
+          }
+        }
+      } catch (error) {
+        console.log('Could not update profile:', error);
+      }
+
       onSuccess(paymentIntentId, confirmData.orderId);
 
     } catch (err) {
