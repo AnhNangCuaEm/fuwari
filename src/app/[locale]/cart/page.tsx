@@ -1,5 +1,9 @@
 'use client'
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
@@ -7,11 +11,30 @@ import {Link} from '@/i18n/navigation';
 import {useTranslations, useLocale} from 'next-intl';
 import { useCart } from "@/lib/hooks/useCart";
 import { getProductById } from "@/lib/products";
+import CheckoutModal from "@/components/cart/CheckoutModal";
+import { OrderTotals } from "@/types/order";
+
+// Initialize Stripe with error handling
+const getStripePromise = () => {
+  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+  
+  if (!publishableKey) {
+    console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not defined');
+    return null;
+  }
+  
+  return loadStripe(publishableKey);
+};
+
+const stripePromise = getStripePromise();
 
 export default function CartPage() {
     const t = useTranslations();
     const locale = useLocale();
-    const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart()
+    const router = useRouter();
+    const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart();
+    
+    const [showCheckout, setShowCheckout] = useState(false);
 
     // Helper function to get localized product name and description
     const getLocalizedProductInfo = (item: { id: number; name: string; description: string }) => {
@@ -48,6 +71,28 @@ export default function CartPage() {
     const getItems = () => {
         return getTotalItems()
     }
+
+    // Create totals object for checkout
+    const totals: OrderTotals = {
+        subtotal: getSubtotal(),
+        tax: getTax(),
+        shipping: getShipping(),
+        total: getTotal()
+    };
+
+    // Handle successful payment
+    const handlePaymentSuccess = (paymentIntentId: string, orderId: string) => {
+        // Clear cart
+        cartItems.forEach(item => removeFromCart(item.id));
+        
+        // Redirect to success page
+        router.push(`/order-success?payment_intent=${paymentIntentId}&order=${orderId}`);
+    };
+
+    // Handle checkout cancel
+    const handleCheckoutCancel = () => {
+        setShowCheckout(false);
+    };
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -179,9 +224,20 @@ export default function CartPage() {
                                         <span className="text-orange-600">¥{getTotal()}</span>
                                     </div>
 
-                                    <button className="w-full bg-[#D6B884] hover:bg-[#CC8409] text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer">
-                                        {t("cart.checkout")}
-                                    </button>
+                                    {!showCheckout ? (
+                                        <button 
+                                            onClick={() => {
+                                                if (!stripePromise) {
+                                                    alert('Payment system is not available. Please check environment configuration.');
+                                                    return;
+                                                }
+                                                setShowCheckout(true);
+                                            }}
+                                            className="w-full bg-[#D6B884] hover:bg-[#CC8409] text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer"
+                                        >
+                                            {t("cart.checkout")}
+                                        </button>
+                                    ) : null}
 
                                     <Link
                                         href="/products"
@@ -197,6 +253,19 @@ export default function CartPage() {
             </main>
 
             <Footer />
+
+            {/* Checkout Modal */}
+            {stripePromise && (
+                <Elements stripe={stripePromise}>
+                    <CheckoutModal
+                        isOpen={showCheckout}
+                        cartItems={cartItems}
+                        totals={totals}
+                        onSuccess={handlePaymentSuccess}
+                        onClose={handleCheckoutCancel}
+                    />
+                </Elements>
+            )}
         </div>
     );
 }
