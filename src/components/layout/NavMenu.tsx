@@ -29,7 +29,7 @@ export default function NavMenu() {
         <nav className="relative flex gap-2">
             {/*Search - Always visible */}
             <div className="flex items-center">
-                <button className="flex items-center font-bold gap-2 px-4 py-1 rounded-4xl bg-white cursor-pointer">
+                <button className="flex items-center font-bold gap-2 pl-2 pr-1 py-1 rounded-4xl bg-[#ffffff99] cursor-pointer">
                     <span className="hidden sm:inline">{t('common.search')}</span>
                     <div className="relative">
                         <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
@@ -87,7 +87,7 @@ export default function NavMenu() {
 
             {/* Menu - Toggle visibility */}
             <ul className={`
-                absolute top-12 right-0 w-56 bg-white shadow-lg rounded-lg border
+                absolute top-12 right-0 w-56 bg-white shadow-lg rounded-xl overflow-hidden
                 transition-all duration-300 ease-in-out z-50
                 ${isOpen
                     ? 'opacity-100 visible transform translate-y-0'
@@ -96,18 +96,15 @@ export default function NavMenu() {
             `}>
                 {/* User info in mobile menu */}
                 {isAuthenticated && user && (
-                    <li className="border-b border-gray-200 bg-gray-50">
+                    <li className="border-b border-gray-300 bg-gray-50">
                         <div className="px-4 py-3">
                             <p className="font-semibold text-gray-800">{user.name}</p>
                             <p className="text-sm text-gray-600">{user.email}</p>
-                            <p className="text-xs text-gray-500">
-                                Role: {isAdmin ? 'Admin' : 'User'}
-                            </p>
                         </div>
                     </li>
                 )}
 
-                <li className="border-b border-gray-100 last:border-b-0">
+                <li className="border-b border-gray-200 last:border-b-0">
                     <Link
                         href="/"
                         className="block px-4 py-3 hover:bg-gray-50 transition-colors"
@@ -116,7 +113,7 @@ export default function NavMenu() {
                         🏠 Home
                     </Link>
                 </li>
-                <li className="border-b border-gray-100 last:border-b-0">
+                <li className="border-b border-gray-200 last:border-b-0">
                     <Link
                         href="/products"
                         className="block px-4 py-3 hover:bg-gray-50 transition-colors"
@@ -125,7 +122,7 @@ export default function NavMenu() {
                         🛍️ {t('common.products')}
                     </Link>
                 </li>
-                <li className="border-b border-gray-100 last:border-b-0">
+                <li className="border-b border-gray-200 last:border-b-0">
                     <Link
                         href="/about"
                         className="block px-4 py-3 hover:bg-gray-50 transition-colors"
@@ -134,7 +131,7 @@ export default function NavMenu() {
                         ℹ️ {t('common.about')}
                     </Link>
                 </li>
-                <li className="border-b border-gray-100 last:border-b-0">
+                <li className="border-b border-gray-200 last:border-b-0">
                     <Link
                         href="/contact"
                         className="block px-4 py-3 hover:bg-gray-50 transition-colors"
@@ -145,7 +142,7 @@ export default function NavMenu() {
                 </li>
 
                 {/* Language Selector */}
-                <li className="border-b border-gray-100 last:border-b-0">
+                <li className="border-b border-gray-200 last:border-b-0">
                     <button
                         onClick={() => {
                             setIsLanguageModalOpen(true)
@@ -160,7 +157,7 @@ export default function NavMenu() {
                 {/* User-specific menu items */}
                 {isAuthenticated ? (
                     <>
-                        <li className="border-b border-gray-100 last:border-b-0">
+                        <li className="border-b border-gray-200 last:border-b-0">
                             <Link
                                 href="/mypage"
                                 className="block px-4 py-3 hover:bg-gray-50 transition-colors"
@@ -172,7 +169,7 @@ export default function NavMenu() {
 
                         {isAdmin && (
                             <>
-                                <li className="border-b border-gray-100 last:border-b-0">
+                                <li className="border-b border-gray-200 last:border-b-0">
                                     <Link
                                         href="/admin/dashboard"
                                         className="block px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600 font-semibold"
@@ -184,7 +181,7 @@ export default function NavMenu() {
                             </>
                         )}
 
-                        <li className="border-b border-gray-100 last:border-b-0">
+                        <li className="border-b border-gray-200 last:border-b-0">
                             <button
                                 onClick={handleSignOut}
                                 className="w-full text-left block px-4 py-3 hover:bg-red-50 transition-colors text-red-600"
@@ -195,7 +192,7 @@ export default function NavMenu() {
                     </>
                 ) : (
                     <>
-                        <li className="border-b border-gray-100 last:border-b-0">
+                        <li className="border-b border-gray-200 last:border-b-0">
                             <Link
                                 href="/auth/signin"
                                 className="block px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600"
@@ -209,7 +206,7 @@ export default function NavMenu() {
 
                 {/* Loading state */}
                 {isLoading && (
-                    <li className="border-b border-gray-100">
+                    <li className="border-b border-gray-200">
                         <div className="px-4 py-3 text-gray-500 text-center">
                             <div className="animate-pulse">{t('common.loading')}</div>
                         </div>
