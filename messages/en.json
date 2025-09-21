@@ -51,7 +51,16 @@
       "stock": "Stock",
       "inStock": "In Stock",
       "outOfStock": "Out of Stock"
-    }
+    },
+    "productInfo": "Product Information",
+    "productCode": "Product Code",
+    "stockStatus": "Stock Status",
+    "ingredients": "Ingredients",
+    "allergens": "Allergen Information",
+    "allergensWarning": "Contains the following allergens:",
+    "addToCartBtn": "Add to Cart",
+    "soldOut": "Sold Out",
+    "buyNow": "Buy Now"
   },
   "cart": {
     "title": "Shopping Cart",

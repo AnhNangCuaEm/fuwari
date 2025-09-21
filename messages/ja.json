@@ -51,7 +51,16 @@
       "stock": "在庫",
       "inStock": "在庫あり",
       "outOfStock": "在庫なし"
-    }
+    },
+    "productInfo": "商品情報",
+    "productCode": "商品コード",
+    "stockStatus": "在庫状況",
+    "ingredients": "原材料",
+    "allergens": "アレルギー情報",
+    "allergensWarning": "以下のアレルギー物質を含みます:",
+    "addToCartBtn": "カートに追加",
+    "soldOut": "売り切れ",
+    "buyNow": "今すぐ購入"
   },
   "cart": {
     "title": "ショッピングカート",

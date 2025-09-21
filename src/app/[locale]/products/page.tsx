@@ -7,19 +7,25 @@ import Header from '@/components/layout/Header';
 import { getAllProducts } from '@/lib/products';
 import { Product } from '@/types/product';
 import { useCart } from '@/lib/hooks/useCart';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function ProductsPage() {
     const products = getAllProducts();
     const { addToCart } = useCart()
     const t = useTranslations();
+    const locale = useLocale();
+
+    // Helper function to get localized text
+    const getLocalizedText = (jaText: string, enText: string) => {
+        return locale === 'en' ? enText : jaText;
+    };
 
     const handleAddToCart = (product: Product, e: React.MouseEvent) => {
         e.preventDefault() // Prevent the Link navigation
         addToCart({
             id: product.id,
-            name: product.name,
-            description: product.description,
+            name: getLocalizedText(product.name, product.engName),
+            description: getLocalizedText(product.description, product.engDescription),
             price: product.price,
             image: product.image
         })
@@ -37,7 +43,9 @@ export default function ProductsPage() {
                         {t("breadcrumb.home")}
                     </Link>
                 </nav>
-                <h1 className="text-3xl font-bold text-center mb-8">商品</h1>
+                <h1 className="text-3xl font-bold text-center mb-8">
+                    {locale === 'en' ? 'Products' : '商品'}
+                </h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {products.map((product: Product) => (
                         <div
@@ -48,7 +56,7 @@ export default function ProductsPage() {
                                 <div className="overflow-hidden rounded-t-lg">
                                     <Image
                                         src={product.image}
-                                        alt={product.name}
+                                        alt={getLocalizedText(product.name, product.engName)}
                                         width={300}
                                         height={300}
                                         className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
@@ -58,15 +66,22 @@ export default function ProductsPage() {
 
                             <div className="p-4">
                                 <Link href={`/products/${product.id}`}>
-                                    <h2 className="text-xl font-semibold mb-2 hover:text-orange-600">{product.name}</h2>
+                                    <h2 className="text-xl font-semibold mb-2 hover:text-orange-600">
+                                        {getLocalizedText(product.name, product.engName)}
+                                    </h2>
                                 </Link>
-                                <p className="text-gray-600 mb-3 line-clamp-2">{product.description}</p>
+                                <p className="text-gray-600 mb-3 line-clamp-2">
+                                    {getLocalizedText(product.description, product.engDescription)}
+                                </p>
                                 <div className="flex justify-between items-center mb-3">
                                     <span className="text-lg font-bold text-green-600">
-                                        {product.price.toLocaleString('ja-JP')} &yen;
+                                        {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} {locale === 'en' ? '$' : '¥'}
                                     </span>
                                     <span className={`text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {product.quantity > 0 ? `在庫: ${product.quantity}` : '売り切れ'}
+                                        {product.quantity > 0 
+                                            ? `${locale === 'en' ? 'Stock' : '在庫'}: ${product.quantity}` 
+                                            : (locale === 'en' ? 'Sold Out' : '売り切れ')
+                                        }
                                     </span>
                                 </div>
                                 <div className="flex gap-2">

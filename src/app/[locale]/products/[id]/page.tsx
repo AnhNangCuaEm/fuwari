@@ -11,7 +11,7 @@ import { getProductById } from '@/lib/products';
 import { useState } from 'react';
 import { Product } from '@/types/product';
 import { useCart } from '@/lib/hooks/useCart';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 
 interface ProductDetailPageProps {
@@ -27,13 +27,19 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     const [showModel, setShowModel] = useState(true);
     const { addToCart } = useCart();
     const t = useTranslations();
+    const locale = useLocale();
+
+    // Helper function to get localized text
+    const getLocalizedText = (jaText: string, enText: string) => {
+        return locale === 'en' ? enText : jaText;
+    };
 
     const handleAddToCart = (product: Product, e: React.MouseEvent) => {
         e.preventDefault() // Prevent the Link navigation
         addToCart({
             id: product.id,
-            name: product.name,
-            description: product.description,
+            name: getLocalizedText(product.name, product.engName),
+            description: getLocalizedText(product.description, product.engDescription),
             price: product.price,
             image: product.image
         })
@@ -49,11 +55,20 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
     const getStockStatus = (quantity: number) => {
         if (quantity === 0) {
-            return { text: '在庫なし', color: 'text-red-600' };
+            return { 
+                text: locale === 'en' ? 'Out of Stock' : '在庫なし', 
+                color: 'text-red-600' 
+            };
         } else if (quantity < 10) {
-            return { text: '残りわずか', color: 'text-orange-500' };
+            return { 
+                text: locale === 'en' ? 'Limited Stock' : '残りわずか', 
+                color: 'text-orange-500' 
+            };
         } else {
-            return { text: '在庫あり', color: 'text-green-600' };
+            return { 
+                text: locale === 'en' ? 'In Stock' : '在庫あり', 
+                color: 'text-green-600' 
+            };
         }
     };
 
@@ -84,7 +99,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                 <div className="w-full h-96 flex items-center justify-center bg-gray-100">
                                     <Image
                                         src={product.image}
-                                        alt={product.name}
+                                        alt={getLocalizedText(product.name, product.engName)}
                                         width={384}
                                         height={384}
                                         className="max-w-full max-h-full object-contain rounded-lg"
@@ -142,17 +157,19 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                     {/* Product Info */}
                     <div className="space-y-6">
                         <div>
-                            <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+                            <h1 className="text-3xl font-bold mb-4">
+                                {getLocalizedText(product.name, product.engName)}
+                            </h1>
                             <p className="text-gray-600 text-lg leading-relaxed">
-                                {product.description}
+                                {getLocalizedText(product.description, product.engDescription)}
                             </p>
                         </div>
 
                         <div className="border-t border-gray-200 pt-6">
                             <div className="flex items-center justify-between mb-6">
-                                <span className="text-sm text-gray-500">価格:</span>
+                                <span className="text-sm text-gray-500">{locale === 'en' ? 'Price:' : '価格:'}</span>
                                 <span className="text-3xl font-bold text-green-600">
-                                    {product.price.toLocaleString('ja-JP')} &yen;
+                                    {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} {locale === 'en' ? '$' : '¥'}
                                 </span>
                             </div>
 
@@ -165,29 +182,77 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                         }`}
                                 >
-                                    {product.quantity > 0 ? 'カートに追加' : '売り切れ'}
+                                    {product.quantity > 0 ? t('shopping.addToCartBtn') : t('shopping.soldOut')}
                                 </button>
 
                                 <button className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300 font-semibold">
-                                    今すぐ購入
+                                    {t('shopping.buyNow')}
                                 </button>
                             </div>
                         </div>
 
                         {/* Product Details */}
                         <div className="border-t border-gray-200 pt-6">
-                            <h3 className="text-lg font-semibold mb-4">商品情報</h3>
+                            <h3 className="text-lg font-semibold mb-4">{t('shopping.productInfo')}</h3>
                             <div className="space-y-2">
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">商品コード:</span>
+                                    <span className="text-gray-600">{t('shopping.productCode')}:</span>
                                     <span className="font-medium">SP{product.id.toString().padStart(3, '0')}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">在庫状況:</span>
+                                    <span className="text-gray-600">{t('shopping.stockStatus')}:</span>
                                     <span className={`font-medium ${getStockStatus(product.quantity).color}`}>{getStockStatus(product.quantity).text}</span>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Ingredients */}
+                        {((product.ingredients && product.ingredients.length > 0) || (product.engIngredients && product.engIngredients.length > 0)) && (
+                            <div className="border-t border-gray-200 pt-6">
+                                <h3 className="text-lg font-semibold mb-4">{t('shopping.ingredients')}</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {(locale === 'en' && product.engIngredients ? product.engIngredients : product.ingredients)?.map((ingredient, index) => (
+                                        <span 
+                                            key={index}
+                                            className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                                        >
+                                            {ingredient}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Allergens */}
+                        {((product.allergens && product.allergens.length > 0) || (product.engAllergens && product.engAllergens.length > 0)) && (
+                            <div className="border-t border-gray-200 pt-6">
+                                <h3 className="text-lg font-semibold mb-4">{t('shopping.allergens')}</h3>
+                                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                                    <div className="flex">
+                                        <div className="flex-shrink-0">
+                                            <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div className="ml-3">
+                                            <h4 className="text-sm font-medium text-yellow-800">
+                                                {t('shopping.allergensWarning')}
+                                            </h4>
+                                            <div className="mt-2 flex flex-wrap gap-2">
+                                                {(locale === 'en' && product.engAllergens ? product.engAllergens : product.allergens)?.map((allergen, index) => (
+                                                    <span 
+                                                        key={index}
+                                                        className="px-2 py-1 bg-red-100 text-red-800 rounded text-sm font-medium"
+                                                    >
+                                                        {allergen}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 

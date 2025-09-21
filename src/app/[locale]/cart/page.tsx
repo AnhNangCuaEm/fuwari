@@ -4,12 +4,30 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
 import {Link} from '@/i18n/navigation';
-import {useTranslations} from 'next-intl';
+import {useTranslations, useLocale} from 'next-intl';
 import { useCart } from "@/lib/hooks/useCart";
+import { getProductById } from "@/lib/products";
 
 export default function CartPage() {
     const t = useTranslations();
+    const locale = useLocale();
     const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart()
+
+    // Helper function to get localized product name and description
+    const getLocalizedProductInfo = (item: { id: number; name: string; description: string }) => {
+        const product = getProductById(item.id);
+        if (product) {
+            return {
+                name: locale === 'en' ? product.engName : product.name,
+                description: locale === 'en' ? product.engDescription : product.description
+            };
+        }
+        // Fallback to item data if product not found
+        return {
+            name: item.name,
+            description: item.description
+        };
+    };
 
     const getSubtotal = () => {
         return getTotalPrice()
@@ -60,55 +78,58 @@ export default function CartPage() {
                                 </div>
 
                                 <div className="divide-y divide-black border-b">
-                                    {cartItems.map((item) => (
-                                        <div key={item.id} className="p-6 flex items-center space-x-4">
-                                            <div className="flex-shrink-0">
-                                                <Link href={`/products/${item.id}`}>
-                                                    <Image
-                                                        src={item.image}
-                                                        alt={item.name}
-                                                        width={100}
-                                                        height={100}
-                                                        className="rounded-lg object-cover"
-                                                    />
-                                                </Link>
-                                            </div>
+                                    {cartItems.map((item) => {
+                                        const localizedInfo = getLocalizedProductInfo(item);
+                                        return (
+                                            <div key={item.id} className="p-6 flex items-center space-x-4">
+                                                <div className="flex-shrink-0">
+                                                    <Link href={`/products/${item.id}`}>
+                                                        <Image
+                                                            src={item.image}
+                                                            alt={localizedInfo.name}
+                                                            width={100}
+                                                            height={100}
+                                                            className="rounded-lg object-cover"
+                                                        />
+                                                    </Link>
+                                                </div>
 
-                                            <div className="flex-1">
-                                                <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
-                                                <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                                                <div className="flex items-center justify-between mt-4">
-                                                    <div className="flex items-center space-x-3">
-                                                        <button
-                                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer"
-                                                        >
-                                                            -
-                                                        </button>
-                                                        <span className="font-medium">{item.quantity}</span>
-                                                        <button
-                                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer"
-                                                        >
-                                                            +
-                                                        </button>
-                                                    </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-lg font-semibold text-gray-900">{localizedInfo.name}</h3>
+                                                    <p className="text-gray-600 text-sm mt-1">{localizedInfo.description}</p>
+                                                    <div className="flex items-center justify-between mt-4">
+                                                        <div className="flex items-center space-x-3">
+                                                            <button
+                                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer"
+                                                            >
+                                                                -
+                                                            </button>
+                                                            <span className="font-medium">{item.quantity}</span>
+                                                            <button
+                                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer"
+                                                            >
+                                                                +
+                                                            </button>
+                                                        </div>
 
-                                                    <div className="flex items-center space-x-4">
-                                                        <span className="text-lg font-bold text-orange-600">
-                                                            ¥{item.price}
-                                                        </span>
-                                                        <button
-                                                            onClick={() => removeFromCart(item.id)}
-                                                            className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
-                                                        >
-                                                            {t("cart.remove")}
-                                                        </button>
+                                                        <div className="flex items-center space-x-4">
+                                                            <span className="text-lg font-bold text-orange-600">
+                                                                ¥{item.price}
+                                                            </span>
+                                                            <button
+                                                                onClick={() => removeFromCart(item.id)}
+                                                                className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+                                                            >
+                                                                {t("cart.remove")}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
