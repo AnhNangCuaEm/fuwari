@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     // Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Convert to cents
+      amount: Math.round(amount),
       currency: 'jpy',
       metadata: {
         items: JSON.stringify(items.map((item: CartItem) => ({

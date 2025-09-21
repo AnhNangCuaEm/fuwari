@@ -50,6 +50,11 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                             <div className="text-6xl mb-4">🛒</div>
                             <p className="text-lg">{t('cart.emptyMessage')}</p>
                             <p className="text-sm mt-2 text-gray-400">{t('cart.emptySuggestion')}</p>
+                            <Link href="/products">
+                                <button className="mt-6 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors cursor-pointer">
+                                    {t('cart.continueShopping')}
+                                </button>
+                            </Link>
                         </div>
                     ) : (
                         <div className="space-y-3">
