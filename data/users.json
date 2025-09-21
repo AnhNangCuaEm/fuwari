@@ -22,6 +22,10 @@
     "provider": "google",
     "image": "https://lh3.googleusercontent.com/a/ACg8ocLGASoDy0J9sy-_DqQLBAdjHHnkzy2rj14IFmtb1dF-bGcz6Mi7=s96-c",
     "createdAt": "2025-08-20T15:24:26.106Z",
-    "updatedAt": "2025-09-21T10:15:47.099Z"
+    "updatedAt": "2025-09-21T11:45:04.985Z",
+    "phone": "09012345678",
+    "address": "Shinjuku 1",
+    "postalCode": "1900011",
+    "city": "Tokyo"
   }
 ]

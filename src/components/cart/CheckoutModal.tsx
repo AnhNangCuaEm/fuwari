@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { useSession } from 'next-auth/react';
 import { CartItem, OrderTotals, ShippingAddress } from '@/types/order';
 import { useTranslations } from 'next-intl';
 
@@ -31,6 +32,7 @@ const cardElementOptions = {
 export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, onClose }: CheckoutModalProps) {
   const stripe = useStripe();
   const elements = useElements();
+  const { data: session } = useSession();
   const t = useTranslations();
 
   const [loading, setLoading] = useState(false);
@@ -45,6 +47,46 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
     country: 'JP',
   });
 
+  // Load user profile data when modal opens
+  useEffect(() => {
+    if (isOpen && session?.user) {
+      const loadUserProfile = async () => {
+        try {
+          const response = await fetch('/api/user/profile');
+          if (response.ok) {
+            const data = await response.json();
+            setCustomerInfo(prev => ({
+              ...prev,
+              fullName: data.user.name || session.user?.name || '',
+              email: data.user.email || session.user?.email || '',
+              phone: data.user.phone || '',
+              address: data.user.address || '',
+              city: data.user.city || '',
+              postalCode: data.user.postalCode || '',
+            }));
+          } else {
+            // Fallback to session data
+            setCustomerInfo(prev => ({
+              ...prev,
+              fullName: session.user?.name || '',
+              email: session.user?.email || '',
+            }));
+          }
+        } catch (error) {
+          console.error('Error loading user profile:', error);
+          // Fallback to session data
+          setCustomerInfo(prev => ({
+            ...prev,
+            fullName: session.user?.name || '',
+            email: session.user?.email || '',
+          }));
+        }
+      };
+
+      loadUserProfile();
+    }
+  }, [isOpen, session]);
+
   const handleInputChange = (field: keyof ShippingAddress, value: string) => {
     setCustomerInfo(prev => ({
       ...prev,
@@ -54,7 +96,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    
+
     if (!stripe || !elements) {
       return;
     }
@@ -205,7 +247,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
                     disabled={loading}
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('payment.email')} <span className="text-red-500">*</span>
@@ -251,12 +293,12 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
 
               <div className="mt-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('payment.address')} <span className="text-red-500">*</span>
+                  {t('payment.city')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  value={customerInfo.address}
-                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  value={customerInfo.city}
+                  onChange={(e) => handleInputChange('city', e.target.value)}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D6B884] focus:border-transparent"
                   required
                   disabled={loading}
@@ -265,12 +307,12 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
 
               <div className="mt-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('payment.city')} <span className="text-red-500">*</span>
+                  {t('payment.address')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  value={customerInfo.city}
-                  onChange={(e) => handleInputChange('city', e.target.value)}
+                  value={customerInfo.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D6B884] focus:border-transparent"
                   required
                   disabled={loading}

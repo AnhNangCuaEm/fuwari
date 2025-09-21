@@ -7,6 +7,8 @@ export interface User {
   provider: 'credentials' | 'google';
   image?: string;
   phone?: string;
+  postalCode?: string;
+  city?: string;
   address?: string;
   status: 'active' | 'banned';
   createdAt: string;

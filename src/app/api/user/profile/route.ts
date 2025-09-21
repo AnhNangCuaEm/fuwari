@@ -9,6 +9,8 @@ interface UserFileData {
   name: string;
   phone?: string;
   address?: string;
+  postalCode?: string;
+  city?: string;
   image?: string;
   role: string;
   provider: string;
@@ -61,6 +63,8 @@ export async function GET() {
       image: user.image,
       phone: userFromFile?.phone || '',
       address: userFromFile?.address || '',
+      postalCode: userFromFile?.postalCode || '',
+      city: userFromFile?.city || '',
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     }
@@ -90,7 +94,7 @@ export async function PUT(request: Request) {
     }
 
     const body = await request.json()
-    const { name, phone, address, image } = body
+    const { name, phone, address, postalCode, city, image } = body
 
     // Read existing users from file
     const users = await readUsersFromFile();
@@ -103,6 +107,8 @@ export async function PUT(request: Request) {
         name: name || users[userIndex].name,
         phone: phone || '',
         address: address || '',
+        postalCode: postalCode || '',
+        city: city || '',
         image: image || users[userIndex].image,
         updatedAt: new Date().toISOString()
       };
@@ -114,6 +120,8 @@ export async function PUT(request: Request) {
         name: name || user.name,
         phone: phone || '',
         address: address || '',
+        postalCode: postalCode || '',
+        city: city || '',
         image: image || user.image,
         role: user.role,
         provider: 'credentials', // Default provider
@@ -132,6 +140,8 @@ export async function PUT(request: Request) {
         name: name || user.name,
         phone: phone || '',
         address: address || '',
+        postalCode: postalCode || '',
+        city: city || '',
         image: image || user.image,
         updatedAt: new Date().toISOString()
       }

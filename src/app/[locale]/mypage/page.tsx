@@ -17,6 +17,8 @@ interface UserProfile {
   name: string;
   email: string;
   phone: string;
+  postalCode: number | string;
+  city: string;
   address: string;
   image?: string;
 }
@@ -32,6 +34,8 @@ export default function Mypage() {
     name: '',
     email: '',
     phone: '',
+    postalCode: '',
+    city: '',
     address: '',
     image: ''
   });
@@ -40,6 +44,8 @@ export default function Mypage() {
     name: '',
     email: '',
     phone: '',
+    postalCode: '',
+    city: '',
     address: '',
     image: ''
   });
@@ -66,6 +72,8 @@ export default function Mypage() {
               name: data.user.name || '',
               email: data.user.email || '',
               phone: data.user.phone || '',
+              postalCode: data.user.postalCode || '',
+              city: data.user.city || '',
               address: data.user.address || '',
               image: data.user.image || ''
             };
@@ -77,6 +85,8 @@ export default function Mypage() {
               name: session.user.name || '',
               email: session.user.email || '',
               phone: '',
+              postalCode: '',
+              city: '',
               address: '',
               image: session.user.image || ''
             };
@@ -89,6 +99,8 @@ export default function Mypage() {
             name: session.user.name || '',
             email: session.user.email || '',
             phone: '',
+            postalCode: '',
+            city: '',
             address: '',
             image: session.user.image || ''
           };
@@ -211,6 +223,8 @@ export default function Mypage() {
           name: profile.name.trim(),
           phone: profile.phone.trim(),
           address: profile.address.trim(),
+          postalCode: profile.postalCode.toString().trim(),
+          city: profile.city.trim(),
           image: profile.image,
         }),
       });
@@ -228,6 +242,8 @@ export default function Mypage() {
           name: data.user.name || '',
           email: data.user.email || '',
           phone: data.user.phone || '',
+          postalCode: data.user.postalCode || '',
+          city: data.user.city || '',
           address: data.user.address || '',
           image: data.user.image || ''
         };
@@ -395,6 +411,44 @@ export default function Mypage() {
                 />
                 {errors.phone && (
                   <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('postalCode')}
+                </label>
+                <input
+                  type="text"
+                  id="postalCode"
+                  value={profile.postalCode}
+                  onChange={(e) => handleInputChange('postalCode', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${
+                    errors.postalCode ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder={t('postalCodePlaceholder')}
+                />
+                {errors.postalCode && (
+                  <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('city')}
+                </label>
+                <input
+                  type="text"
+                  id="city"
+                  value={profile.city}
+                  onChange={(e) => handleInputChange('city', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${
+                    errors.city ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder={t('cityPlaceholder')}
+                />
+                {errors.city && (
+                  <p className="mt-1 text-sm text-red-600">{errors.city}</p>
                 )}
               </div>
 
