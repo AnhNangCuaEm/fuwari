@@ -27,6 +27,7 @@ const cardElementOptions = {
       color: '#9e2146',
     },
   },
+  hidePostalCode: true,
 };
 
 export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, onClose }: CheckoutModalProps) {

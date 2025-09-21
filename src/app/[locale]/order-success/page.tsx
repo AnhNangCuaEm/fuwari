@@ -46,7 +46,7 @@ export default function OrderSuccessPage() {
               
               {/* Success Message */}
               <div className="space-y-2">
-                <h1 className="text-4xl font-bold text-green-600">{t('payment.success')}</h1>
+                <h1 className="text-4xl font-bold text-green-600">{t('payment.orderSuccess')}</h1>
                 <p className="text-xl text-gray-600">{t('payment.orderSuccessMsg')}</p>
               </div>
 
@@ -101,7 +101,7 @@ export default function OrderSuccessPage() {
                 href="/cart"
                 className="inline-block bg-[#D6B884] hover:bg-[#CC8409] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
               >
-                {t('cart.backToCart')}
+                {t('payment.backToCart')}
               </Link>
             </div>
           )}

@@ -116,7 +116,7 @@
     "viewOrder": "View Order",
     "paymentId": "Payment ID",
     "paymentNotfound": "Payment Not Found.",
-    "paymentNFMsg": "We couldn&apos;t find your payment information. Please check your email for confirmation.",
+    "paymentNFMsg": "We couldn't find your payment information. Please check your email for confirmation.",
     "backToCart": "Back to Cart",
     "status": "Status",
     "paid": "Paid",
