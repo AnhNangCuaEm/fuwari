@@ -50,7 +50,7 @@ export default function ProductsPage() {
                     {products.map((product: Product) => (
                         <div
                             key={product.id}
-                            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                            className="flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
                         >
                             <Link href={`/products/${product.id}`}>
                                 <div className="overflow-hidden rounded-t-lg">
@@ -64,7 +64,7 @@ export default function ProductsPage() {
                                 </div>
                             </Link>
 
-                            <div className="p-4">
+                            <div className="flex flex-col justify-between p-4 flex-1">
                                 <Link href={`/products/${product.id}`}>
                                     <h2 className="text-xl font-semibold mb-2 hover:text-orange-600">
                                         {getLocalizedText(product.name, product.engName)}
