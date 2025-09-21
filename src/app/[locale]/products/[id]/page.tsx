@@ -86,7 +86,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                     </Link>
                 </nav>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">
                     {/* Left Column - 3D Model and Related Products */}
                     <div className="space-y-8">
                         {/* Product 3D Model */}
@@ -183,9 +183,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
                         <div className="border-t border-gray-200 pt-6">
                             <div className="flex items-center justify-between mb-6">
-                                <span className="text-sm text-gray-500">{locale === 'en' ? 'Price:' : '価格:'}</span>
-                                <span className="text-3xl font-bold text-green-600">
-                                    {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} {locale === 'en' ? '$' : '¥'}
+                                <span className="text-xl text-gray-500">{locale === 'en' ? 'Price:' : '価格:'}</span>
+                                <span className="text-2xl font-bold text-green-600">
+                                    {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} &yen;
                                 </span>
                             </div>
 

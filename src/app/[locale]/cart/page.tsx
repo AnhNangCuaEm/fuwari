@@ -38,7 +38,7 @@ export default function CartPage() {
     }
 
     const getShipping = () => {
-        return getSubtotal() > 1000 ? 0 : 550 // Free shipping over ¥1000
+        return getSubtotal() >= 2000 ? 0 : 550 // Free shipping over ¥2000
     }
 
     const getTotal = () => {
@@ -131,6 +131,9 @@ export default function CartPage() {
                                         );
                                     })}
                                 </div>
+                                <div className="p-6 border-t">
+                                        <span>{t("cart.freeShippingNotice")}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -163,7 +166,7 @@ export default function CartPage() {
                                         <span>{getShipping() === 0 ? t("cart.free") : `¥${getShipping()}`}</span>
                                     </div>
 
-                                    {getSubtotal() > 500 && (
+                                    {getSubtotal() >= 2000 && (
                                         <div className="text-sm text-green-600">
                                             {t("cart.freeDeliverMsg")}
                                         </div>

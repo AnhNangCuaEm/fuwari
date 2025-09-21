@@ -51,14 +51,14 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
       />
       
       {/* Modal */}
-      <div className="relative bg-white rounded-lg shadow-xl p-6 w-80 max-w-sm mx-4">
+      <div className="relative bg-white rounded-lg shadow-xl p-6 w-70 max-w-sm mx-4">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-xl font-semibold text-gray-900">
             {t('common.selectLanguage')}
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-xl"
+            className="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer"
           >
             ×
           </button>
@@ -69,7 +69,7 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
             <button
               key={lng}
               onClick={() => handleLocaleChange(lng)}
-              className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+              className={`w-full text-left px-4 py-3 rounded-lg transition-colors cursor-pointer ${
                 locale === lng
                   ? 'bg-pink-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'

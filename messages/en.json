@@ -77,6 +77,7 @@
     "shipping": "Shipping fee",
     "free": "Free",
     "freeDeliverMsg": "🎉 Free shipping applied!",
+    "freeShippingNotice": "Free shipping on orders over ¥2000",
     "emptyMessage": "Your cart is currently empty.",
     "emptySuggestion": "Add some delicious treats!",
     "continueShopping": "Continue Shopping",
