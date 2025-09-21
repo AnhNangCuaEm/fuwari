@@ -5,6 +5,7 @@
     "signin": "Sign In",
     "signup": "Sign Up",
     "logout": "Logout",
+    "home": "Home",
     "myPage": "Profile",
     "products": "Products",
     "cart": "Cart",
@@ -21,11 +22,9 @@
     "welcomeMessage": "You have successfully logged in. Explore our shop!",
     "loginPrompt": "Please login or sign up 🎉"
   },
-  "breadcrumb": {
-    "home": "Back to Home",
-    "products": "Back to Products"
-  },
   "products": {
+    "title": "Products",
+    "detail": "Details",
     "cupcake": {
       "title": "Cupcake",
       "description": "Cupcakes with various flavors and toppings"
@@ -38,6 +37,12 @@
       "title": "Cookie",
       "description": "Crispy and delicious cookies made from natural ingredients"
     }
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "subtitle": "Sorry, the product you are looking for could not be found.",
+    "goProducts": "Go Back to Products",
+    "goHome": "Go Back Home"
   },
   "shopping": {
     "cart": {
@@ -142,9 +147,10 @@
     "loginerror": "An error occurred while logging in."
   },
   "mypage": {
-    "breadcrumb": "Back to Home",
+    "home": "Home",
     "title": "My Profile",
     "subtitle": "Manage your personal information and preferences",
+    "viewOrders": "View Orders",
     "profilePicture": "Profile Picture",
     "profilePictureDesc": "Click the camera icon to upload a new avatar",
     "fullName": "Full Name",
@@ -169,5 +175,23 @@
     "fileTypeError": "Please select an image file",
     "avatarUploadSuccess": "Avatar uploaded successfully!",
     "avatarUploadError": "Failed to upload avatar. Please try again."
+  },
+  "orders": {
+    "title": "Order History",
+    "subtitle": "View and track all your orders",
+    "noOrders": "No Orders Yet",
+    "noOrdersDesc": "You haven't placed any orders yet. Start shopping to see your orders here!",
+    "startShopping": "Start Shopping",
+    "orderNumber": "Order",
+    "quantity": "Qty",
+    "shippingAddress": "Shipping Address",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "shipping": "Shipping",
+    "total": "Total",
+    "free": "Free",
+    "statusPaid": "Paid",
+    "statusPending": "Pending",
+    "statusCancelled": "Cancelled"
   }
 }

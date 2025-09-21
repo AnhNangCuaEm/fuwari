@@ -5,27 +5,71 @@ import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useTranslations, useLocale } from 'next-intl';
+
+interface OrderItem {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  quantity: number;
+}
+
+interface OrderDetails {
+  id: string;
+  items: OrderItem[];
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  total: number;
+  shippingAddress: {
+    fullName: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  };
+  createdAt: string;
+}
 
 export default function OrderSuccessPage() {  
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
+  const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
 
   const paymentIntentId = searchParams.get('payment_intent');
   const orderId = searchParams.get('order');
   const t = useTranslations();
+  const locale = useLocale();
 
   useEffect(() => {
-    // In a real app, you might want to fetch order details from your API
-    // For now, we'll just show the IDs we have
-    if (orderId) {
-      // Simulate fetching order info
-      setTimeout(() => {
+    const fetchOrderDetails = async () => {
+      if (orderId) {
+        try {
+          // Fetch order details from API
+          const response = await fetch('/api/user/orders');
+          if (response.ok) {
+            const data = await response.json();
+            const order = data.orders.find((o: OrderDetails) => o.id === orderId);
+            if (order) {
+              setOrderDetails(order);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching order details:', error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
         setLoading(false);
-      }, 1000);
-    } else {
-      setLoading(false);
-    }
+      }
+    };
+
+    fetchOrderDetails();
   }, [orderId]);
 
   return (
@@ -51,26 +95,73 @@ export default function OrderSuccessPage() {
               </div>
 
               {/* Order Details */}
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-md mx-auto">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-2xl mx-auto">
                 <h2 className="text-lg font-semibold text-green-800 mb-4">{t('payment.orderDetails')}</h2>
-                <div className="space-y-2 text-sm text-green-700">
+                
+                {/* Order Info */}
+                <div className="space-y-2 text-sm text-green-700 mb-4">
                   <div className="flex justify-between">
                     <span>{t('payment.orderId')}:</span>
-                    <span className="font-mono">{orderId}</span>
+                    <span className="font-mono">#{orderId?.slice(-8).toUpperCase()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>{t('payment.paymentId')}:</span>
-                    <span className="font-mono">{paymentIntentId}</span>
+                    <span>{t('payment.date')}:</span>
+                    <span>{new Date().toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US')}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>{t('payment.status')}:</span>
                     <span className="font-semibold">{t('payment.paid')}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>{t('payment.date')}:</span>
-                    <span>{new Date().toLocaleDateString()}</span>
-                  </div>
                 </div>
+
+                {/* Order Items */}
+                {orderDetails && orderDetails.items && (
+                  <div className="border-t border-green-200 pt-4">
+                    <h3 className="text-sm font-semibold text-green-800 mb-3">{t('payment.items')}:</h3>
+                    <div className="space-y-3">
+                      {orderDetails.items.map((item, index) => (
+                        <div key={index} className="flex items-center space-x-3 bg-white p-3 rounded-lg">
+                          <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              width={48}
+                              height={48}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-sm font-medium text-gray-900 truncate">{item.name}</h4>
+                            <p className="text-xs text-gray-500">¥{item.price.toLocaleString()} × {item.quantity}</p>
+                          </div>
+                          <div className="text-sm font-medium text-gray-900">
+                            ¥{(item.price * item.quantity).toLocaleString()}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Order Total */}
+                    <div className="mt-4 pt-3 border-t border-green-200">
+                      <div className="flex justify-between text-sm">
+                        <span>{t('payment.subtotal')}:</span>
+                        <span>¥{orderDetails.subtotal?.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>{t('payment.tax')}:</span>
+                        <span>¥{orderDetails.tax?.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>{t('payment.shipping')}:</span>
+                        <span>{orderDetails.shipping === 0 ? t('payment.free') : `¥${orderDetails.shipping?.toLocaleString()}`}</span>
+                      </div>
+                      <div className="flex justify-between font-bold text-base mt-2 pt-2 border-t border-green-300">
+                        <span>{t('payment.total')}:</span>
+                        <span className="text-green-800">¥{orderDetails.total?.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -83,7 +174,7 @@ export default function OrderSuccessPage() {
                 </Link>
                 
                 <Link
-                  href="/mypage"
+                  href="/orders"
                   className="border border-gray-300 hover:border-gray-500 text-gray-700 px-8 py-3 rounded-lg font-semibold transition-colors"
                 >
                   {t('payment.viewOrder')}

@@ -6,6 +6,7 @@
     "signup": "アカウント作成",
     "logout": "ログアウト",
     "myPage": "プロフィール",
+    "home": "ホーム",
     "products": "商品一覧",
     "cart": "カート",
     "admin": "管理者",
@@ -21,11 +22,9 @@
     "welcomeMessage": "あなたは成功裏にログインしました。私たちのショップを探索してください！",
     "loginPrompt": "ログインまたはサインアップしてください 🎉"
   },
-  "breadcrumb": {
-    "home": "ホームに戻る",
-    "products": "商品一覧に戻る"
-  },
   "products": {
+    "title": "商品一覧",
+    "detail": "詳細",
     "cupcake": {
       "title": "カップケーキ",
       "description": "さまざまなフレーバーとトッピングのカップケーキ"
@@ -38,6 +37,12 @@
       "title": "クッキー",
       "description": "自然素材から作られたサクサクで美味しいクッキー"
     }
+  },
+  "notFound": {
+    "title": "ページが見つかりません",
+    "subtitle": "申し訳ありませんが、お探しの商品は見つかりませんでした。",
+    "goProducts": "商品一覧に戻る",
+    "goHome": "ホームに戻る"
   },
   "shopping": {
     "cart": {
@@ -142,9 +147,10 @@
     "loginerror": "ログイン中にエラーが発生しました。"
   },
   "mypage": {
-    "breadcrumb": "ホームに戻る",
+    "home": "ホームに",
     "title": "マイページ",
     "subtitle": "個人情報と設定を管理",
+    "viewOrders": "注文履歴を見る",
     "profilePicture": "プロフィール画像",
     "profilePictureDesc": "カメラアイコンをクリックして新しいアバターをアップロード",
     "fullName": "氏名",
@@ -169,5 +175,23 @@
     "fileTypeError": "画像ファイルを選択してください",
     "avatarUploadSuccess": "アバターが正常にアップロードされました！",
     "avatarUploadError": "アバターのアップロードに失敗しました。もう一度お試しください。"
+  },
+  "orders": {
+    "title": "注文履歴",
+    "subtitle": "すべての注文を表示・追跡",
+    "noOrders": "注文履歴がありません",
+    "noOrdersDesc": "まだ注文していません。ショッピングを始めて注文履歴を確認しましょう！",
+    "startShopping": "ショッピングを開始",
+    "orderNumber": "注文番号",
+    "quantity": "数量",
+    "shippingAddress": "配送先住所",
+    "subtotal": "小計",
+    "tax": "税金",
+    "shipping": "送料",
+    "total": "合計",
+    "free": "無料",
+    "statusPaid": "支払い済み",
+    "statusPending": "処理中",
+    "statusCancelled": "キャンセル済み"
   }
 }

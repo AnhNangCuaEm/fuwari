@@ -79,11 +79,20 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 {/* Breadcrumb */}
                 <nav className="mb-8">
                     <Link
-                        href="/products"
-                        className="btn text-white hover:bg-gray-700"
+                        href="/"
+                        className="text-[#CC8409] hover:text-[#D6B884] mr-2"
                     >
-                        {t("breadcrumb.products")}
+                        {t('common.home')}
                     </Link>
+                    <span className="text-gray-500 mr-2">/</span>
+                    <Link
+                        href="/products"
+                        className="text-[#CC8409] hover:text-[#D6B884] mr-2"
+                    >
+                        {t('products.title')}
+                    </Link>
+                    <span className="text-gray-500 mr-2">/</span>
+                    <span className="text-gray-700">{t('products.detail')}</span>
                 </nav>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">

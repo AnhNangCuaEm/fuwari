@@ -60,7 +60,7 @@ export default function Mypage() {
   useEffect(() => {
     if (status === 'loading') return; // Still loading
     if (!session) router.push('/auth/signin');
-    
+
     if (session?.user) {
       const loadProfile = async () => {
         setIsLoading(true);
@@ -110,7 +110,7 @@ export default function Mypage() {
           setIsLoading(false);
         }
       };
-      
+
       loadProfile();
     }
   }, [session, status, router]);
@@ -158,7 +158,7 @@ export default function Mypage() {
       };
       reader.readAsDataURL(file);
     }
-    
+
     // Reset the input value so the same file can be selected again
     event.target.value = '';
   };
@@ -168,17 +168,17 @@ export default function Mypage() {
       // Convert base64 to blob
       const response = await fetch(croppedImage);
       const blob = await response.blob();
-      
+
       // Create form data
       const formData = new FormData();
       formData.append('avatar', blob, 'avatar.jpg');
-      
+
       // Upload to server
       const uploadResponse = await fetch('/api/upload/avatar', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (uploadResponse.ok) {
         const uploadData = await uploadResponse.json();
         setProfile(prev => ({
@@ -189,7 +189,7 @@ export default function Mypage() {
       } else {
         throw new Error('Upload failed');
       }
-      
+
     } catch (error) {
       console.error('Error uploading avatar:', error);
       setMessage({ type: 'error', text: t('avatarUploadError') });
@@ -202,7 +202,7 @@ export default function Mypage() {
   const handleSave = async () => {
     // Validate all fields before saving
     const validation = validateAllFields(profile);
-    
+
     if (!validation.isValid) {
       setErrors(validation.errors);
       setMessage({ type: 'error', text: t('validationError') });
@@ -212,7 +212,7 @@ export default function Mypage() {
     setIsSaving(true);
     setMessage(null);
     setErrors({});
-    
+
     try {
       const response = await fetch('/api/user/profile', {
         method: 'PUT',
@@ -235,7 +235,7 @@ export default function Mypage() {
       }
 
       const data = await response.json();
-      
+
       // Update profile state with server response
       if (data.user) {
         const updatedProfile = {
@@ -252,7 +252,7 @@ export default function Mypage() {
       } else {
         setOriginalProfile(profile);
       }
-      
+
       setMessage({ type: 'success', text: t('updateSuccess') });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : t('updateError');
@@ -287,26 +287,42 @@ export default function Mypage() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="container mx-auto px-4 py-8 flex-1">
+        {/* Breadcrumb */}
         <nav className="mb-8">
-                    <Link
-                        href="/"
-                        className="btn text-white hover:bg-gray-700"
-                    >
-                        {t("breadcrumb")}
-                    </Link>
-                </nav>
+          <Link
+            href="/"
+            className="text-[#CC8409] hover:text-[#D6B884] mr-2"
+          >
+            {t('home')}
+          </Link>
+          <span className="text-gray-500 mr-2">/</span>
+          <span className="text-gray-700">{t('title')}</span>
+        </nav>
+
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>
             <p className="text-gray-600">{t('subtitle')}</p>
+
+            {/* Quick Actions */}
+            <div className="mt-6 flex flex-wrap gap-4">
+              <Link
+                href="/orders"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                {t('viewOrders')}
+              </Link>
+            </div>
           </div>
 
           {message && (
-            <div className={`mb-6 p-4 rounded-lg ${
-              message.type === 'success' 
-                ? 'bg-green-50 border border-green-200 text-green-800 message-success' 
-                : 'bg-red-50 border border-red-200 text-red-800 message-error'
-            }`}>
+            <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
+              ? 'bg-green-50 border border-green-200 text-green-800 message-success'
+              : 'bg-red-50 border border-red-200 text-red-800 message-error'
+              }`}>
               {message.text}
             </div>
           )}
@@ -366,9 +382,8 @@ export default function Mypage() {
                   id="name"
                   value={profile.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${
-                    errors.name ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.name ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t('fullNamePlaceholder')}
                 />
                 {errors.name && (
@@ -385,9 +400,8 @@ export default function Mypage() {
                   id="email"
                   value={profile.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t('emailPlaceholder')}
                 />
                 {errors.email && (
@@ -404,9 +418,8 @@ export default function Mypage() {
                   id="phone"
                   value={profile.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${
-                    errors.phone ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t('phonePlaceholder')}
                 />
                 {errors.phone && (
@@ -423,9 +436,8 @@ export default function Mypage() {
                   id="postalCode"
                   value={profile.postalCode}
                   onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${
-                    errors.postalCode ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t('postalCodePlaceholder')}
                 />
                 {errors.postalCode && (
@@ -442,9 +454,8 @@ export default function Mypage() {
                   id="city"
                   value={profile.city}
                   onChange={(e) => handleInputChange('city', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${
-                    errors.city ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.city ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t('cityPlaceholder')}
                 />
                 {errors.city && (
@@ -461,9 +472,8 @@ export default function Mypage() {
                   id="address"
                   value={profile.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${
-                    errors.address ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.address ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t('addressPlaceholder')}
                 />
                 {errors.address && (
