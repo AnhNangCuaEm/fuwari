@@ -210,8 +210,19 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                     {product.quantity > 0 ? t('shopping.addToCartBtn') : t('shopping.soldOut')}
                                 </button>
 
-                                <button className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300 font-semibold">
-                                    {t('shopping.buyNow')}
+                                <button 
+                                    onClick={(e) => {
+                                        handleAddToCart(product, e);
+                                        window.location.href = `/${locale}/cart`;
+                                    }}
+                                    disabled={product.quantity === 0}
+                                    className={`w-full py-3 px-6 rounded-lg transition-colors duration-300 font-semibold ${
+                                        product.quantity > 0
+                                            ? 'bg-green-600 text-white hover:bg-green-700'
+                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                    }`}
+                                >
+                                    {product.quantity > 0 ? t('shopping.buyNow') : t('shopping.soldOut')}
                                 </button>
                             </div>
                         </div>

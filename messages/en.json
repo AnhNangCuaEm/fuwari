@@ -88,7 +88,14 @@
     "continueShopping": "Continue Shopping",
     "viewProducts": "View Products",
     "checkout": "Proceed to Checkout",
-    "remove": "Remove"
+    "checkingStock": "Checking stock...",
+    "remove": "Remove",
+    "stockError": {
+      "insufficient": "Sorry, some items in your cart are no longer available:",
+      "requested": "Requested:",
+      "available": "Available:",
+      "checkFailed": "Unable to check stock availability. Please try again."
+    }
   },
   "payment": {
     "title": "Checkout",

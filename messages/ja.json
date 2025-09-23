@@ -88,7 +88,14 @@
     "continueShopping": "買い物を続ける",
     "viewProducts": "商品を閲覧",
     "checkout": "チェックアウト",
-    "remove": "削除"
+    "checkingStock": "在庫確認中...",
+    "remove": "削除",
+    "stockError": {
+      "insufficient": "申し訳ございませんが、カート内の一部商品の在庫が不足しています:",
+      "requested": "ご注文数:",
+      "available": "在庫数:",
+      "checkFailed": "在庫確認ができませんでした。もう一度お試しください。"
+    }
   },
   "payment": {
     "title": "チェックアウト",

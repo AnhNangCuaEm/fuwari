@@ -1,47 +1,127 @@
 [
-    {
-        "id": 1,
-        "name": "カップケーキ",
-        "engName": "Cupcake",
-        "description": "バタークリームフロスティングの美味しいバニラカップケーキ。",
-        "engDescription": "Delicious vanilla cupcake with buttercream frosting.",
-        "ingredients": ["小麦粉", "砂糖", "バター", "卵", "バニラエッセンス", "ベーキングパウダー", "塩", "牛乳"],
-        "engIngredients": ["Flour", "Sugar", "Butter", "Eggs", "Vanilla Extract", "Baking Powder", "Salt", "Milk"],
-        "allergens": ["小麦", "卵", "乳"],
-        "engAllergens": ["Wheat", "Eggs", "Dairy"],
-        "price": 300,
-        "quantity": 10,
-        "image": "/2dimage/cupcake.webp",
-        "modelPath": "/3dmodels/cupcake/scene.gltf"
-    },
-    {
-        "id": 2,
-        "name": "ブラウニー",
-        "engName": "Brownie",
-        "description": "くるみ入りの濃厚なチョコレートブラウニー。",
-        "engDescription": "Rich chocolate brownie with walnuts.",
-        "ingredients": ["小麦粉", "砂糖", "バター", "卵", "チョコレート", "くるみ", "ベーキングパウダー", "塩"],
-        "engIngredients": ["Flour", "Sugar", "Butter", "Eggs", "Chocolate", "Walnuts", "Baking Powder", "Salt"],
-        "allergens": ["小麦", "卵", "乳", "ナッツ"],
-        "engAllergens": ["Wheat", "Eggs", "Dairy", "Nuts"],
-        "price": 250,
-        "quantity": 2,
-        "image": "/2dimage/brownie.jpg",
-        "modelPath": "/3dmodels/brownie/scene.gltf"
-    },
-    {
-        "id": 3,
-        "name": "クッキー(3個入り)",
-        "engName": "Cookie (Set of 3)",
-        "description": "チョコレートチップクッキー。",
-        "engDescription": "Chewy chocolate chip cookie.",
-        "ingredients": ["小麦粉", "砂糖", "バター", "卵", "チョコレートチップ", "ベーキングソーダ", "塩", "バニラエッセンス"],
-        "engIngredients": ["Flour", "Sugar", "Butter", "Eggs", "Chocolate Chips", "Baking Soda", "Salt", "Vanilla Extract"],
-        "allergens": ["小麦", "卵", "乳"],
-        "engAllergens": ["Wheat", "Eggs", "Dairy"],
-        "price": 400,
-        "quantity": 0,
-        "image": "/2dimage/cookie.webp",
-        "modelPath": "/3dmodels/cookie/scene.gltf"
-    }
+  {
+    "id": 1,
+    "name": "カップケーキ",
+    "engName": "Cupcake",
+    "description": "バタークリームフロスティングの美味しいバニラカップケーキ。",
+    "engDescription": "Delicious vanilla cupcake with buttercream frosting.",
+    "ingredients": [
+      "小麦粉",
+      "砂糖",
+      "バター",
+      "卵",
+      "バニラエッセンス",
+      "ベーキングパウダー",
+      "塩",
+      "牛乳"
+    ],
+    "engIngredients": [
+      "Flour",
+      "Sugar",
+      "Butter",
+      "Eggs",
+      "Vanilla Extract",
+      "Baking Powder",
+      "Salt",
+      "Milk"
+    ],
+    "allergens": [
+      "小麦",
+      "卵",
+      "乳"
+    ],
+    "engAllergens": [
+      "Wheat",
+      "Eggs",
+      "Dairy"
+    ],
+    "price": 300,
+    "quantity": 9,
+    "image": "/2dimage/cupcake.webp",
+    "modelPath": "/3dmodels/cupcake/scene.gltf"
+  },
+  {
+    "id": 2,
+    "name": "ブラウニー",
+    "engName": "Brownie",
+    "description": "くるみ入りの濃厚なチョコレートブラウニー。",
+    "engDescription": "Rich chocolate brownie with walnuts.",
+    "ingredients": [
+      "小麦粉",
+      "砂糖",
+      "バター",
+      "卵",
+      "チョコレート",
+      "くるみ",
+      "ベーキングパウダー",
+      "塩"
+    ],
+    "engIngredients": [
+      "Flour",
+      "Sugar",
+      "Butter",
+      "Eggs",
+      "Chocolate",
+      "Walnuts",
+      "Baking Powder",
+      "Salt"
+    ],
+    "allergens": [
+      "小麦",
+      "卵",
+      "乳",
+      "ナッツ"
+    ],
+    "engAllergens": [
+      "Wheat",
+      "Eggs",
+      "Dairy",
+      "Nuts"
+    ],
+    "price": 250,
+    "quantity": 6,
+    "image": "/2dimage/brownie.jpg",
+    "modelPath": "/3dmodels/brownie/scene.gltf"
+  },
+  {
+    "id": 3,
+    "name": "クッキー(3個入り)",
+    "engName": "Cookie (Set of 3)",
+    "description": "チョコレートチップクッキー。",
+    "engDescription": "Chewy chocolate chip cookie.",
+    "ingredients": [
+      "小麦粉",
+      "砂糖",
+      "バター",
+      "卵",
+      "チョコレートチップ",
+      "ベーキングソーダ",
+      "塩",
+      "バニラエッセンス"
+    ],
+    "engIngredients": [
+      "Flour",
+      "Sugar",
+      "Butter",
+      "Eggs",
+      "Chocolate Chips",
+      "Baking Soda",
+      "Salt",
+      "Vanilla Extract"
+    ],
+    "allergens": [
+      "小麦",
+      "卵",
+      "乳"
+    ],
+    "engAllergens": [
+      "Wheat",
+      "Eggs",
+      "Dairy"
+    ],
+    "price": 400,
+    "quantity": 0,
+    "image": "/2dimage/cookie.webp",
+    "modelPath": "/3dmodels/cookie/scene.gltf"
+  }
 ]

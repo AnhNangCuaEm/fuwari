@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -35,6 +35,8 @@ export default function CartPage() {
     const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart();
     
     const [showCheckout, setShowCheckout] = useState(false);
+    const [isCheckingStock, setIsCheckingStock] = useState(false);
+    const [stockError, setStockError] = useState<string | null>(null);
 
     // Helper function to get localized product name and description
     const getLocalizedProductInfo = (item: { id: number; name: string; description: string }) => {
@@ -80,10 +82,71 @@ export default function CartPage() {
         total: getTotal()
     };
 
+    // Clear stock error when cart items change
+    useEffect(() => {
+        setStockError(null);
+    }, [cartItems]);
+
+    // Check stock availability before checkout
+    const checkStockBeforeCheckout = async () => {
+        setIsCheckingStock(true);
+        setStockError(null);
+
+        try {
+            const stockItems = cartItems.map(item => ({
+                id: item.id,
+                quantity: item.quantity,
+                name: item.name
+            }));
+
+            const response = await fetch('/api/check-stock', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cartItems: stockItems }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to check stock');
+            }
+
+            if (!data.isAvailable) {
+                // Show stock error message
+                interface UnavailableItem {
+                    id: number;
+                    name: string;
+                    requestedQuantity: number;
+                    availableStock: number;
+                }
+                
+                const unavailableItemsText = data.unavailableItems.map((item: UnavailableItem) => 
+                    `${item.name}: ${t('cart.stockError.requested')} ${item.requestedQuantity}, ${t('cart.stockError.available')} ${item.availableStock}`
+                ).join('\n');
+                
+                setStockError(`${t('cart.stockError.insufficient')}\n${unavailableItemsText}`);
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.error('Stock check error:', error);
+            setStockError(t('cart.stockError.checkFailed'));
+            return false;
+        } finally {
+            setIsCheckingStock(false);
+        }
+    };
+
     // Handle successful payment
     const handlePaymentSuccess = (paymentIntentId: string, orderId: string) => {
         // Clear cart
         cartItems.forEach(item => removeFromCart(item.id));
+        
+        // Clear any stock errors
+        setStockError(null);
         
         // Redirect to success page
         router.push(`/order-success?payment_intent=${paymentIntentId}&order=${orderId}`);
@@ -92,6 +155,7 @@ export default function CartPage() {
     // Handle checkout cancel
     const handleCheckoutCancel = () => {
         setShowCheckout(false);
+        setStockError(null); // Clear stock error when closing checkout
     };
 
     return (
@@ -146,7 +210,8 @@ export default function CartPage() {
                                                         <div className="flex items-center space-x-3">
                                                             <button
                                                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer"
+                                                                disabled={item.quantity === 1}
+                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer disabled:bg-gray-50 disabled:text-gray-400"
                                                             >
                                                                 -
                                                             </button>
@@ -224,22 +289,35 @@ export default function CartPage() {
                                         <span className="text-orange-600">¥{getTotal()}</span>
                                     </div>
 
-                                    {!showCheckout ? (
-                                        <button 
-                                            onClick={() => {
-                                                if (!stripePromise) {
-                                                    alert('Payment system is not available. Please check environment configuration.');
-                                                    return;
-                                                }
-                                                setShowCheckout(true);
-                                            }}
-                                            className="w-full bg-[#D6B884] hover:bg-[#CC8409] text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer"
-                                        >
-                                            {t("cart.checkout")}
-                                        </button>
-                                    ) : null}
+                    {!showCheckout ? (
+                        <button 
+                            onClick={async () => {
+                                if (!stripePromise) {
+                                    alert('Payment system is not available. Please check environment configuration.');
+                                    return;
+                                }
+                                
+                                // Check stock before proceeding to checkout
+                                const stockAvailable = await checkStockBeforeCheckout();
+                                if (stockAvailable) {
+                                    setShowCheckout(true);
+                                }
+                            }}
+                            disabled={isCheckingStock}
+                            className="w-full bg-[#D6B884] hover:bg-[#CC8409] text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        >
+                            {isCheckingStock ? t("cart.checkingStock") : t("cart.checkout")}
+                        </button>
+                    ) : null}
 
-                                    <Link
+                    {/* Stock Error Message */}
+                    {stockError && (
+                        <div className="w-full p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <div className="text-red-800 text-sm whitespace-pre-line">
+                                {stockError}
+                            </div>
+                        </div>
+                    )}                                    <Link
                                         href="/products"
                                         className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors cursor-pointer"
                                     >

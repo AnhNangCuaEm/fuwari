@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createOrder } from '@/lib/orders';
 import { CreateOrderData } from '@/types/order';
+import { updateStock, rollbackStock, CartStockItem } from '@/lib/stock';
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,8 +44,36 @@ export async function POST(request: NextRequest) {
       stripePaymentIntentId: paymentIntentId,
     };
 
+    // Convert cart items to stock format
+    const stockItems: CartStockItem[] = cartItems.map(item => ({
+      id: item.id,
+      quantity: item.quantity,
+      name: item.name
+    }));
+
+    // Update stock first
+    const stockUpdated = await updateStock(stockItems);
+    if (!stockUpdated) {
+      return NextResponse.json(
+        { error: 'Failed to update stock. Please contact support.' },
+        { status: 500 }
+      );
+    }
+
     // Save order to file
-    const order = await createOrder(orderData);
+    let order;
+    try {
+      order = await createOrder(orderData);
+    } catch (orderError) {
+      // If order creation fails, rollback stock
+      console.error('Order creation failed, rolling back stock:', orderError);
+      await rollbackStock(stockItems);
+      
+      return NextResponse.json(
+        { error: 'Failed to create order' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
