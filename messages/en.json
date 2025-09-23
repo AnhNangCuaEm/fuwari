@@ -91,11 +91,17 @@
     "checkingStock": "Checking stock...",
     "remove": "Remove",
     "stockError": {
-      "insufficient": "Sorry, some items in your cart are no longer available:",
+      "title": "Sorry, some items in your cart are no longer available:",
+      "insufficient": "Insufficient stock:",
+      "ok": "OK:",
       "requested": "Requested:",
       "available": "Available:",
       "checkFailed": "Unable to check stock availability. Please try again."
-    }
+    },
+    "removeConfirmTitle": "Remove Item",
+    "removeConfirmMsg": "Are you sure you want to remove this item from your cart?",
+    "removeConfirm": "Remove",
+    "cancel": "Cancel"
   },
   "payment": {
     "title": "Checkout",

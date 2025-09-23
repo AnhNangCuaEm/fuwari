@@ -12,6 +12,7 @@ import {useTranslations, useLocale} from 'next-intl';
 import { useCart } from "@/lib/hooks/useCart";
 import { getProductById } from "@/lib/products";
 import CheckoutModal from "@/components/cart/CheckoutModal";
+import AlertModal from "@/components/ui/AlertModal";
 import { OrderTotals } from "@/types/order";
 
 // Initialize Stripe with error handling
@@ -37,6 +38,22 @@ export default function CartPage() {
     const [showCheckout, setShowCheckout] = useState(false);
     const [isCheckingStock, setIsCheckingStock] = useState(false);
     const [stockError, setStockError] = useState<string | null>(null);
+    const [showRemoveAlert, setShowRemoveAlert] = useState(false);
+    const [itemToRemove, setItemToRemove] = useState<number | null>(null);
+    const [showStockErrorAlert, setShowStockErrorAlert] = useState(false);
+
+    // Handle remove confirmation
+    const handleRemoveClick = (itemId: number) => {
+        setItemToRemove(itemId);
+        setShowRemoveAlert(true);
+    };
+
+    const handleConfirmRemove = () => {
+        if (itemToRemove !== null) {
+            removeFromCart(itemToRemove);
+            setItemToRemove(null);
+        }
+    };
 
     // Helper function to get localized product name and description
     const getLocalizedProductInfo = (item: { id: number; name: string; description: string }) => {
@@ -127,6 +144,7 @@ export default function CartPage() {
                 ).join('\n');
                 
                 setStockError(`${t('cart.stockError.insufficient')}\n${unavailableItemsText}`);
+                setShowStockErrorAlert(true); // Show alert instead of inline error
                 return false;
             }
 
@@ -134,6 +152,7 @@ export default function CartPage() {
         } catch (error) {
             console.error('Stock check error:', error);
             setStockError(t('cart.stockError.checkFailed'));
+            setShowStockErrorAlert(true); // Show alert instead of inline error
             return false;
         } finally {
             setIsCheckingStock(false);
@@ -229,7 +248,7 @@ export default function CartPage() {
                                                                 ¥{item.price}
                                                             </span>
                                                             <button
-                                                                onClick={() => removeFromCart(item.id)}
+                                                                onClick={() => handleRemoveClick(item.id)}
                                                                 className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
                                                             >
                                                                 {t("cart.remove")}
@@ -242,7 +261,7 @@ export default function CartPage() {
                                     })}
                                 </div>
                                 <div className="p-6 border-t">
-                                        <span>{t("cart.freeShippingNotice")}</span>
+                                    <span>{t("cart.freeShippingNotice")}</span>
                                 </div>
                             </div>
                         </div>
@@ -255,7 +274,6 @@ export default function CartPage() {
                                 </div>
 
                                 <div className="p-6 space-y-4">
-
                                     <div className="flex justify-between">
                                         <span>{t("cart.totalItems")}</span>
                                         <span>{getItems()}</span>
@@ -289,35 +307,28 @@ export default function CartPage() {
                                         <span className="text-orange-600">¥{getTotal()}</span>
                                     </div>
 
-                    {!showCheckout ? (
-                        <button 
-                            onClick={async () => {
-                                if (!stripePromise) {
-                                    alert('Payment system is not available. Please check environment configuration.');
-                                    return;
-                                }
-                                
-                                // Check stock before proceeding to checkout
-                                const stockAvailable = await checkStockBeforeCheckout();
-                                if (stockAvailable) {
-                                    setShowCheckout(true);
-                                }
-                            }}
-                            disabled={isCheckingStock}
-                            className="w-full bg-[#D6B884] hover:bg-[#CC8409] text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
-                        >
-                            {isCheckingStock ? t("cart.checkingStock") : t("cart.checkout")}
-                        </button>
-                    ) : null}
+                                    {!showCheckout ? (
+                                        <button 
+                                            onClick={async () => {
+                                                if (!stripePromise) {
+                                                    alert('Payment system is not available. Please check environment configuration.');
+                                                    return;
+                                                }
+                                                
+                                                // Check stock before proceeding to checkout
+                                                const stockAvailable = await checkStockBeforeCheckout();
+                                                if (stockAvailable) {
+                                                    setShowCheckout(true);
+                                                }
+                                            }}
+                                            disabled={isCheckingStock}
+                                            className="w-full bg-[#D6B884] hover:bg-[#CC8409] text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                        >
+                                            {isCheckingStock ? t("cart.checkingStock") : t("cart.checkout")}
+                                        </button>
+                                    ) : null}
 
-                    {/* Stock Error Message */}
-                    {stockError && (
-                        <div className="w-full p-3 bg-red-50 border border-red-200 rounded-lg">
-                            <div className="text-red-800 text-sm whitespace-pre-line">
-                                {stockError}
-                            </div>
-                        </div>
-                    )}                                    <Link
+                                    <Link
                                         href="/products"
                                         className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors cursor-pointer"
                                     >
@@ -329,6 +340,33 @@ export default function CartPage() {
                     </div>
                 )}
             </main>
+
+            {/* Remove Item Alert Modal */}
+            <AlertModal
+                isOpen={showRemoveAlert}
+                onClose={() => setShowRemoveAlert(false)}
+                title={t("cart.removeConfirmTitle")}
+                message={t("cart.removeConfirmMsg")}
+                type="warning"
+                confirmText={t("cart.removeConfirm")}
+                cancelText={t("cart.cancel")}
+                onConfirm={handleConfirmRemove}
+                showCancel={true}
+            />
+
+            {/* Stock Error Alert Modal */}
+            <AlertModal
+                isOpen={showStockErrorAlert}
+                onClose={() => {
+                    setShowStockErrorAlert(false);
+                    setStockError(null);
+                }}
+                title={t("cart.stockError.title")}
+                message={stockError || ''}
+                type="error"
+                confirmText={t("cart.stockError.ok")}
+                showCancel={false}
+            />
 
             <Footer />
 

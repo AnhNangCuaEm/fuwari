@@ -5,7 +5,7 @@ import { getProductById } from './products';
 
 const PRODUCTS_FILE_PATH = path.join(process.cwd(), 'data', 'products.json');
 
-// Interface cho stock check result
+// Interface for stock check result
 export interface StockCheckResult {
   isAvailable: boolean;
   unavailableItems: {
@@ -16,7 +16,7 @@ export interface StockCheckResult {
   }[];
 }
 
-// Interface cho cart item
+// Interface for cart item
 export interface CartStockItem {
   id: number;
   quantity: number;

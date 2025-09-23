@@ -91,11 +91,17 @@
     "checkingStock": "在庫確認中...",
     "remove": "削除",
     "stockError": {
-      "insufficient": "申し訳ございませんが、カート内の一部商品の在庫が不足しています:",
+      "title": "申し訳ございませんが、カート内の一部商品の在庫が不足しています:",
+      "insufficient": "在庫不足",
+      "ok": "確認",
       "requested": "ご注文数:",
       "available": "在庫数:",
       "checkFailed": "在庫確認ができませんでした。もう一度お試しください。"
-    }
+    },
+    "removeConfirmTitle": "商品をカートから削除しますか？",
+    "removeConfirmMsg": "この操作は元に戻せません。",
+    "removeConfirm": "削除",
+    "cancel": "キャンセル"
   },
   "payment": {
     "title": "チェックアウト",
