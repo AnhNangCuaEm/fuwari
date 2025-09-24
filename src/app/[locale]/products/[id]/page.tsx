@@ -204,7 +204,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                     disabled={product.quantity === 0}
                                     className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${product.quantity > 0
                                         ? 'bg-orange-500 hover:bg-orange-600 text-white'
-                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                        : 'hidden'
                                         }`}
                                 >
                                     {product.quantity > 0 ? t('shopping.addToCartBtn') : t('shopping.soldOut')}

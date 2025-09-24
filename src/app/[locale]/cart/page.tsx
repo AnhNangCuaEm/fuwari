@@ -140,11 +140,11 @@ export default function CartPage() {
                 }
                 
                 const unavailableItemsText = data.unavailableItems.map((item: UnavailableItem) => 
-                    `${item.name}: ${t('cart.stockError.requested')} ${item.requestedQuantity}, ${t('cart.stockError.available')} ${item.availableStock}`
+                    `${item.name}. ${t('cart.stockError.requested')} ${item.requestedQuantity}, ${t('cart.stockError.available')} ${item.availableStock}`
                 ).join('\n');
                 
                 setStockError(`${t('cart.stockError.insufficient')}\n${unavailableItemsText}`);
-                setShowStockErrorAlert(true); // Show alert instead of inline error
+                setShowStockErrorAlert(true);
                 return false;
             }
 
@@ -152,7 +152,7 @@ export default function CartPage() {
         } catch (error) {
             console.error('Stock check error:', error);
             setStockError(t('cart.stockError.checkFailed'));
-            setShowStockErrorAlert(true); // Show alert instead of inline error
+            setShowStockErrorAlert(true);
             return false;
         } finally {
             setIsCheckingStock(false);
@@ -260,7 +260,7 @@ export default function CartPage() {
                                         );
                                     })}
                                 </div>
-                                <div className="p-6 border-t">
+                                <div className="p-6">
                                     <span>{t("cart.freeShippingNotice")}</span>
                                 </div>
                             </div>
