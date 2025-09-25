@@ -38,7 +38,9 @@
     "price": 300,
     "quantity": 9,
     "image": "/2dimage/cupcake.webp",
-    "modelPath": "/3dmodels/cupcake/scene.gltf"
+    "modelPath": "/3dmodels/cupcake/scene.gltf",
+    "created_at": "2024-10-01T10:00:00Z",
+    "updated_at": "2024-10-05T12:00:00Z"
   },
   {
     "id": 2,
@@ -81,7 +83,9 @@
     "price": 250,
     "quantity": 6,
     "image": "/2dimage/brownie.jpg",
-    "modelPath": "/3dmodels/brownie/scene.gltf"
+    "modelPath": "/3dmodels/brownie/scene.gltf",
+    "created_at": "2024-10-02T11:00:00Z",
+    "updated_at": "2024-10-06T13:00:00Z"
   },
   {
     "id": 3,
@@ -122,6 +126,8 @@
     "price": 400,
     "quantity": 0,
     "image": "/2dimage/cookie.webp",
-    "modelPath": "/3dmodels/cookie/scene.gltf"
+    "modelPath": "/3dmodels/cookie/scene.gltf",
+    "created_at": "2024-10-03T12:00:00Z",
+    "updated_at": "2024-10-07T14:00:00Z"
   }
 ]

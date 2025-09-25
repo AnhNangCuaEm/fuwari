@@ -206,5 +206,18 @@
     "statusPaid": "支払い済み",
     "statusPending": "処理中",
     "statusCancelled": "キャンセル済み"
+  },
+  "search": {
+    "searchProducts": "商品を検索",
+    "searchLabel": "商品名で検索",
+    "searchPlaceholder": "商品検索",
+    "sortBy": "並び替え",
+    "relevance": "関連性",
+    "newest": "新着順",
+    "priceLowHigh": "価格：安い順",
+    "priceHighLow": "価格：高い順",
+    "noResults": "該当する商品が見つかりません。",
+    "startSearching": "検索を開始して商品を見つけましょう。",
+    "clearSearch": "検索をクリア"
   }
 }

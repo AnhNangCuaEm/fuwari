@@ -12,4 +12,6 @@ export interface Product {
     quantity: number;
     image: string;
     modelPath?: string;
+    created_at: string;
+    updated_at: string;
 }

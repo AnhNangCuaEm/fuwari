@@ -7,6 +7,7 @@ import { useCurrentUser } from "@/lib/hooks/useAuth"
 import { signOut } from "next-auth/react"
 import CartDrawer from "@/components/cart/CartDrawer"
 import LanguageModal from "@/components/ui/LanguageModal"
+import SearchModal from "@/components/ui/SearchModal"
 import { useCart } from "@/lib/hooks/useCart"
 import { useTranslations } from 'next-intl'
 
@@ -14,6 +15,7 @@ export default function NavMenu() {
     const [isOpen, setIsOpen] = useState(false)
     const [isCartOpen, setIsCartOpen] = useState(false)
     const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false)
+    const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
     const { user, isAuthenticated, isLoading } = useCurrentUser()
     const { getTotalItems } = useCart()
     const t = useTranslations()
@@ -29,7 +31,10 @@ export default function NavMenu() {
         <nav className="relative flex gap-2">
             {/*Search - Always visible */}
             <div className="flex items-center">
-                <button className="flex items-center font-bold gap-2 pl-2 pr-1 py-1 rounded-4xl bg-[#ffffff99] cursor-pointer">
+                <button 
+                    onClick={() => setIsSearchModalOpen(true)}
+                    className="flex items-center font-bold gap-2 pl-3 pr-2 py-1 rounded-4xl bg-[#ffffff99] cursor-pointer hover:bg-[#ffffffaa] transition-colors"
+                >
                     <span className="hidden sm:inline">{t('common.search')}</span>
                     <div className="relative">
                         <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
@@ -224,6 +229,12 @@ export default function NavMenu() {
             <LanguageModal
                 isOpen={isLanguageModalOpen}
                 onClose={() => setIsLanguageModalOpen(false)}
+            />
+
+            {/* Search Modal */}
+            <SearchModal
+                isOpen={isSearchModalOpen}
+                onClose={() => setIsSearchModalOpen(false)}
             />
         </nav>
     )

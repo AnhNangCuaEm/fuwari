@@ -206,5 +206,18 @@
     "statusPaid": "Paid",
     "statusPending": "Pending",
     "statusCancelled": "Cancelled"
+  },
+  "search": {
+    "searchProducts": "Search Products",
+    "searchLabel": "Search by name",
+    "searchPlaceholder": "Search products",
+    "sortBy": "Sort by",
+    "relevance": "Relevance",
+    "newest": "Newest",
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low",
+    "noResults": "No products found.",
+    "startSearching": "Start searching to see products.",
+    "clearSearch": "Clear Search"
   }
 }
