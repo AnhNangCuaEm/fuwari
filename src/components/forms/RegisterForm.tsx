@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {Link} from '@/i18n/navigation';
 import {useTranslations} from 'next-intl';
+import Image from 'next/image';
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -59,6 +60,13 @@ export default function RegisterForm() {
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-4xl shadow-md p-6">
+      <Image
+        src="/logo.svg"
+        alt="Fuwari Sweet Shop Logo"
+        width={200}
+        height={80}
+        className="mx-auto mb-8"
+      />
       <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
         {t('common.signup')}
       </h2>

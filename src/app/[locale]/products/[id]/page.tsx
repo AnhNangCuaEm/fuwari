@@ -123,7 +123,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                 {product.modelPath ? (
                                     <button
                                         onClick={toggleView}
-                                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300"
+                                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300 cursor-pointer"
                                         title={showModel ? "画像を表示" : "3Dモデルに切り替え"}
                                     >
                                         {showModel ? (
@@ -202,7 +202,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                 <button
                                     onClick={(e) => handleAddToCart(product, e)}
                                     disabled={product.quantity === 0}
-                                    className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${product.quantity > 0
+                                    className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer ${product.quantity > 0
                                         ? 'bg-orange-500 hover:bg-orange-600 text-white'
                                         : 'hidden'
                                         }`}
@@ -216,7 +216,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                         window.location.href = `/${locale}/cart`;
                                     }}
                                     disabled={product.quantity === 0}
-                                    className={`w-full py-3 px-6 rounded-lg transition-colors duration-300 font-semibold ${
+                                    className={`w-full py-3 px-6 rounded-lg transition-colors duration-300 font-semibold cursor-pointer ${
                                         product.quantity > 0
                                             ? 'bg-green-600 text-white hover:bg-green-700'
                                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'

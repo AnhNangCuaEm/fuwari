@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {Link} from '@/i18n/navigation';
 import {useTranslations} from 'next-intl';
+import Image from 'next/image';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -69,6 +70,13 @@ export default function LoginForm() {
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-4xl shadow-md p-8">
+      <Image
+        src="/logo.svg"
+        alt="Fuwari Sweet Shop Logo"
+        width={200}
+        height={80}
+        className="mx-auto mb-8"
+      />
       <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
         {t('common.signin')}
       </h2>
