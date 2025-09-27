@@ -171,15 +171,15 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
       }
 
       // Success!
-      
+
       // Auto-save shipping info to profile if user wants
       try {
         if (session?.user) {
           const shouldUpdateProfile = customerInfo.fullName !== session.user.name ||
-                                    customerInfo.phone !== '' ||
-                                    customerInfo.address !== '' ||
-                                    customerInfo.city !== '' ||
-                                    customerInfo.postalCode !== '';
+            customerInfo.phone !== '' ||
+            customerInfo.address !== '' ||
+            customerInfo.city !== '' ||
+            customerInfo.postalCode !== '';
 
           if (shouldUpdateProfile) {
             await fetch('/api/user/profile', {
@@ -222,14 +222,15 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
     <div className="fixed inset-0 bg-[#030303b7] flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Modal Header */}
-        <div className="flex justify-between items-center p-6 border-b">
+        <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-2xl font-semibold">{t('payment.title')}</h2>
           <button
             onClick={handleClose}
-            disabled={loading}
-            className="text-gray-500 hover:text-gray-700 text-2xl font-bold disabled:opacity-50"
+            className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
           >
-            ×
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         </div>
 
