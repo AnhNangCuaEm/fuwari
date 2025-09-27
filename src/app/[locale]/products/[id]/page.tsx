@@ -103,11 +103,12 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                             <div className="overflow-hidden rounded-lg shadow-lg bg-white">
                                 {product.modelPath && showModel ? (
                                     <ModelViewer
+                                        key={`model-${product.id}-${showModel}`} // Force re-render when toggling
                                         modelPath={product.modelPath}
                                         className="w-full h-96"
                                     />
                                 ) : (
-                                    <div className="w-full h-96 flex items-center justify-center">
+                                    <div key={`image-${product.id}-${showModel}`} className="w-full h-96 flex items-center justify-center">
                                         <Image
                                             src={product.image}
                                             alt={getLocalizedText(product.name, product.engName)}

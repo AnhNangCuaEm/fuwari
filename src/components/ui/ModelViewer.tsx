@@ -2,7 +2,7 @@
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
-import { Suspense, useMemo } from 'react';
+import { Suspense, useMemo, useRef, useEffect } from 'react';
 import { Box3, Vector3 } from 'three';
 
 interface ModelViewerProps {
@@ -14,7 +14,9 @@ function Model({ modelPath }: { modelPath: string }) {
     const { scene } = useGLTF(modelPath);
     
     const { scale, center } = useMemo(() => {
-        const box = new Box3().setFromObject(scene);
+        // Clone the scene to avoid modifying the original
+        const clonedScene = scene.clone();
+        const box = new Box3().setFromObject(clonedScene);
         const size = box.getSize(new Vector3());
         const center = box.getCenter(new Vector3());
         
@@ -27,7 +29,7 @@ function Model({ modelPath }: { modelPath: string }) {
     
     return (
         <primitive 
-            object={scene} 
+            object={scene.clone()} 
             scale={[scale, scale, scale]}
             position={[-center.x * scale, -center.y * scale, -center.z * scale]}
         />
@@ -44,14 +46,32 @@ function LoadingSpinner() {
 }
 
 export function ModelViewer({ modelPath, className = "w-full h-96" }: ModelViewerProps) {
+    const controlsRef = useRef<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    useEffect(() => {
+        // Reset controls when component mounts or modelPath changes
+        if (controlsRef.current) {
+            // Reset to initial camera position
+            controlsRef.current.object.position.set(3, 4, 5);
+            controlsRef.current.target.set(0, 0, 0);
+            controlsRef.current.update();
+        }
+    }, [modelPath]);
+
     return (
         <div className={className}>
             <Canvas 
+                key={modelPath} // Force re-render when modelPath changes
                 camera={{ 
                     position: [3,4,5], 
                     fov: 45,
                     near: 0.1,
                     far: 1000
+                }}
+                onCreated={(state) => {
+                    // Ensure camera is positioned correctly on creation
+                    state.camera.position.set(3, 4, 5);
+                    state.camera.lookAt(0, 0, 0);
                 }}
             >
                 {/* Ambient light for overall illumination */}
@@ -81,6 +101,7 @@ export function ModelViewer({ modelPath, className = "w-full h-96" }: ModelViewe
                 </Suspense>
                 
                 <OrbitControls 
+                    ref={controlsRef}
                     enablePan={true}
                     enableZoom={true}
                     enableRotate={true}
@@ -91,6 +112,7 @@ export function ModelViewer({ modelPath, className = "w-full h-96" }: ModelViewe
                     enableDamping={true} // Smooth motion
                     dampingFactor={0.05}
                     target={[0, 0, 0]}   // Camera always looks at center
+                    makeDefault // Make this the default controls
                 />
             </Canvas>
         </div>
