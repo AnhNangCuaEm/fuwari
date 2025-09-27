@@ -244,7 +244,7 @@ export default function CartPage() {
                                                         </div>
 
                                                         <div className="flex items-center space-x-4">
-                                                            <span className="text-lg font-bold text-orange-600">
+                                                            <span className="text-lg font-bold text-green-600">
                                                                 ¥{item.price}
                                                             </span>
                                                             <button
@@ -304,7 +304,7 @@ export default function CartPage() {
 
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>{t("cart.total")}</span>
-                                        <span className="text-orange-600">¥{getTotal()}</span>
+                                        <span className="text-green-600">¥{getTotal()}</span>
                                     </div>
 
                                     {!showCheckout ? (

@@ -23,7 +23,7 @@ export default function Footer() {
             </svg>
             
             {/* Footer Content */}
-            <div className="flex flex-col relative z-10 max-w-7xl gap-2 mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col relative max-w-7xl gap-2 mx-auto px-4 sm:px-6 lg:px-8">
             <Image
                 src="/logo.svg"
                 alt="Fuwari Sweet Shop Logo"
