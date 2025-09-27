@@ -69,7 +69,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                                     />
                                     <div className="flex-1 min-w-0">
                                         <h4 className="font-semibold text-gray-900 truncate">{item.name}</h4>
-                                        <p className="text-orange-600 font-bold text-lg">¥{item.price.toLocaleString()}</p>
+                                        <p className="text-green-600 font-bold text-lg">¥{item.price.toLocaleString()}</p>
 
                                         {/* Quantity Controls */}
                                         <div className="flex items-center justify-between mt-3">
@@ -108,13 +108,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     <div className="border-t bg-white p-4 space-y-4 flex-shrink-0">
                         {/* Summary */}
                         <div className="space-y-2">
-                            <div className="flex justify-between text-gray-600">
-                                <span>{t('cart.items')} ({getTotalItems()})</span>
-                                <span>¥{getTotalPrice().toLocaleString()}</span>
-                            </div>
                             <div className="flex justify-between font-bold text-xl">
-                                <span>{t('cart.subtotal')}</span>
-                                <span className="text-orange-600">¥{getTotalPrice().toLocaleString()}</span>
+                                <span>{t('cart.subtotal')} ({getTotalItems()})</span>
+                                <span className="text-green-600">¥{getTotalPrice().toLocaleString()}</span>
                             </div>
                         </div>
 
