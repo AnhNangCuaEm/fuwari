@@ -129,5 +129,50 @@
     "modelPath": "/3dmodels/cookie/scene.gltf",
     "created_at": "2024-10-03T12:00:00Z",
     "updated_at": "2024-10-07T14:00:00Z"
+  },
+  {
+    "id": 4,
+    "name": "ストロベリークリームケーキ",
+    "engName": "Strawberry Cream Cake",
+    "description": "ふわふわのスポンジケーキにストロベリークリームをサンド。",
+    "engDescription": "Fluffy sponge cake sandwiched with strawberry cream.",
+    "ingredients": [
+      "小麦粉",
+      "砂糖",
+      "バター",
+      "卵",
+      "生クリーム",
+      "イチゴ",
+      "ベーキングパウダー",
+      "塩"
+    ],
+    "engIngredients": [
+      "Flour",
+      "Sugar",
+      "Butter",
+      "Eggs",
+      "Whipping Cream",
+      "Strawberries",
+      "Baking Powder",
+      "Salt"
+    ],
+    "allergens": [
+      "小麦",
+      "卵",
+      "乳",
+      "ナッツ"
+    ],
+    "engAllergens": [
+      "Wheat",
+      "Eggs",
+      "Dairy",
+      "Nuts"
+    ],
+    "price": 550,
+    "quantity": 12,
+    "image": "/2dimage/strawberrycake.jpg",
+    "modelPath": "/3dmodels/strawberrycake/scene.gltf",
+    "created_at": "2024-10-04T13:00:00Z",
+    "updated_at": "2024-10-08T15:00:00Z"
   }
 ]
