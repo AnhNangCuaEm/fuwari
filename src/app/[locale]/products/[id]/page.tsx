@@ -107,13 +107,13 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                         className="w-full h-96"
                                     />
                                 ) : (
-                                    <div className="w-full h-96 flex items-center justify-center bg-gray-100">
+                                    <div className="w-full h-96 flex items-center justify-center">
                                         <Image
                                             src={product.image}
                                             alt={getLocalizedText(product.name, product.engName)}
-                                            width={384}
-                                            height={384}
-                                            className="max-w-full max-h-full object-contain rounded-lg"
+                                            width={400}
+                                            height={400}
+                                            className="w-auto max-h-full object-contain rounded-lg"
                                         />
                                     </div>
                                 )}
