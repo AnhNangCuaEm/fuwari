@@ -189,6 +189,19 @@
     "avatarUploadSuccess": "Avatar uploaded successfully!",
     "avatarUploadError": "Failed to upload avatar. Please try again."
   },
+  "about": {
+    "pjName": "Project Name",
+    "genre": "Genre",
+    "sweetNetShop": "Sweet Net Shop",
+    "pjGoal": "Project Goal",
+    "pjGoalDesc": "This project was created as a sample sweet net shop using modern frontend technologies and secure payment features.",
+    "frameworks": "Frameworks",
+    "libraries": "Libraries",
+    "others": "Others",
+    "database": "Database",
+    "payment": "Payment Platform",
+    "maker": "Author"
+  },
   "orders": {
     "title": "Order History",
     "subtitle": "View and track all your orders",

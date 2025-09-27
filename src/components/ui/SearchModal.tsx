@@ -204,7 +204,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                 ? 'bg-green-100 text-green-800'
                                                 : 'bg-red-100 text-red-800'
                                                 }`}>
-                                                {product.quantity > 0 ? 'In Stock' : 'Out of Stock'}
+                                                {product.quantity > 0 ? t('shopping.stock.inStock') : t('shopping.stock.outOfStock')}
                                             </span>
                                         </div>
                                     </div>

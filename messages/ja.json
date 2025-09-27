@@ -189,6 +189,19 @@
     "avatarUploadSuccess": "アバターが正常にアップロードされました！",
     "avatarUploadError": "アバターのアップロードに失敗しました。もう一度お試しください。"
   },
+  "about": {
+    "pjName": "プロジェクト名",
+    "genre": "ジャンル",
+    "sweetNetShop": "スイーツネットショップ",
+    "pjGoal": "プロジェクトの目的",
+    "pjGoalDesc": "本プロジェクトは、モダンなフロントエンド技術と安全な決済機能を用いたスイーツネットショップのサンプルとして制作されました。",
+    "frameworks": "フレームワーク",
+    "libraries": "ライブラリ",
+    "others": "その他",
+    "database": "データベース",
+    "payment": "決済プラットフォーム",
+    "maker": "制作者"
+  },
   "orders": {
     "title": "注文履歴",
     "subtitle": "すべての注文を表示・追跡",
