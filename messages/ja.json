@@ -221,8 +221,6 @@
     "statusCancelled": "キャンセル済み"
   },
   "search": {
-    "searchProducts": "商品を検索",
-    "searchLabel": "商品名で検索",
     "searchPlaceholder": "商品検索",
     "sortBy": "並び替え",
     "relevance": "関連性",

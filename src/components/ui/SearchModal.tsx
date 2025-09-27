@@ -84,6 +84,13 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         onClose();
     };
 
+    const sortOptions = [
+        { value: 'relevance', label: t('search.relevance') },
+        { value: 'newest', label: t('search.newest') },
+        { value: 'price-low', label: t('search.priceLowHigh') },
+        { value: 'price-high', label: t('search.priceHighLow') }
+    ];
+
     if (!isOpen) return null;
 
     return (
@@ -95,31 +102,13 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             />
 
             {/* Modal */}
-            <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
-                {/* Header */}
-                <div className="flex justify-between items-center p-4 border-b border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                        {t('search.searchProducts')}
-                    </h2>
-                    <button
-                        onClick={handleClose}
-                        className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-
+            <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
                 {/* Search Controls */}
                 <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <div className="space-y-4">
                         <div className='flex justify-between'>
                             {/* Text Search */}
                             <div className='flex-1 mr-4'>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('search.searchLabel')}
-                                </label>
                                 <input
                                     type="text"
                                     value={searchTerm}
@@ -129,22 +118,32 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                 />
                             </div>
 
-                            {/* Sort By */}
-                            <div className="max-w-xs">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('search.sortBy')}
-                                </label>
-                                <select
-                                    value={sortBy}
-                                    onChange={(e) => setSortBy(e.target.value as SortOption)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                            <button
+                                onClick={handleClose}
+                                className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
+                            >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Sort Filter Tags */}
+                        <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-gray-700 mr-2">{t('search.sortBy')}:</span>
+                            {sortOptions.map((option) => (
+                                <p
+                                    key={option.value}
+                                    onClick={() => setSortBy(option.value as SortOption)}
+                                    className={`px-3 py-1 text-sm rounded-full cursor-pointer transition-colors ${
+                                        sortBy === option.value
+                                            ? 'bg-[#CC8409] text-white'
+                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
                                 >
-                                    <option value="relevance">{t('search.relevance')}</option>
-                                    <option value="newest">{t('search.newest')}</option>
-                                    <option value="price-low">{t('search.priceLowHigh')}</option>
-                                    <option value="price-high">{t('search.priceHighLow')}</option>
-                                </select>
-                            </div>
+                                    {option.label}
+                                </p>
+                            ))}
                         </div>
                     </div>
                 </div>

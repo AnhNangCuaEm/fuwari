@@ -221,8 +221,6 @@
     "statusCancelled": "Cancelled"
   },
   "search": {
-    "searchProducts": "Search Products",
-    "searchLabel": "Search by name",
     "searchPlaceholder": "Search products",
     "sortBy": "Sort by",
     "relevance": "Relevance",
