@@ -69,7 +69,7 @@ export default function AboutPage() {
             </div>
 
             {/* Main content */}
-            <div className="relative z-10 flex-1 flex flex-col">
+            <div className="relative flex-1 flex flex-col">
                 <div className="flex flex-col max-w-[720px] gap-6 mx-auto justify-center py-12 px-4 sm:px-6 lg:px-8 flex-1">
                     <div>
                         <p>{t('pjName')}</p>
@@ -116,11 +116,7 @@ export default function AboutPage() {
                     </div>
                 </div>
             </div>
-
-            {/* Footer */}
-            <div className="relative z-10">
-                <Footer />
-            </div>
+            <Footer />
         </div>
     );
 }
