@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { Object3D, Material } from 'three';
 
 /**
- * 通用材質替換 Hook
- * @param scene - GLTF 載入後的 scene
- * @param materialFactory - 接收舊的材質，回傳新的材質
+ * Generic material replacement hook
+ * @param scene - The scene loaded from GLTF
+ * @param materialFactory - Receives the old material and returns a new material
  */
 export function useCustomMaterial(
   scene: Object3D,
