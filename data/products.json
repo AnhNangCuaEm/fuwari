@@ -129,5 +129,177 @@
     "modelPath": "/3dmodels/cookie/scene.gltf",
     "created_at": "2024-10-03T12:00:00Z",
     "updated_at": "2024-10-07T14:00:00Z"
+  },
+  {
+    "id": 4,
+    "name": "ケーキ",
+    "engName": "Cake",
+    "description": "チョコレートガナッシュのリッチなチョコレートケーキ。",
+    "engDescription": " Rich chocolate cake with chocolate ganache.",
+    "ingredients": [
+      "小麦粉",
+      "砂糖",
+      "バター",
+      "卵",
+      "チョコレートチップ",
+      "ベーキングソーダ",
+      "塩",
+      "バニラエッセンス"
+    ],
+    "engIngredients": [
+      "Flour",
+      "Sugar",
+      "Butter",
+      "Eggs",
+      "Chocolate Chips",
+      "Baking Soda",
+      "Salt",
+      "Vanilla Extract"
+    ],
+    "allergens": [
+      "小麦",
+      "卵",
+      "乳"
+    ],
+    "engAllergens": [
+      "Wheat",
+      "Eggs",
+      "Dairy"
+    ],
+    "price": 400,
+    "quantity": 0,
+    "image": "/2dimage/cookie.webp",
+    "modelPath": "/3dmodels/cake/straeberrycreamcake.glb",
+    "created_at": "2024-10-03T12:00:00Z",
+    "updated_at": "2024-10-07T14:00:00Z"
+  },
+  {
+    "id": 5,
+    "name": "ケーキ",
+    "engName": "Cake",
+    "description": "チョコレートガナッシュのリッチなチョコレートケーキ。",
+    "engDescription": " Rich chocolate cake with chocolate ganache.",
+    "ingredients": [
+      "小麦粉",
+      "砂糖",
+      "バター",
+      "卵",
+      "チョコレートチップ",
+      "ベーキングソーダ",
+      "塩",
+      "バニラエッセンス"
+    ],
+    "engIngredients": [
+      "Flour",
+      "Sugar",
+      "Butter",
+      "Eggs",
+      "Chocolate Chips",
+      "Baking Soda",
+      "Salt",
+      "Vanilla Extract"
+    ],
+    "allergens": [
+      "小麦",
+      "卵",
+      "乳"
+    ],
+    "engAllergens": [
+      "Wheat",
+      "Eggs",
+      "Dairy"
+    ],
+    "price": 400,
+    "quantity": 0,
+    "image": "/2dimage/cookie.webp",
+    "modelPath": "/3dmodels/testmodel/low_poly_ice_cream_shop.glb",
+    "created_at": "2024-10-03T12:00:00Z",
+    "updated_at": "2024-10-07T14:00:00Z"
+  }, 
+   {
+    "id": 6,
+    "name": "ケーキ",
+    "engName": "Cake",
+    "description": "チョコレートガナッシュのリッチなチョコレートケーキ。",
+    "engDescription": " Rich chocolate cake with chocolate ganache.",
+    "ingredients": [
+      "小麦粉",
+      "砂糖",
+      "バター",
+      "卵",
+      "チョコレートチップ",
+      "ベーキングソーダ",
+      "塩",
+      "バニラエッセンス"
+    ],
+    "engIngredients": [
+      "Flour",
+      "Sugar",
+      "Butter",
+      "Eggs",
+      "Chocolate Chips",
+      "Baking Soda",
+      "Salt",
+      "Vanilla Extract"
+    ],
+    "allergens": [
+      "小麦",
+      "卵",
+      "乳"
+    ],
+    "engAllergens": [
+      "Wheat",
+      "Eggs",
+      "Dairy"
+    ],
+    "price": 400,
+    "quantity": 0,
+    "image": "/2dimage/cookie.webp",
+    "modelPath": "/3dmodels/testmodel/cake_roll.glb",
+    "created_at": "2024-10-03T12:00:00Z",
+    "updated_at": "2024-10-07T14:00:00Z"
+  },
+  {
+    "id": 7,
+    "name": "ケーキ",
+    "engName": "Cake",
+    "description": "チョコレートガナッシュのリッチなチョコレートケーキ。",
+    "engDescription": " Rich chocolate cake with chocolate ganache.",
+    "ingredients": [
+      "小麦粉",
+      "砂糖",
+      "バター",
+      "卵",
+      "チョコレートチップ",
+      "ベーキングソーダ",
+      "塩",
+      "バニラエッセンス"
+    ],
+    "engIngredients": [
+      "Flour",
+      "Sugar",
+      "Butter",
+      "Eggs",
+      "Chocolate Chips",
+      "Baking Soda",
+      "Salt",
+      "Vanilla Extract"
+    ],
+    "allergens": [
+      "小麦",
+      "卵",
+      "乳"
+    ],
+    "engAllergens": [
+      "Wheat",
+      "Eggs",
+      "Dairy"
+    ],
+    "price": 400,
+    "quantity": 0,
+    "image": "/2dimage/cookie.webp",
+    "modelPath": "/3dmodels/testmodel/mita.glb",
+    "created_at": "2024-10-03T12:00:00Z",
+    "updated_at": "2024-10-07T14:00:00Z"
   }
 ]
