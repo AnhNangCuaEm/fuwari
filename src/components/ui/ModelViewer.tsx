@@ -5,7 +5,7 @@ import { OrbitControls, useGLTF } from '@react-three/drei';
 import { Suspense, useMemo } from 'react';
 import { Box3, Vector3, MeshToonMaterial, MeshNormalMaterial } from 'three';
 import { useCustomMaterial } from './useCustomMaterial'; 
-import { EffectComposer, Bloom, Vignette ,Outline} from '@react-three/postprocessing';
+import { EffectComposer, Bloom, Vignette ,Outline,HueSaturation} from '@react-three/postprocessing';
 import { BlendFunction, ShaderPass } from 'postprocessing';
 
 interface ModelViewerProps {
@@ -78,12 +78,12 @@ export function ModelViewer({ modelPath, className = "w-full h-96" }: ModelViewe
        <hemisphereLight
             skyColor={"#ffeedd"}
             groundColor={"#ffeeee"}
-            intensity={0.6}
+            intensity={0.4}
         />
 
         <directionalLight
             position={[5, 8, 5]}
-            intensity={1.2}
+            intensity={0.8}
             castShadow
             shadow-mapSize-width={2048}
             shadow-mapSize-height={2048}
@@ -110,21 +110,23 @@ export function ModelViewer({ modelPath, className = "w-full h-96" }: ModelViewe
         />
     <EffectComposer>
     <Bloom
-      intensity={1.2}          // Bloom intensity
+      intensity={0.8}          // Bloom intensity
       luminanceThreshold={0.1} // Bloom luminance threshold
     />
     
-    <Vignette
+    {/* <Vignette
       eskil={false}
       offset={0.1}
       darkness={0.9}
       blendFunction={BlendFunction.NORMAL}
-    />
+    /> */}
     
     <Outline
       edgeStrength={3}   // Outline thickness
       visibleEdgeColor={0x000000} // Outline color
     />
+     {/* <HueSaturation hue={0} saturation={-1} /> */}
+
 
   </EffectComposer>
       </Canvas>
