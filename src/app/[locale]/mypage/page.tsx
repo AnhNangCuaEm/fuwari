@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ImageCropModal from '@/components/ui/ImageCropModal';
+import { Tabs } from '@/components/ui/tabs';
 import { useTranslations } from 'next-intl';
 import { validateAllFields } from '@/lib/validation';
 import Link from 'next/link';
@@ -277,7 +278,7 @@ export default function Mypage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-almond-5 mx-auto"></div>
           <p className="mt-4 text-gray-600">{tCommon('loading')}</p>
         </div>
       </div>
@@ -293,7 +294,7 @@ export default function Mypage() {
       <Header />
       <main className="container mx-auto px-4 py-8 flex-1">
         {/* Breadcrumb */}
-        <nav className="mb-8">
+        <nav className="mb-6">
           <Link
             href="/"
             className="text-[#CC8409] hover:text-[#D6B884] mr-2"
@@ -304,216 +305,235 @@ export default function Mypage() {
           <span className="text-gray-700">{t('title')}</span>
         </nav>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>
-            <p className="text-gray-600">{t('subtitle')}</p>
+        {/* Tabs Section */}
+        <div className="relative">
+          <Tabs
+            tabs={[
+              {
+                title: t('tabs.profile'),
+                value: "profile",
+                content: (
+                  <div className="bg-white rounded-xl shadow-lg p-8">
 
-            {/* Quick Actions */}
-            <div className="mt-6 flex flex-wrap gap-4">
-              <Link
-                href="/orders"
-                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                {t('viewOrders')}
-              </Link>
-              <button
-                onClick={handleSignOut}
-                className="block bg-red-200 rounded-lg px-4 py-3 hover:bg-red-50 transition-colors text-red-600"
-              >
-                🚪 {tCommon('logout')}
-              </button>
-            </div>
-          </div>
+                    {message && (
+                      <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
+                        ? 'bg-green-50 border border-green-200 text-green-800 message-success'
+                        : 'bg-red-50 border border-red-200 text-red-800 message-error'
+                        }`}>
+                        {message.text}
+                      </div>
+                    )}
 
-          {message && (
-            <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
-              ? 'bg-green-50 border border-green-200 text-green-800 message-success'
-              : 'bg-red-50 border border-red-200 text-red-800 message-error'
-              }`}>
-              {message.text}
-            </div>
-          )}
+                    <div className="space-y-8">
+                      {/* Avatar Section */}
+                      <div className="flex items-center space-x-6">
+                        <div className="relative profile-avatar">
+                          <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                            {profile.image ? (
+                              <Image
+                                src={profile.image}
+                                alt="Profile Avatar"
+                                width={120}
+                                height={120}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-semibold">
+                                {profile.name.charAt(0).toUpperCase() || 'U'}
+                              </div>
+                            )}
+                          </div>
+                          <button
+                            onClick={() => fileInputRef.current?.click()}
+                            className="absolute bottom-0 right-0 bg-almond-5 hover:bg-almond-6 text-white p-2 rounded-full shadow-lg transition-colors cursor-pointer"
+                            type="button"
+                            aria-label="Upload avatar"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                          </button>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarUpload}
+                            className="hidden"
+                          />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-medium text-gray-900">{t('hello')} <span className="font-semibold">{profile.name}</span></h3>
+                          <p className="text-md text-gray-500">{t('profilePictureDesc')}</p>
+                        </div>
+                      </div>
 
-          <div className="space-y-8">
-            {/* Avatar Section */}
-            <div className="flex items-center space-x-6">
-              <div className="relative profile-avatar">
-                <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                  {profile.image ? (
-                    <Image
-                      src={profile.image}
-                      alt="Profile Avatar"
-                      width={96}
-                      height={96}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-semibold">
-                      {profile.name.charAt(0).toUpperCase() || 'U'}
+                      {/* Form Fields */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('fullName')} <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            id="name"
+                            value={profile.name}
+                            onChange={(e) => handleInputChange('name', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.name ? 'border-red-500' : 'border-gray-300'
+                              }`}
+                            placeholder={t('fullNamePlaceholder')}
+                          />
+                          {errors.name && (
+                            <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('emailAddress')} <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            value={profile.email}
+                            onChange={(e) => handleInputChange('email', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.email ? 'border-red-500' : 'border-gray-300'
+                              }`}
+                            placeholder={t('emailPlaceholder')}
+                          />
+                          {errors.email && (
+                            <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('phoneNumber')}
+                          </label>
+                          <input
+                            type="tel"
+                            id="phone"
+                            value={profile.phone}
+                            onChange={(e) => handleInputChange('phone', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                              }`}
+                            placeholder={t('phonePlaceholder')}
+                          />
+                          {errors.phone && (
+                            <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('postalCode')}
+                          </label>
+                          <input
+                            type="text"
+                            id="postalCode"
+                            value={profile.postalCode}
+                            onChange={(e) => handleInputChange('postalCode', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
+                              }`}
+                            placeholder={t('postalCodePlaceholder')}
+                          />
+                          {errors.postalCode && (
+                            <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('city')}
+                          </label>
+                          <input
+                            type="text"
+                            id="city"
+                            value={profile.city}
+                            onChange={(e) => handleInputChange('city', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.city ? 'border-red-500' : 'border-gray-300'
+                              }`}
+                            placeholder={t('cityPlaceholder')}
+                          />
+                          {errors.city && (
+                            <p className="mt-1 text-sm text-red-600">{errors.city}</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('address')}
+                          </label>
+                          <input
+                            type="text"
+                            id="address"
+                            value={profile.address}
+                            onChange={(e) => handleInputChange('address', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.address ? 'border-red-500' : 'border-gray-300'
+                              }`}
+                            placeholder={t('addressPlaceholder')}
+                          />
+                          {errors.address && (
+                            <p className="mt-1 text-sm text-red-600">{errors.address}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                        <button
+                          onClick={handleSignOut}
+                          className="block bg-red-200 rounded-lg px-4 py-3 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
+                        >
+                          {tCommon('logout')}
+                        </button>
+                        <button
+                          onClick={handleReset}
+                          disabled={!hasChanges() || isSaving}
+                          className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
+                        >
+                          {t('reset')}
+                        </button>
+                        <button
+                          onClick={handleSave}
+                          disabled={!hasChanges() || isSaving}
+                          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
+                        >
+                          {isSaving && (
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white loading-spinner"></div>
+                          )}
+                          <span>{isSaving ? t('saving') : t('saveChanges')}</span>
+                        </button>
+                      </div>
                     </div>
-                  )}
-                </div>
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors"
-                  type="button"
-                  aria-label="Upload avatar"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarUpload}
-                  className="hidden"
-                />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-gray-900">{t('profilePicture')}</h3>
-                <p className="text-sm text-gray-500">{t('profilePictureDesc')}</p>
-              </div>
-            </div>
-
-            {/* Form Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('fullName')} <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={profile.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.name ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  placeholder={t('fullNamePlaceholder')}
-                />
-                {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('emailAddress')} <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={profile.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.email ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  placeholder={t('emailPlaceholder')}
-                />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('phoneNumber')}
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  value={profile.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.phone ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  placeholder={t('phonePlaceholder')}
-                />
-                {errors.phone && (
-                  <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('postalCode')}
-                </label>
-                <input
-                  type="text"
-                  id="postalCode"
-                  value={profile.postalCode}
-                  onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  placeholder={t('postalCodePlaceholder')}
-                />
-                {errors.postalCode && (
-                  <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('city')}
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  value={profile.city}
-                  onChange={(e) => handleInputChange('city', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.city ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  placeholder={t('cityPlaceholder')}
-                />
-                {errors.city && (
-                  <p className="mt-1 text-sm text-red-600">{errors.city}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('address')}
-                </label>
-                <input
-                  type="text"
-                  id="address"
-                  value={profile.address}
-                  onChange={(e) => handleInputChange('address', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.address ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  placeholder={t('addressPlaceholder')}
-                />
-                {errors.address && (
-                  <p className="mt-1 text-sm text-red-600">{errors.address}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-              <button
-                onClick={handleReset}
-                disabled={!hasChanges() || isSaving}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
-              >
-                {t('reset')}
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={!hasChanges() || isSaving}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
-              >
-                {isSaving && (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white loading-spinner"></div>
-                )}
-                <span>{isSaving ? t('saving') : t('saveChanges')}</span>
-              </button>
-            </div>
-          </div>
+                  </div>
+                )
+              },
+              {
+                title: t('tabs.orders'),
+                value: "orders",
+                content: (
+                  <div className="bg-white rounded-lg shadow-lg p-8">
+                    <h3 className="text-xl font-semibold mb-4">{t('tabs.orders')}</h3>
+                    <p>This is the orders tab content. You can customize this later.</p>
+                  </div>
+                )
+              },
+              {
+                title: t('tabs.review'),
+                value: "review",
+                content: (
+                  <div className="bg-white rounded-lg shadow-lg p-8">
+                    <h3 className="text-xl font-semibold mb-4">{t('tabs.review')}</h3>
+                    <p>This is the review tab content. You can customize this later.</p>
+                  </div>
+                )
+              }
+            ]}
+            containerClassName="mb-4"
+            tabClassName="px-6 py-3 rounded-full font-medium transition-colors cursor-pointer"
+            contentClassName="relative z-10"
+          />
         </div>
 
         {/* Image Crop Modal */}
@@ -529,6 +549,8 @@ export default function Mypage() {
           />
         )}
       </main>
+
+
       <Footer />
     </div>
   );

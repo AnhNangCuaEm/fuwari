@@ -162,9 +162,12 @@
   "mypage": {
     "home": "ホーム",
     "title": "マイページ",
-    "subtitle": "個人情報と設定を管理",
-    "viewOrders": "注文履歴を見る",
-    "profilePicture": "プロフィール画像",
+    "tabs": {
+      "profile": "プロフィール",
+      "orders": "注文履歴",
+      "review": "レビュー"
+    },
+    "hello": "こんにちは、",
     "profilePictureDesc": "カメラアイコンをクリックして新しいアバターをアップロード",
     "fullName": "氏名",
     "fullNamePlaceholder": "氏名を入力してください",

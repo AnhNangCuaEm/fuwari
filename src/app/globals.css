@@ -2,7 +2,7 @@
 @plugin "daisyui";
 
 :root {
-  --background: #EADBC8;
+  --background: #eadbc8;
   --foreground: #171717;
 }
 
@@ -59,4 +59,15 @@ body {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
+}
+
+/* tabs hide scrollbar */
+.no-visible-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-visible-scrollbar::-webkit-scrollbar {
+  display: none;
 }

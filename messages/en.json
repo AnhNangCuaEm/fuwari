@@ -161,10 +161,13 @@
   },
   "mypage": {
     "home": "Home",
-    "title": "My Profile",
-    "subtitle": "Manage your personal information and preferences",
-    "viewOrders": "View Orders",
-    "profilePicture": "Profile Picture",
+    "title": "My Page",
+    "tabs": {
+      "profile": "Profile",
+      "orders": "Orders",
+      "review": "Reviews"
+    },
+    "hello": "Hi,",
     "profilePictureDesc": "Click the camera icon to upload a new avatar",
     "fullName": "Full Name",
     "fullNamePlaceholder": "Enter your full name",
