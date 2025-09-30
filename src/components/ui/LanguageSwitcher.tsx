@@ -35,7 +35,7 @@ export default function LanguageSwitcher() {
           onClick={() => handleLocaleChange(lng)}
           className={`px-3 py-1 text-sm rounded transition-colors ${
             locale === lng
-              ? 'bg-pink-600 text-white'
+              ? 'bg-almond-6 text-white'
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
