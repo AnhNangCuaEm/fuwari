@@ -99,7 +99,7 @@ export default function AlertModal({
                                 onConfirm?.()
                                 onClose()
                             }}
-                            className="px-4 py-2 bg-[#FF6900] text-white rounded-lg hover:bg-[#CC8409] transition-colors cursor-pointer"
+                            className="px-4 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 transition-colors cursor-pointer"
                         >
                             {confirmText}
                         </button>

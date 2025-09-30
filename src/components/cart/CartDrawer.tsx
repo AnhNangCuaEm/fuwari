@@ -122,6 +122,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         >
                             {t('shopping.cart.viewCart')}
                         </Link>
+                        <Link
+                            href="/products"
+                            className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors cursor-pointer"
+                        >
+                            {t("cart.continueShopping")}
+                        </Link>
                     </div>
                 )}
             </div>

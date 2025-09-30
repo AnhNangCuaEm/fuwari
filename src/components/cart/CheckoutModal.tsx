@@ -254,7 +254,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
               </div>
               <div className="border-t pt-2 flex justify-between font-bold text-lg">
                 <span>{t('payment.total')}:</span>
-                <span className="text-orange-600">¥{totals.total}</span>
+                <span className="text-green-600">¥{totals.total}</span>
               </div>
             </div>
           </div>
@@ -329,7 +329,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
                   type="text"
                   value={customerInfo.city}
                   onChange={(e) => handleInputChange('city', e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D6B884] focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-almond-6 focus:border-transparent"
                   required
                   disabled={loading}
                 />
@@ -343,7 +343,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
                   type="text"
                   value={customerInfo.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D6B884] focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-almond-6 focus:border-transparent"
                   required
                   disabled={loading}
                 />
@@ -389,7 +389,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
               <button
                 type="submit"
                 disabled={!stripe || loading}
-                className="flex-1 bg-[#D6B884] hover:bg-[#CC8409] disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-semibold transition-colors cursor-pointer"
+                className="flex-1 bg-almond-6 hover:bg-almond-5 disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-semibold transition-colors cursor-pointer"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
