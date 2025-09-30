@@ -4,7 +4,8 @@ import { Link } from "@/i18n/navigation"
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useCart } from '@/lib/hooks/useCart'
-
+import AlertModal from "@/components/ui/AlertModal";
+import { useState } from "react"
 interface CartDrawerProps {
     isOpen: boolean
     onClose: () => void
@@ -13,6 +14,23 @@ interface CartDrawerProps {
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart()
     const t = useTranslations();
+    const [showRemoveAlert, setShowRemoveAlert] = useState(false);
+        const [itemToRemove, setItemToRemove] = useState<number | null>(null);
+
+
+
+    // Handle remove confirmation
+    const handleRemoveClick = (itemId: number) => {
+        setItemToRemove(itemId);
+        setShowRemoveAlert(true);
+    };
+
+    const handleConfirmRemove = () => {
+        if (itemToRemove !== null) {
+            removeFromCart(itemToRemove);
+            setItemToRemove(null);
+        }
+    };
 
     return (
         <>
@@ -60,13 +78,15 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         <div className="space-y-3">
                             {cartItems.map((item) => (
                                 <div key={item.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                                    <Image
-                                        src={item.image}
-                                        alt={item.name}
-                                        width={80}
-                                        height={80}
-                                        className="rounded-lg object-cover"
-                                    />
+                                    <Link href={`/products/${item.id}`}>
+                                        <Image
+                                            src={item.image}
+                                            alt={item.name}
+                                            width={80}
+                                            height={80}
+                                            className="rounded-lg object-cover"
+                                        />
+                                    </Link>
                                     <div className="flex-1 min-w-0">
                                         <h4 className="font-semibold text-gray-900 truncate">{item.name}</h4>
                                         <p className="text-green-600 font-bold text-lg">¥{item.price.toLocaleString()}</p>
@@ -90,7 +110,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                                                 </button>
                                             </div>
                                             <button
-                                                onClick={() => removeFromCart(item.id)}
+                                                onClick={() => handleRemoveClick(item.id)}
                                                 className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
                                             >
                                                 {t('cart.remove')}
@@ -130,6 +150,19 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         </Link>
                     </div>
                 )}
+
+                {/* Remove Item Alert Modal */}
+                <AlertModal
+                    isOpen={showRemoveAlert}
+                    onClose={() => setShowRemoveAlert(false)}
+                    title={t("cart.removeConfirmTitle")}
+                    message={t("cart.removeConfirmMsg")}
+                    type="warning"
+                    confirmText={t("cart.removeConfirm")}
+                    cancelText={t("cart.cancel")}
+                    onConfirm={handleConfirmRemove}
+                    showCancel={true}
+                />
             </div>
         </>
     )
