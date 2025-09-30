@@ -71,7 +71,7 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
               onClick={() => handleLocaleChange(lng)}
               className={`w-full text-left px-4 py-3 rounded-lg transition-colors cursor-pointer ${
                 locale === lng
-                  ? 'bg-pink-600 text-white'
+                  ? 'bg-almond-5 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >

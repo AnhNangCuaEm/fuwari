@@ -51,7 +51,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                             <p className="text-lg">{t('cart.emptyMessage')}</p>
                             <p className="text-sm mt-2 text-gray-400">{t('cart.emptySuggestion')}</p>
                             <Link href="/products">
-                                <button className="mt-6 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors cursor-pointer">
+                                <button className="mt-6 px-4 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 transition-colors cursor-pointer">
                                     {t('cart.continueShopping')}
                                 </button>
                             </Link>
@@ -117,7 +117,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         {/* Action Buttons */}
                         <Link
                             href="/cart"
-                            className="block w-full bg-orange-500 hover:bg-orange-600 text-white text-center py-4 rounded-lg font-semibold transition-colors text-lg"
+                            className="block w-full bg-almond-6 hover:bg-almond-5 text-white text-center py-4 rounded-lg font-semibold transition-colors text-lg"
                             onClick={onClose}
                         >
                             {t('shopping.cart.viewCart')}

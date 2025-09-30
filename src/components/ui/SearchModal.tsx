@@ -137,7 +137,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                     onClick={() => setSortBy(option.value as SortOption)}
                                     className={`px-3 py-1 text-sm rounded-full cursor-pointer transition-colors ${
                                         sortBy === option.value
-                                            ? 'bg-[#CC8409] text-white'
+                                            ? 'bg-almond-6 text-white'
                                             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                     }`}
                                 >

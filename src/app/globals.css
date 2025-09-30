@@ -4,24 +4,27 @@
 :root {
   --background: #EADBC8;
   --foreground: #171717;
-  --almond-1: 32 42% 94%;
-  --almond-2: 34 45% 85%;
-  --almond-3: 35 49% 78%;
-  --almond-4: 35 36% 70%;
-  --almond-5: 34 25% 61%;
-  --almond-6: 35 18% 52%;
-  --almond-7: 34 16% 43%;
-  --almond-8: 35 17% 34%;
-  --almond-9: 33 18% 24%;
-  --almond-10: 36 19% 15%;
-  --almond-11: 35 22% 11%;
-  --almond-12: 33 29% 6%;
+}
+
+@theme {
+  --color-almond-1: #faf6f2;
+  --color-almond-2: #f4ebe0;
+  --color-almond-3: #eadbc8;
+  --color-almond-4: #d8ba99;
+  --color-almond-5: #c79970;
+  --color-almond-6: #bb8054;
+  --color-almond-7: #ae6d48;
+  --color-almond-8: #91583d;
+  --color-almond-9: #754737;
+  --color-almond-10: #5f3c2f;
+  --color-almond-11: #331e17;
+  --color-almond-12: #14100b;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Noto Sans JP, Helvetica, sans-serif;
 }
 
 @keyframes carousel-scroll {

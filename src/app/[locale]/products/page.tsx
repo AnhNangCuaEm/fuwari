@@ -39,7 +39,7 @@ export default function ProductsPage() {
                 <nav className="mb-8">
                     <Link
                         href="/"
-                        className="text-[#CC8409] hover:text-[#D6B884] mr-2"
+                        className="text-almond-6 hover:text-almond-8 mr-2"
                     >
                         {t('common.home')}
                     </Link>
@@ -91,7 +91,7 @@ export default function ProductsPage() {
                                 <div className="flex gap-2">
                                     <Link
                                         href={`/products/${product.id}`}
-                                        className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium text-center transition-colors cursor-pointer"
+                                        className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium text-center transition-colors cursor-pointer"
                                     >
                                         {t("shopping.detail")}
                                     </Link>
@@ -99,7 +99,7 @@ export default function ProductsPage() {
                                         onClick={(e) => handleAddToCart(product, e)}
                                         disabled={product.quantity === 0}
                                         className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer ${product.quantity > 0
-                                            ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                                            ? 'bg-almond-6 hover:bg-almond-5 text-white'
                                             : 'bg-gray-300 text-gray-500 cursor-not-allowed!'
                                             }`}
                                     >

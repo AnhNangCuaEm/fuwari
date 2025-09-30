@@ -7,8 +7,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
-import {Link} from '@/i18n/navigation';
-import {useTranslations, useLocale} from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { useTranslations, useLocale } from 'next-intl';
 import { useCart } from "@/lib/hooks/useCart";
 import { getProductById } from "@/lib/products";
 import CheckoutModal from "@/components/cart/CheckoutModal";
@@ -17,14 +17,14 @@ import { OrderTotals } from "@/types/order";
 
 // Initialize Stripe with error handling
 const getStripePromise = () => {
-  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-  
-  if (!publishableKey) {
-    console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not defined');
-    return null;
-  }
-  
-  return loadStripe(publishableKey);
+    const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+
+    if (!publishableKey) {
+        console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not defined');
+        return null;
+    }
+
+    return loadStripe(publishableKey);
 };
 
 const stripePromise = getStripePromise();
@@ -34,7 +34,7 @@ export default function CartPage() {
     const locale = useLocale();
     const router = useRouter();
     const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart();
-    
+
     const [showCheckout, setShowCheckout] = useState(false);
     const [isCheckingStock, setIsCheckingStock] = useState(false);
     const [stockError, setStockError] = useState<string | null>(null);
@@ -138,11 +138,11 @@ export default function CartPage() {
                     requestedQuantity: number;
                     availableStock: number;
                 }
-                
-                const unavailableItemsText = data.unavailableItems.map((item: UnavailableItem) => 
+
+                const unavailableItemsText = data.unavailableItems.map((item: UnavailableItem) =>
                     `${item.name}. ${t('cart.stockError.requested')} ${item.requestedQuantity}, ${t('cart.stockError.available')} ${item.availableStock}`
                 ).join('\n');
-                
+
                 setStockError(`${t('cart.stockError.insufficient')}\n${unavailableItemsText}`);
                 setShowStockErrorAlert(true);
                 return false;
@@ -163,10 +163,10 @@ export default function CartPage() {
     const handlePaymentSuccess = (paymentIntentId: string, orderId: string) => {
         // Clear cart
         cartItems.forEach(item => removeFromCart(item.id));
-        
+
         // Clear any stock errors
         setStockError(null);
-        
+
         // Redirect to success page
         router.push(`/order-success?payment_intent=${paymentIntentId}&order=${orderId}`);
     };
@@ -191,7 +191,7 @@ export default function CartPage() {
                         <p className="text-gray-500 mb-6">{t("cart.continueShopping")}</p>
                         <Link
                             href="/products"
-                            className="inline-block bg-[#D6B884] hover:bg-[#CC8409] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                            className="inline-block bg-almond-6 hover:bg-almond-8 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
                         >
                             {t("cart.viewProducts")}
                         </Link>
@@ -308,13 +308,13 @@ export default function CartPage() {
                                     </div>
 
                                     {!showCheckout ? (
-                                        <button 
+                                        <button
                                             onClick={async () => {
                                                 if (!stripePromise) {
                                                     alert('Payment system is not available. Please check environment configuration.');
                                                     return;
                                                 }
-                                                
+
                                                 // Check stock before proceeding to checkout
                                                 const stockAvailable = await checkStockBeforeCheckout();
                                                 if (stockAvailable) {
@@ -322,7 +322,7 @@ export default function CartPage() {
                                                 }
                                             }}
                                             disabled={isCheckingStock}
-                                            className="w-full bg-[#D6B884] hover:bg-[#CC8409] text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                            className="w-full bg-almond-6 hover:bg-almond-5 text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
                                         >
                                             {isCheckingStock ? t("cart.checkingStock") : t("cart.checkout")}
                                         </button>

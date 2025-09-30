@@ -80,14 +80,14 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 <nav className="mb-8">
                     <Link
                         href="/"
-                        className="text-[#CC8409] hover:text-[#D6B884] mr-2"
+                        className="text-almond-6 hover:text-almond-8 mr-2"
                     >
                         {t('common.home')}
                     </Link>
                     <span className="text-gray-500 mr-2">/</span>
                     <Link
                         href="/products"
-                        className="text-[#CC8409] hover:text-[#D6B884] mr-2"
+                        className="text-almond-6 hover:text-almond-8 mr-2"
                     >
                         {t('products.title')}
                     </Link>
@@ -204,7 +204,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                     onClick={(e) => handleAddToCart(product, e)}
                                     disabled={product.quantity === 0}
                                     className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer ${product.quantity > 0
-                                        ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                                        ? 'bg-almond-6 hover:bg-almond-5 text-white'
                                         : 'hidden'
                                         }`}
                                 >
