@@ -10,6 +10,7 @@ import ImageCropModal from '@/components/ui/ImageCropModal';
 import { useTranslations } from 'next-intl';
 import { validateAllFields } from '@/lib/validation';
 import Link from 'next/link';
+import { signOut } from "next-auth/react"
 
 import '@/css/mypage.css';
 
@@ -268,6 +269,10 @@ export default function Mypage() {
     setMessage(null);
   };
 
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' })
+  }
+
   if (status === 'loading' || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -315,6 +320,12 @@ export default function Mypage() {
                 </svg>
                 {t('viewOrders')}
               </Link>
+              <button
+                onClick={handleSignOut}
+                className="block bg-red-200 rounded-lg px-4 py-3 hover:bg-red-50 transition-colors text-red-600"
+              >
+                🚪 {tCommon('logout')}
+              </button>
             </div>
           </div>
 

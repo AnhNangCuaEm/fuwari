@@ -4,7 +4,6 @@ import { Link } from "@/i18n/navigation"
 import { Sling as Hamburger } from 'hamburger-react'
 import { useState } from "react"
 import { useCurrentUser } from "@/lib/hooks/useAuth"
-import { signOut } from "next-auth/react"
 import CartDrawer from "@/components/cart/CartDrawer"
 import LanguageModal from "@/components/ui/LanguageModal"
 import SearchModal from "@/components/ui/SearchModal"
@@ -21,11 +20,6 @@ export default function NavMenu() {
     const t = useTranslations()
 
     const isAdmin = user?.role === 'admin'
-
-    const handleSignOut = () => {
-        signOut({ callbackUrl: '/' })
-        setIsOpen(false)
-    }
 
     return (
         <nav className="relative flex gap-2">
@@ -185,15 +179,6 @@ export default function NavMenu() {
                                 </li>
                             </>
                         )}
-
-                        <li className="border-b border-gray-200 last:border-b-0">
-                            <button
-                                onClick={handleSignOut}
-                                className="w-full text-left block px-4 py-3 hover:bg-red-50 transition-colors text-red-600"
-                            >
-                                🚪 {t('common.logout')}
-                            </button>
-                        </li>
                     </>
                 ) : (
                     <>
