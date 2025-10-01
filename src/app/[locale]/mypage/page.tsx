@@ -7,8 +7,7 @@ import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ImageCropModal from '@/components/ui/ImageCropModal';
-import { Tabs } from '@/components/ui/tabs';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { validateAllFields } from '@/lib/validation';
 import Link from 'next/link';
 import { signOut } from "next-auth/react"
@@ -25,37 +24,11 @@ interface UserProfile {
   image?: string;
 }
 
-interface Order {
-  id: string;
-  total: number;
-  status: string;
-  createdAt: string;
-  items: Array<{
-    name: string;
-    quantity: number;
-    price: number;
-    image: string;
-    description: string;
-  }>;
-  shippingAddress: {
-    fullName: string;
-    address: string;
-    city: string;
-    postalCode: string;
-    phone: string;
-  };
-  subtotal: number;
-  tax: number;
-  shipping: number;
-}
-
 export default function Mypage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const t = useTranslations('mypage');
   const tCommon = useTranslations('common');
-  const tOrders = useTranslations('orders');
-  const locale = useLocale();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [profile, setProfile] = useState<UserProfile>({
@@ -84,9 +57,6 @@ export default function Mypage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [imageToProcess, setImageToProcess] = useState<string | null>(null);
-
-  // Orders data
-  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     if (status === 'loading') return; // Still loading
@@ -124,20 +94,6 @@ export default function Mypage() {
             setProfile(initialProfile);
             setOriginalProfile(initialProfile);
           }
-
-          // Fetch orders data
-          console.log('Fetching orders data...');
-          try {
-            const ordersResponse = await fetch('/api/user/orders');
-            if (ordersResponse.ok) {
-              const ordersData = await ordersResponse.json();
-              setOrders(ordersData.orders || []);
-            } else {
-              console.log('Failed to fetch orders');
-            }
-          } catch (ordersError) {
-            console.error('Error fetching orders:', ordersError);
-          }
         } catch {
           // Fallback to session data if API fails
           const initialProfile = {
@@ -151,19 +107,6 @@ export default function Mypage() {
           };
           setProfile(initialProfile);
           setOriginalProfile(initialProfile);
-
-          // Still try to fetch orders even if profile fails
-          console.log('Fetching orders data (fallback)...');
-          try {
-            const ordersResponse = await fetch('/api/user/orders');
-            if (ordersResponse.ok) {
-              const ordersData = await ordersResponse.json();
-              console.log('Orders fetched:', ordersData.orders?.length || 0);
-              setOrders(ordersData.orders || []);
-            }
-          } catch (ordersError) {
-            console.error('Error fetching orders:', ordersError);
-          }
         } finally {
           setIsLoading(false);
         }
@@ -330,42 +273,6 @@ export default function Mypage() {
     signOut({ callbackUrl: '/' })
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'paid':
-        return 'bg-green-100 text-green-800';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'paid':
-        return tOrders('statusPaid');
-      case 'pending':
-        return tOrders('statusPending');
-      case 'cancelled':
-        return tOrders('statusCancelled');
-      default:
-        return status;
-    }
-  };
-
   if (status === 'loading' || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -386,7 +293,7 @@ export default function Mypage() {
       <Header />
       <main className="container mx-auto px-4 py-8 flex-1">
         {/* Breadcrumb */}
-        <nav className="mb-6">
+        <nav className="mb-8">
           <Link
             href="/"
             className="text-[#CC8409] hover:text-[#D6B884] mr-2"
@@ -397,341 +304,213 @@ export default function Mypage() {
           <span className="text-gray-700">{t('title')}</span>
         </nav>
 
-        {/* Tabs Section */}
-        <div className="relative">
-          <Tabs
-            tabs={[
-              {
-                title: t('tabs.profile'),
-                value: "profile",
-                content: (
-                  <div className="bg-almond-1 rounded-xl shadow-lg p-8">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="mb-8">
+            {/* Quick Actions */}
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/orders"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                {t('viewOrders')}
+              </Link>
+            </div>
+          </div>
 
-                    {message && (
-                      <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
-                        ? 'bg-green-50 border border-green-200 text-green-800 message-success'
-                        : 'bg-red-50 border border-red-200 text-red-800 message-error'
-                        }`}>
-                        {message.text}
-                      </div>
-                    )}
+          {message && (
+            <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
+              ? 'bg-green-50 border border-green-200 text-green-800 message-success'
+              : 'bg-red-50 border border-red-200 text-red-800 message-error'
+              }`}>
+              {message.text}
+            </div>
+          )}
 
-                    <div className="space-y-8">
-                      {/* Avatar Section */}
-                      <div className="flex items-center space-x-6">
-                        <div className="relative profile-avatar">
-                          <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                            {profile.image ? (
-                              <Image
-                                src={profile.image}
-                                alt="Profile Avatar"
-                                width={120}
-                                height={120}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-semibold">
-                                {profile.name.charAt(0).toUpperCase() || 'U'}
-                              </div>
-                            )}
-                          </div>
-                          <button
-                            onClick={() => fileInputRef.current?.click()}
-                            className="absolute bottom-0 right-0 bg-almond-5 hover:bg-almond-6 text-white p-2 rounded-full shadow-lg transition-colors cursor-pointer"
-                            type="button"
-                            aria-label="Upload avatar"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                          </button>
-                          <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept="image/*"
-                            onChange={handleAvatarUpload}
-                            className="hidden"
-                          />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-medium text-gray-900">{t('hello')} <span className="font-semibold">{profile.name}</span></h3>
-                          <p className="text-md text-gray-500">{t('profilePictureDesc')}</p>
-                        </div>
-                      </div>
-
-                      {/* Form Fields */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                            {t('fullName')} <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            id="name"
-                            value={profile.name}
-                            onChange={(e) => handleInputChange('name', e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors form-input ${errors.name ? 'border-red-500' : 'border-gray-300'
-                              }`}
-                            placeholder={t('fullNamePlaceholder')}
-                          />
-                          {errors.name && (
-                            <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                            {t('emailAddress')} <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="email"
-                            id="email"
-                            value={profile.email}
-                            onChange={(e) => handleInputChange('email', e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors form-input ${errors.email ? 'border-red-500' : 'border-gray-300'
-                              }`}
-                            placeholder={t('emailPlaceholder')}
-                          />
-                          {errors.email && (
-                            <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                            {t('phoneNumber')}
-                          </label>
-                          <input
-                            type="tel"
-                            id="phone"
-                            value={profile.phone}
-                            onChange={(e) => handleInputChange('phone', e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors form-input ${errors.phone ? 'border-red-500' : 'border-gray-300'
-                              }`}
-                            placeholder={t('phonePlaceholder')}
-                          />
-                          {errors.phone && (
-                            <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700 mb-2">
-                            {t('postalCode')}
-                          </label>
-                          <input
-                            type="text"
-                            id="postalCode"
-                            value={profile.postalCode}
-                            onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors form-input ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
-                              }`}
-                            placeholder={t('postalCodePlaceholder')}
-                          />
-                          {errors.postalCode && (
-                            <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
-                            {t('city')}
-                          </label>
-                          <input
-                            type="text"
-                            id="city"
-                            value={profile.city}
-                            onChange={(e) => handleInputChange('city', e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors form-input ${errors.city ? 'border-red-500' : 'border-gray-300'
-                              }`}
-                            placeholder={t('cityPlaceholder')}
-                          />
-                          {errors.city && (
-                            <p className="mt-1 text-sm text-red-600">{errors.city}</p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-                            {t('address')}
-                          </label>
-                          <input
-                            type="text"
-                            id="address"
-                            value={profile.address}
-                            onChange={(e) => handleInputChange('address', e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors form-input ${errors.address ? 'border-red-500' : 'border-gray-300'
-                              }`}
-                            placeholder={t('addressPlaceholder')}
-                          />
-                          {errors.address && (
-                            <p className="mt-1 text-sm text-red-600">{errors.address}</p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-                        <button
-                          onClick={handleSignOut}
-                          className="text-xs sm:text-base bg-red-200 rounded-lg px-4 py-3 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
-                        >
-                          {tCommon('logout')}
-                        </button>
-                        <button
-                          onClick={handleReset}
-                          disabled={!hasChanges() || isSaving}
-                          className="text-xs sm:text-base px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
-                        >
-                          {t('reset')}
-                        </button>
-                        <button
-                          onClick={handleSave}
-                          disabled={!hasChanges() || isSaving}
-                          className="text-xs sm:text-base px-6 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
-                        >
-                          {isSaving && (
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white loading-spinner"></div>
-                          )}
-                          <span>{isSaving ? t('saving') : t('saveChanges')}</span>
-                        </button>
-                      </div>
+          <div className="space-y-8">
+            {/* Avatar Section */}
+            <div className="flex items-center space-x-6">
+              <div className="relative profile-avatar">
+                <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                  {profile.image ? (
+                    <Image
+                      src={profile.image}
+                      alt="Profile Avatar"
+                      width={96}
+                      height={96}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-semibold">
+                      {profile.name.charAt(0).toUpperCase() || 'U'}
                     </div>
-                  </div>
-                )
-              },
-              {
-                title: t('tabs.orders'),
-                value: "orders",
-                content: (
-                  <div className="bg-almond-1 rounded-lg shadow-lg p-8">
-                    <div className="mb-8">
-                      <h1 className="text-3xl font-bold text-gray-900 mb-2">{tOrders('title')}</h1>
-                      <p className="text-gray-600">{tOrders('subtitle')}</p>
-                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors"
+                  type="button"
+                  aria-label="Upload avatar"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  className="hidden"
+                />
+              </div>
+              <div>
+                <h3 className="text-xl font-medium text-gray-900">{t('hello')} <span className="font-semibold">{profile.name}</span></h3>
+                <p className="text-md text-gray-500">{t('profilePictureDesc')}</p>
+              </div>
+            </div>
 
-                    {orders.length === 0 ? (
-                      <div className="text-center py-12">
-                        <div className="text-6xl mb-4">📦</div>
-                        <h2 className="text-2xl font-semibold text-gray-700 mb-2">{tOrders('noOrders')}</h2>
-                        <p className="text-gray-500 mb-6">{tOrders('noOrdersDesc')}</p>
-                        <Link
-                          href="/products"
-                          className="bg-almond-6 hover:bg-almond-5 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-                        >
-                          {tOrders('startShopping')}
-                        </Link>
-                      </div>
-                    ) : (
-                      <div className="space-y-6">
-                        {orders.map((order) => (
-                          <div key={order.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-                            {/* Order Header */}
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 pb-4 border-b border-gray-100">
-                              <div className="mb-2 sm:mb-0">
-                                <h3 className="text-lg font-semibold text-gray-900">
-                                  {tOrders('orderNumber')}: {order.id.slice(-8).toUpperCase()}
-                                </h3>
-                                <p className="text-sm text-gray-500">{formatDate(order.createdAt)}</p>
-                              </div>
-                              <div className="flex flex-col text-center sm:items-end">
-                                <span className={`inline-flex px-3 py-1 rounded-full justify-center text-sm font-medium ${getStatusColor(order.status)}`}>
-                                  {getStatusText(order.status)}
-                                </span>
-                                <p className="text-lg font-bold text-gray-900 mt-1">¥{order.total.toLocaleString()}</p>
-                              </div>
-                            </div>
+            {/* Form Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('fullName')} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={profile.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.name ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder={t('fullNamePlaceholder')}
+                />
+                {errors.name && (
+                  <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                )}
+              </div>
 
-                            {/* Order Items */}
-                            <div className="space-y-3">
-                              {order.items.map((item, index) => (
-                                <div key={index} className="flex items-center space-x-4">
-                                  <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                                    <Image
-                                      src={item.image}
-                                      alt={item.name}
-                                      width={64}
-                                      height={64}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <h4 className="text-sm font-medium text-gray-900 truncate">{item.name}</h4>
-                                    <p className="text-sm text-gray-500 truncate">{item.description}</p>
-                                    <div className="flex items-center space-x-4 mt-1">
-                                      <span className="text-sm text-gray-600">{tOrders('quantity')}: {item.quantity}</span>
-                                      <span className="text-sm font-medium text-gray-900">¥{item.price.toLocaleString()}</span>
-                                    </div>
-                                  </div>
-                                  <div className="text-right">
-                                    <p className="text-sm font-medium text-gray-900">
-                                      ¥{(item.price * item.quantity).toLocaleString()}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('emailAddress')} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={profile.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder={t('emailPlaceholder')}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                )}
+              </div>
 
-                            <div className='flex justify-between flex-col mt-4 pt-4 border-t border-gray-200 gap-4 md:flex-row md:items-center'>
-                              {/* Shipping Info */}
-                              <div>
-                                <h4 className="text-sm font-medium text-gray-900 mb-2">{tOrders('shippingAddress')}</h4>
-                                <div className="text-sm text-gray-600">
-                                  <p>{order.shippingAddress.fullName}</p>
-                                  <p>{order.shippingAddress.address}</p>
-                                  <p>{order.shippingAddress.city}, {order.shippingAddress.postalCode}</p>
-                                  <p>{order.shippingAddress.phone}</p>
-                                </div>
-                              </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('phoneNumber')}
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  value={profile.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder={t('phonePlaceholder')}
+                />
+                {errors.phone && (
+                  <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                )}
+              </div>
 
-                              {/* Order Summary */}
-                              <div>
-                                <div className="flex justify-end">
-                                  <div className="w-64 space-y-1 text-sm">
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">{tOrders('subtotal')}:</span>
-                                      <span>¥{order.subtotal.toLocaleString()}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">{tOrders('tax')}:</span>
-                                      <span>¥{order.tax.toLocaleString()}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">{tOrders('shipping')}:</span>
-                                      <span>{order.shipping === 0 ? tOrders('free') : `¥${order.shipping.toLocaleString()}`}</span>
-                                    </div>
-                                    <div className="flex justify-between font-semibold text-base pt-1 border-t">
-                                      <span>{tOrders('total')}:</span>
-                                      <span>¥{order.total.toLocaleString()}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+              <div>
+                <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('postalCode')}
+                </label>
+                <input
+                  type="text"
+                  id="postalCode"
+                  value={profile.postalCode}
+                  onChange={(e) => handleInputChange('postalCode', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder={t('postalCodePlaceholder')}
+                />
+                {errors.postalCode && (
+                  <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
+                )}
+              </div>
 
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )
-              },
-              {
-                title: t('tabs.review'),
-                value: "review",
-                content: (
-                  <div className="bg-almond-1 rounded-lg shadow-lg p-8">
-                    <h3 className="text-xl font-semibold mb-4">{t('tabs.review')}</h3>
-                    <p>This is the review tab content. You can customize this later.</p>
-                  </div>
-                )
-              }
-            ]}
-            containerClassName="mb-4"
-            tabClassName="text-xs sm:text-base px-6 py-3 rounded-full font-medium transition-colors cursor-pointer"
-            contentClassName="relative z-10"
-          />
+              <div>
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('city')}
+                </label>
+                <input
+                  type="text"
+                  id="city"
+                  value={profile.city}
+                  onChange={(e) => handleInputChange('city', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.city ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder={t('cityPlaceholder')}
+                />
+                {errors.city && (
+                  <p className="mt-1 text-sm text-red-600">{errors.city}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('address')}
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  value={profile.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.address ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder={t('addressPlaceholder')}
+                />
+                {errors.address && (
+                  <p className="mt-1 text-sm text-red-600">{errors.address}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+              <button
+                onClick={handleSignOut}
+                className="text-xs sm:text-base bg-red-200 rounded-lg px-4 py-3 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
+              >
+                {tCommon('logout')}
+              </button>
+              <button
+                onClick={handleReset}
+                disabled={!hasChanges() || isSaving}
+                className="text-xs sm:text-base px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
+              >
+                {t('reset')}
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={!hasChanges() || isSaving}
+                className="text-xs sm:text-base px-6 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
+              >
+                {isSaving && (
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white loading-spinner"></div>
+                )}
+                <span>{isSaving ? t('saving') : t('saveChanges')}</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Image Crop Modal */}
@@ -747,8 +526,6 @@ export default function Mypage() {
           />
         )}
       </main>
-
-
       <Footer />
     </div>
   );

@@ -162,13 +162,9 @@
   "mypage": {
     "home": "Home",
     "title": "My Page",
-    "tabs": {
-      "profile": "Profile",
-      "orders": "Orders",
-      "review": "Reviews"
-    },
     "hello": "Hi,",
     "profilePictureDesc": "Click the camera icon to upload a new avatar",
+    "viewOrders": "View Orders",
     "fullName": "Full Name",
     "fullNamePlaceholder": "Enter your full name",
     "emailAddress": "Email Address",
