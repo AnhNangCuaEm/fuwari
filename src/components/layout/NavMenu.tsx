@@ -25,7 +25,7 @@ export default function NavMenu() {
         <nav className="relative flex gap-2">
             {/*Search - Always visible */}
             <div className="flex items-center">
-                <button 
+                <button
                     onClick={() => setIsSearchModalOpen(true)}
                     className="flex items-center font-bold gap-2 pl-3 pr-2 py-1 rounded-4xl bg-[#ffffff99] cursor-pointer hover:bg-[#ffffffaa] transition-colors"
                 >
@@ -119,6 +119,15 @@ export default function NavMenu() {
                         onClick={() => setIsOpen(false)}
                     >
                         🛍️ {t('common.products')}
+                    </Link>
+                </li>
+                <li className="border-b border-gray-200 last:border-b-0">
+                    <Link
+                        href="/orders"
+                        className="block px-4 py-3 hover:bg-gray-50 transition-colors"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        📦 {t('common.orders')}
                     </Link>
                 </li>
                 <li className="border-b border-gray-200 last:border-b-0">
