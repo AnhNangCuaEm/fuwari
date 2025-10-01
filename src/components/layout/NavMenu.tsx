@@ -86,7 +86,7 @@ export default function NavMenu() {
 
             {/* Menu - Toggle visibility */}
             <ul className={`
-                absolute top-12 right-0 w-56 bg-white shadow-lg rounded-xl overflow-hidden
+                absolute top-12 right-0 w-56 bg-almond-1 shadow-lg rounded-xl overflow-hidden
                 transition-all duration-300 ease-in-out z-50
                 ${isOpen
                     ? 'opacity-100 visible transform translate-y-0'
@@ -97,8 +97,8 @@ export default function NavMenu() {
                 {isAuthenticated && user && (
                     <li className="border-b border-gray-300 bg-gray-50">
                         <div className="px-4 py-3">
-                            <p className="font-semibold text-gray-800">{user.name}</p>
-                            <p className="text-sm text-gray-600">{user.email}</p>
+                            <p className="font-semibold text-gray-800 truncate">{user.name}</p>
+                            <p className="text-sm text-gray-600 truncate">{user.email}</p>
                         </div>
                     </li>
                 )}

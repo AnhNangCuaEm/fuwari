@@ -15,7 +15,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart()
     const t = useTranslations();
     const [showRemoveAlert, setShowRemoveAlert] = useState(false);
-        const [itemToRemove, setItemToRemove] = useState<number | null>(null);
+    const [itemToRemove, setItemToRemove] = useState<number | null>(null);
 
 
 
@@ -44,12 +44,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
             {/* Drawer */}
             <div className={`
-                fixed top-0 right-0 h-full w-96 bg-white shadow-xl z-50 flex flex-col
+                fixed top-0 right-0 h-full w-96 bg-almond-1 shadow-xl z-50 flex flex-col
                 transform transition-transform duration-300 ease-in-out
                 ${isOpen ? 'translate-x-0' : 'translate-x-full'}
             `}>
                 {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b bg-white flex-shrink-0">
+                <div className="flex items-center justify-between p-4 border-b bg-almond-1 flex-shrink-0">
                     <h2 className="text-xl font-bold">{t('shopping.cart.title')}</h2>
                     <button
                         onClick={onClose}
@@ -82,14 +82,16 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                                         <Image
                                             src={item.image}
                                             alt={item.name}
-                                            width={80}
-                                            height={80}
-                                            className="rounded-lg object-cover"
+                                            width={70}
+                                            height={70}
+                                            className="w-24 h-24 rounded-lg object-cover"
                                         />
                                     </Link>
                                     <div className="flex-1 min-w-0">
-                                        <h4 className="font-semibold text-gray-900 truncate">{item.name}</h4>
-                                        <p className="text-green-600 font-bold text-lg">¥{item.price.toLocaleString()}</p>
+                                        <div>
+                                            <h4 className="font-semibold text-gray-900 truncate">{item.name}</h4>
+                                            <p className="text-green-600 font-bold text-lg">¥{item.price.toLocaleString()}</p>
+                                        </div>
 
                                         {/* Quantity Controls */}
                                         <div className="flex items-center justify-between mt-3">
@@ -125,7 +127,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
                 {/* Footer */}
                 {cartItems.length > 0 && (
-                    <div className="border-t bg-white p-4 space-y-4 flex-shrink-0">
+                    <div className="border-t bg-almond-1 p-4 space-y-4 flex-shrink-0">
                         {/* Summary */}
                         <div className="space-y-2">
                             <div className="flex justify-between font-bold text-xl">

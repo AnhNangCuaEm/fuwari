@@ -505,7 +505,7 @@ export default function Mypage() {
                 className="text-xs sm:text-base px-6 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
               >
                 {isSaving && (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white loading-spinner"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-almond-5 loading-spinner"></div>
                 )}
                 <span>{isSaving ? t('saving') : t('saveChanges')}</span>
               </button>

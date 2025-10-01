@@ -27,12 +27,13 @@ export default function Footer() {
             <Image
                 src="/logo.svg"
                 alt="Fuwari Sweet Shop Logo"
-                width={250}
-                height={100}
-                className="mx-auto"
+                width={200}
+                height={50}
+                priority={true}
+                className="w-auto h-auto mx-auto"
             />
-            <p className="text-center">
-                &copy; {new Date().getFullYear()}All rights reserved.
+            <p className="text-center text-sm">
+                &copy; {new Date().getFullYear()} All rights reserved.
             </p>
             </div>
         </footer>

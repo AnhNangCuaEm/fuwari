@@ -1,9 +1,9 @@
 'use client';
 
-import {useLocale} from 'next-intl';
-import {useRouter, usePathname} from '@/i18n/navigation';
-import {routing} from '@/i18n/routing';
-import {useTranslations} from 'next-intl';
+import { useLocale } from 'next-intl';
+import { useRouter, usePathname } from '@/i18n/navigation';
+import { routing } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 interface LanguageModalProps {
   isOpen: boolean;
@@ -32,10 +32,10 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
     } catch (error) {
       console.error('Error backing up cart before locale change:', error)
     }
-    
+
     // Small delay to ensure localStorage operations complete
     setTimeout(() => {
-      router.replace(pathname, {locale: newLocale});
+      router.replace(pathname, { locale: newLocale });
       onClose();
     }, 10);
   };
@@ -45,11 +45,11 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-[#000000c2]" 
+      <div
+        className="absolute inset-0 bg-[#000000c2]"
         onClick={onClose}
       />
-      
+
       {/* Modal */}
       <div className="relative bg-almond-1 rounded-xl shadow-xl p-6 w-70 max-w-sm mx-4">
         <div className="flex justify-between items-center mb-4">
@@ -58,22 +58,23 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer"
+            className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
           >
-            ×
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         </div>
-        
+
         <div className="space-y-2">
           {routing.locales.map((lng) => (
             <button
               key={lng}
               onClick={() => handleLocaleChange(lng)}
-              className={`w-full text-left px-4 py-3 rounded-lg transition-colors cursor-pointer ${
-                locale === lng
+              className={`w-full text-left px-4 py-3 rounded-lg transition-colors cursor-pointer ${locale === lng
                   ? 'bg-almond-5 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
+                }`}
             >
               <div className="flex items-center justify-between">
                 <span className="font-medium">{languageNames[lng]}</span>

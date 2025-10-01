@@ -117,7 +117,7 @@ export default function OrdersPage() {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-almond-5 mx-auto"></div>
                     <p className="mt-4 text-gray-600">{t('common.loading')}</p>
                 </div>
             </div>
@@ -152,7 +152,7 @@ export default function OrdersPage() {
                     <span className="text-gray-700">{t('orders.title')}</span>
                 </nav>
 
-                <div className="bg-white rounded-lg shadow-lg p-8">
+                <div className="bg-almond-1 rounded-lg shadow-lg p-8">
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('orders.title')}</h1>
                         <p className="text-gray-600">{t('orders.subtitle')}</p>
@@ -171,7 +171,7 @@ export default function OrdersPage() {
                             <p className="text-gray-500 mb-6">{t('orders.noOrdersDesc')}</p>
                             <Link
                                 href="/products"
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                                className="bg-almond-5 hover:bg-almond-6 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
                             >
                                 {t('orders.startShopping')}
                             </Link>
