@@ -95,7 +95,7 @@ export default function RegisterForm() {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-almond-5 focus:border-transparent"
             placeholder={t('auth.namePlaceholder')}
           />
         </div>
@@ -111,7 +111,7 @@ export default function RegisterForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-almond-5 focus:border-transparent"
             placeholder="your@email.com"
           />
         </div>
@@ -127,7 +127,7 @@ export default function RegisterForm() {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-almond-5 focus:border-transparent"
             placeholder={t('auth.passwordPlaceholder')}
           />
         </div>
@@ -143,7 +143,7 @@ export default function RegisterForm() {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-almond-5 focus:border-transparent"
             placeholder="••••••••"
           />
         </div>

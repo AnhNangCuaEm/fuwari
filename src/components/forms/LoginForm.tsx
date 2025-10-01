@@ -121,7 +121,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-almond-5 text-white py-2 px-4 rounded-md cursor-pointer hover:bg-almond-6 focus:outline-none focus:ring-2 focus:ring-almond-5 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? t('auth.signing') : t('common.signin')}
         </button>
