@@ -36,7 +36,7 @@ export default function ProductsPage() {
             <Header />
             <div className="container mx-auto px-4 py-8 flex-1">
                 {/* Breadcrumb */}
-                <nav className="mb-8">
+                <nav className="mb-4">
                     <Link
                         href="/"
                         className="text-almond-6 hover:text-almond-8 mr-2"
@@ -54,30 +54,29 @@ export default function ProductsPage() {
                     {products.map((product: Product) => (
                         <div
                             key={product.id}
-                            className="flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                            className="relative flex flex-col bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-80"
                         >
-                            <Link href={`/products/${product.id}`}>
-                                <div className="overflow-hidden rounded-t-lg">
-                                    <Image
-                                        src={product.image}
-                                        alt={getLocalizedText(product.name, product.engName)}
-                                        width={300}
-                                        height={300}
-                                        className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                                    />
-                                </div>
+                            {/* Background Image */}
+                            <Link href={`/products/${product.id}`} className="absolute inset-0">
+                                <Image
+                                    src={product.image}
+                                    alt={getLocalizedText(product.name, product.engName)}
+                                    fill
+                                    className="object-cover hover:scale-105 transition-transform duration-300"
+                                />
                             </Link>
 
-                            <div className="flex flex-col justify-between p-4 flex-1">
+                            {/* Product Info Overlay */}
+                            <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-between p-3 bg-white/50 backdrop-blur-sm">
                                 <Link href={`/products/${product.id}`}>
-                                    <h2 className="text-xl font-semibold mb-2 hover:text-orange-600">
+                                    <h2 className="text-xl font-semibold mb-2">
                                         {getLocalizedText(product.name, product.engName)}
                                     </h2>
                                 </Link>
-                                <p className="text-gray-600 mb-3 line-clamp-2">
+                                <p className="text-gray-800 mb-3 line-clamp-2 truncate">
                                     {getLocalizedText(product.description, product.engDescription)}
                                 </p>
-                                <div className="flex justify-between items-center mb-3">
+                                <div className="flex justify-between items-center">
                                     <span className="text-lg font-bold text-green-600">
                                         {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} &yen;
                                     </span>
@@ -87,25 +86,18 @@ export default function ProductsPage() {
                                             : (locale === 'en' ? 'Sold Out' : '売り切れ')
                                         }
                                     </span>
-                                </div>
-                                <div className="flex gap-2">
-                                    <Link
-                                        href={`/products/${product.id}`}
-                                        className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium text-center transition-colors cursor-pointer"
-                                    >
-                                        {t("shopping.detail")}
-                                    </Link>
                                     <button
                                         onClick={(e) => handleAddToCart(product, e)}
                                         disabled={product.quantity === 0}
-                                        className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer ${product.quantity > 0
+                                        className={`py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer ${product.quantity > 0
                                             ? 'bg-almond-6 hover:bg-almond-5 text-white'
-                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed!'
+                                            : 'bg-gray-400 text-gray-700 cursor-not-allowed!'
                                             }`}
                                     >
                                         {product.quantity > 0 ? t("shopping.cart.addToCart") : t("shopping.stock.outOfStock")}
                                     </button>
                                 </div>
+
                             </div>
                         </div>
                     ))}
