@@ -51,7 +51,7 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
       />
       
       {/* Modal */}
-      <div className="relative bg-white rounded-lg shadow-xl p-6 w-70 max-w-sm mx-4">
+      <div className="relative bg-almond-1 rounded-xl shadow-xl p-6 w-70 max-w-sm mx-4">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold text-gray-900">
             {t('common.selectLanguage')}
@@ -72,7 +72,7 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
               className={`w-full text-left px-4 py-3 rounded-lg transition-colors cursor-pointer ${
                 locale === lng
                   ? 'bg-almond-5 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
               <div className="flex items-center justify-between">

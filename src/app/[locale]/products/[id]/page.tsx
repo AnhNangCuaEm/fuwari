@@ -114,7 +114,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                             alt={getLocalizedText(product.name, product.engName)}
                                             width={400}
                                             height={400}
-                                            className="w-auto max-h-full object-contain rounded-lg"
+                                            className="w-auto h-full object-contain rounded-lg"
                                         />
                                     </div>
                                 )}

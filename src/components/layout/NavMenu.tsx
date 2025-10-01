@@ -147,7 +147,7 @@ export default function NavMenu() {
                             setIsLanguageModalOpen(true)
                             setIsOpen(false)
                         }}
-                        className="w-full text-left block px-4 py-3 hover:bg-gray-50 transition-colors"
+                        className="w-full text-left block px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                         🌐 {t('common.language')}
                     </button>

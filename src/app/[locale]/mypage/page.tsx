@@ -313,7 +313,7 @@ export default function Mypage() {
                 title: t('tabs.profile'),
                 value: "profile",
                 content: (
-                  <div className="bg-white rounded-xl shadow-lg p-8">
+                  <div className="bg-almond-1 rounded-xl shadow-lg p-8">
 
                     {message && (
                       <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
@@ -483,21 +483,21 @@ export default function Mypage() {
                       <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                         <button
                           onClick={handleSignOut}
-                          className="block bg-red-200 rounded-lg px-4 py-3 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
+                          className="text-xs sm:text-base bg-red-200 rounded-lg px-4 py-3 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
                         >
                           {tCommon('logout')}
                         </button>
                         <button
                           onClick={handleReset}
                           disabled={!hasChanges() || isSaving}
-                          className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
+                          className="text-xs sm:text-base px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
                         >
                           {t('reset')}
                         </button>
                         <button
                           onClick={handleSave}
                           disabled={!hasChanges() || isSaving}
-                          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
+                          className="text-xs sm:text-base px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
                         >
                           {isSaving && (
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white loading-spinner"></div>
@@ -513,7 +513,7 @@ export default function Mypage() {
                 title: t('tabs.orders'),
                 value: "orders",
                 content: (
-                  <div className="bg-white rounded-lg shadow-lg p-8">
+                  <div className="bg-almond-1 rounded-lg shadow-lg p-8">
                     <h3 className="text-xl font-semibold mb-4">{t('tabs.orders')}</h3>
                     <p>This is the orders tab content. You can customize this later.</p>
                   </div>
@@ -523,7 +523,7 @@ export default function Mypage() {
                 title: t('tabs.review'),
                 value: "review",
                 content: (
-                  <div className="bg-white rounded-lg shadow-lg p-8">
+                  <div className="bg-almond-1 rounded-lg shadow-lg p-8">
                     <h3 className="text-xl font-semibold mb-4">{t('tabs.review')}</h3>
                     <p>This is the review tab content. You can customize this later.</p>
                   </div>
@@ -531,7 +531,7 @@ export default function Mypage() {
               }
             ]}
             containerClassName="mb-4"
-            tabClassName="px-6 py-3 rounded-full font-medium transition-colors cursor-pointer"
+            tabClassName="text-xs sm:text-base px-6 py-3 rounded-full font-medium transition-colors cursor-pointer"
             contentClassName="relative z-10"
           />
         </div>

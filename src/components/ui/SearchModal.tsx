@@ -102,7 +102,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             />
 
             {/* Modal */}
-            <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="relative bg-almond-1 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
                 {/* Search Controls */}
                 <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <div className="space-y-4">
