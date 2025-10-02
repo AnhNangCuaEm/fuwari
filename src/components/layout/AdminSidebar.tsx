@@ -69,7 +69,7 @@ export default function AdminSidebar() {
         },
         {
             name: "User Management",
-            href: "/admin/users", 
+            href: "/admin/users",
             icon: UsersIcon,
         },
         {
@@ -84,6 +84,18 @@ export default function AdminSidebar() {
         },
     ]
 
+    const signOutAlert = () => {
+        if (confirm("Are you sure you want to sign out?")) {
+            handleSignOut()
+        }
+    }
+
+    const backHomeAlert = () => {
+        if (confirm("Are you sure you want to go back to the home page?")) {
+            window.location.href = "/"
+        }
+    }
+
     const handleSignOut = () => {
         signOut({ callbackUrl: '/' })
     }
@@ -93,9 +105,8 @@ export default function AdminSidebar() {
     }
 
     return (
-        <div className={`bg-gray-900 text-white h-screen transition-all duration-300 ease-in-out ${
-            isExpanded ? 'w-64' : 'w-20'
-        } flex flex-col`}>
+        <div className={`bg-gray-900 text-white h-screen transition-all duration-300 ease-in-out ${isExpanded ? 'w-64' : 'w-20'
+            } flex flex-col`}>
             {/* Header */}
             <div className="p-4 border-b border-gray-700">
                 <div className="flex items-center justify-center gap-16">
@@ -131,29 +142,27 @@ export default function AdminSidebar() {
                 <ul className="space-y-2">
                     {/* Home Link */}
                     <li>
-                        <Link
-                            href="/"
-                            className={`flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${
-                                pathname === '/' ? 'bg-gray-700 text-blue-400' : ''
-                            } ${isExpanded ? 'justify-start' : 'justify-center'}`}
+                        <button
+                            onClick={backHomeAlert}
+                            className={`w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${pathname === '/' ? 'bg-gray-700 text-blue-400' : ''
+                                } ${isExpanded ? 'justify-start' : 'justify-center'}`}
                         >
                             <HomeIcon className="w-5 h-5" />
                             {isExpanded && <span className="ml-3">Home</span>}
-                        </Link>
+                        </button>
                     </li>
 
                     {/* Admin Menu Items */}
                     {menuItems.map((item) => {
                         const Icon = item.icon
                         const isActive = isActiveRoute(item.href)
-                        
+
                         return (
                             <li key={item.name}>
                                 <Link
                                     href={item.href}
-                                    className={`flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${
-                                        isActive ? 'bg-gray-700 text-blue-400' : ''
-                                    } ${isExpanded ? 'justify-start' : 'justify-center'}`}
+                                    className={`flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${isActive ? 'bg-gray-700 text-blue-400' : ''
+                                        } ${isExpanded ? 'justify-start' : 'justify-center'}`}
                                 >
                                     <Icon className="w-5 h-5" />
                                     {isExpanded && <span className="ml-3">{item.name}</span>}
@@ -167,7 +176,7 @@ export default function AdminSidebar() {
             {/* Footer */}
             <div className="p-4 border-t border-gray-700">
                 <button
-                    onClick={handleSignOut}
+                    onClick={signOutAlert}
                     className="flex items-center w-full p-3 rounded-lg hover:bg-red-600 transition-colors text-red-400 hover:text-white"
                 >
                     <ArrowRightOnRectangleIcon className="w-5 h-5" />

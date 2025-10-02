@@ -177,22 +177,25 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                     key={product.id}
                                     href={`/products/${product.id}`}
                                     onClick={handleClose}
-                                    className="block bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+                                    className="relative flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-80"
                                 >
-                                    <div className="aspect-square relative">
+                                    {/* Background Image */}
+                                    <div className="absolute inset-0">
                                         <Image
                                             src={product.image}
-                                            alt={product.name}
+                                            alt={`${product.name} (${product.engName})`}
                                             fill
-                                            className="object-cover"
+                                            className="object-cover rounded-xl hover:scale-105 transition-transform duration-300"
                                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         />
                                     </div>
-                                    <div className="p-3">
-                                        <h3 className="font-medium text-sm text-gray-900 mb-1 line-clamp-2">
+
+                                    {/* Product Info Overlay */}
+                                    <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-between p-3 bg-white/50 backdrop-blur-sm">
+                                        <h3 className="text-lg font-semibold mb-2 text-gray-900">
                                             {product.name}
                                         </h3>
-                                        <p className="text-xs text-gray-500 mb-2 line-clamp-1">
+                                        <p className="text-xs text-gray-800 mb-2 line-clamp-1">
                                             {product.engName}
                                         </p>
                                         <div className="flex justify-between items-center">
@@ -200,8 +203,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                 ¥{product.price.toLocaleString()}
                                             </span>
                                             <span className={`text-xs px-2 py-1 rounded ${product.quantity > 0
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-red-100 text-red-800'
+                                                ? 'bg-green-100/80 text-green-800'
+                                                : 'bg-red-100/80 text-red-800'
                                                 }`}>
                                                 {product.quantity > 0 ? t('shopping.stock.inStock') : t('shopping.stock.outOfStock')}
                                             </span>

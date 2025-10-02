@@ -63,6 +63,7 @@ export default function ProductsPage() {
                                     alt={getLocalizedText(product.name, product.engName)}
                                     fill
                                     className="object-cover hover:scale-105 transition-transform duration-300"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                 />
                             </Link>
 
