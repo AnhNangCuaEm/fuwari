@@ -186,7 +186,11 @@
     "fileSizeError": "ファイルサイズは5MB未満である必要があります",
     "fileTypeError": "画像ファイルを選択してください",
     "avatarUploadSuccess": "アバターが正常にアップロードされました！",
-    "avatarUploadError": "アバターのアップロードに失敗しました。もう一度お試しください。"
+    "avatarUploadError": "アバターのアップロードに失敗しました。もう一度お試しください。",
+    "logoutAlertTitle": "ログアウトしてもよろしいですか？",
+    "logoutAlertMsg": "アカウントに再度アクセスするには、再度ログインする必要があります。",
+    "logoutConfirm": "ログアウト",
+    "cancel": "キャンセル"
   },
   "about": {
     "pjName": "プロジェクト名",

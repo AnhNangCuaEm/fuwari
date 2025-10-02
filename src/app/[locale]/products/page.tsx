@@ -90,7 +90,7 @@ export default function ProductsPage() {
                                         onClick={(e) => handleAddToCart(product, e)}
                                         disabled={product.quantity === 0}
                                         className={`py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer ${product.quantity > 0
-                                            ? 'bg-almond-6 hover:bg-almond-5 text-white'
+                                            ? 'bg-almond-6/80 hover:bg-almond-5/80 text-white'
                                             : 'bg-gray-400 text-gray-700 cursor-not-allowed!'
                                             }`}
                                     >

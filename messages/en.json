@@ -186,7 +186,11 @@
     "fileSizeError": "File size must be less than 5MB",
     "fileTypeError": "Please select an image file",
     "avatarUploadSuccess": "Avatar uploaded successfully!",
-    "avatarUploadError": "Failed to upload avatar. Please try again."
+    "avatarUploadError": "Failed to upload avatar. Please try again.",
+    "logoutAlertTitle": "Are you sure you want to logout?",
+    "logoutAlertMsg": "You will need to log in again to access your account.",
+    "logoutConfirm": "Logout",
+    "cancel": "Cancel"
   },
   "about": {
     "pjName": "Project Name",

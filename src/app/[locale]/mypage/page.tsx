@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 import { validateAllFields } from '@/lib/validation';
 import Link from 'next/link';
 import { signOut } from "next-auth/react"
+import AlertModal from "@/components/ui/AlertModal";
 
 import '@/css/mypage.css';
 
@@ -25,11 +26,17 @@ interface UserProfile {
 }
 
 export default function Mypage() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const t = useTranslations('mypage');
   const tCommon = useTranslations('common');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const handleConfirmLogout = () => {
+    setShowLogoutModal(false);
+    handleSignOut();
+  };
 
   const [profile, setProfile] = useState<UserProfile>({
     name: '',
@@ -250,6 +257,16 @@ export default function Mypage() {
         };
         setProfile(updatedProfile);
         setOriginalProfile(updatedProfile);
+
+        // Update session to reflect the new name and image
+        await update({
+          ...session,
+          user: {
+            ...session?.user,
+            name: data.user.name,
+            image: data.user.image
+          }
+        });
       } else {
         setOriginalProfile(profile);
       }
@@ -401,9 +418,8 @@ export default function Mypage() {
                   type="email"
                   id="email"
                   value={profile.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.email ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  disabled
+                  className="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed form-input border-gray-300"
                   placeholder={t('emailPlaceholder')}
                 />
                 {errors.email && (
@@ -487,7 +503,7 @@ export default function Mypage() {
             {/* Action Buttons */}
             <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
               <button
-                onClick={handleSignOut}
+                onClick={() => setShowLogoutModal(true)}
                 className="text-xs sm:text-base bg-red-200 rounded-lg px-4 py-3 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
               >
                 {tCommon('logout')}
@@ -512,6 +528,19 @@ export default function Mypage() {
             </div>
           </div>
         </div>
+
+        {/* Remove Item Alert Modal */}
+        <AlertModal
+          isOpen={showLogoutModal}
+          onClose={() => setShowLogoutModal(false)}
+          title={t("logoutAlertTitle")}
+          message={t("logoutAlertMsg")}
+          type="warning"
+          confirmText={t("logoutConfirm")}
+          cancelText={t("cancel")}
+          onConfirm={handleConfirmLogout}
+          showCancel={true}
+        />
 
         {/* Image Crop Modal */}
         {imageToProcess && cropModalOpen && (
