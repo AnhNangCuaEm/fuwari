@@ -221,6 +221,9 @@
     "free": "Free",
     "statusPaid": "Paid",
     "statusPending": "Pending",
+    "statusProcessing": "Processing",
+    "statusShipped": "Shipped",
+    "statusDelivered": "Delivered",
     "statusCancelled": "Cancelled"
   },
   "search": {
