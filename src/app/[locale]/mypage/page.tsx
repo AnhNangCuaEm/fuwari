@@ -322,20 +322,6 @@ export default function Mypage() {
         </nav>
 
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="mb-8">
-            {/* Quick Actions */}
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/orders"
-                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                {t('viewOrders')}
-              </Link>
-            </div>
-          </div>
 
           {message && (
             <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
@@ -506,31 +492,49 @@ export default function Mypage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-              <button
-                onClick={() => setShowLogoutModal(true)}
-                className="flex items-center gap-1 text-xs sm:text-base sm:px-4 sm:py-3 bg-red-200 rounded-lg px-2 py-2 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
-              >
-                <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M15 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H15" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path><path d="M19 12L15 8M19 12L15 16M19 12H9" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></g></svg>
-                {tCommon('logout')}
-              </button>
-              <button
-                onClick={handleReset}
-                disabled={!hasChanges() || isSaving}
-                className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
-              >
-                {t('reset')}
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={!hasChanges() || isSaving}
-                className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 bg-almond-6 text-white rounded-lg hover:bg-almond-5 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
-              >
-                {isSaving && (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-almond-5 loading-spinner"></div>
-                )}
-                <span>{isSaving ? t('saving') : t('saveChanges')}</span>
-              </button>
+            <div className="flex justify-between flex-col mt-4 pt-4 border-t border-gray-200 gap-4 md:flex-row md:items-center">
+              <div className="flex space-x-3 mb-4 md:mb-0">
+                <Link
+                  href="/orders"
+                  className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
+                >
+                  📦 {t('viewOrders')}
+                </Link>
+                <Link
+                  href="/contact"
+                  className="flex items-center gap-1 text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors"
+                >
+                  <svg width="20px" height="20px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>support</title> <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd"> <g id="support" fill="#000000" transform="translate(42.666667, 42.666667)"> <path d="M379.734355,174.506667 C373.121022,106.666667 333.014355,-2.13162821e-14 209.067688,-2.13162821e-14 C85.1210217,-2.13162821e-14 45.014355,106.666667 38.4010217,174.506667 C15.2012632,183.311569 -0.101643453,205.585799 0.000508304259,230.4 L0.000508304259,260.266667 C0.000508304259,293.256475 26.7445463,320 59.734355,320 C92.7241638,320 119.467688,293.256475 119.467688,260.266667 L119.467688,230.4 C119.360431,206.121456 104.619564,184.304973 82.134355,175.146667 C86.4010217,135.893333 107.307688,42.6666667 209.067688,42.6666667 C310.827688,42.6666667 331.521022,135.893333 335.787688,175.146667 C313.347976,184.324806 298.68156,206.155851 298.667688,230.4 L298.667688,260.266667 C298.760356,283.199651 311.928618,304.070103 332.587688,314.026667 C323.627688,330.88 300.801022,353.706667 244.694355,360.533333 C233.478863,343.50282 211.780225,336.789048 192.906491,344.509658 C174.032757,352.230268 163.260418,372.226826 167.196286,392.235189 C171.132153,412.243552 188.675885,426.666667 209.067688,426.666667 C225.181549,426.577424 239.870491,417.417465 247.041022,402.986667 C338.561022,392.533333 367.787688,345.386667 376.961022,317.653333 C401.778455,309.61433 418.468885,286.351502 418.134355,260.266667 L418.134355,230.4 C418.23702,205.585799 402.934114,183.311569 379.734355,174.506667 Z M76.8010217,260.266667 C76.8010217,269.692326 69.1600148,277.333333 59.734355,277.333333 C50.3086953,277.333333 42.6676884,269.692326 42.6676884,260.266667 L42.6676884,230.4 C42.6676884,224.302667 45.9205765,218.668499 51.2010216,215.619833 C56.4814667,212.571166 62.9872434,212.571166 68.2676885,215.619833 C73.5481336,218.668499 76.8010217,224.302667 76.8010217,230.4 L76.8010217,260.266667 Z M341.334355,230.4 C341.334355,220.97434 348.975362,213.333333 358.401022,213.333333 C367.826681,213.333333 375.467688,220.97434 375.467688,230.4 L375.467688,260.266667 C375.467688,269.692326 367.826681,277.333333 358.401022,277.333333 C348.975362,277.333333 341.334355,269.692326 341.334355,260.266667 L341.334355,230.4 Z"> </path> </g> </g> </g></svg>
+                  {t('contactSupport')}
+                </Link>
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowLogoutModal(true)}
+                  className="flex items-center gap-1 text-xs sm:text-base sm:px-4 sm:py-3 bg-red-200 rounded-lg px-2 py-2 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
+                >
+                  <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M15 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H15" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path><path d="M19 12L15 8M19 12L15 16M19 12H9" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></g></svg>
+                  {tCommon('logout')}
+                </button>
+                <button
+                  onClick={handleReset}
+                  disabled={!hasChanges() || isSaving}
+                  className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
+                >
+                  {t('reset')}
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={!hasChanges() || isSaving}
+                  className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 bg-almond-6 text-white rounded-lg hover:bg-almond-5 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
+                >
+                  {isSaving && (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-almond-5 loading-spinner"></div>
+                  )}
+                  <span>{isSaving ? t('saving') : t('saveChanges')}</span>
+                </button>
+              </div>
+
             </div>
           </div>
         </div>
