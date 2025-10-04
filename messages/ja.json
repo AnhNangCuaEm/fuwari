@@ -206,6 +206,17 @@
     "payment": "決済プラットフォーム",
     "maker": "制作者"
   },
+  "contact": {
+    "title": "お問い合わせ",
+    "subtitle": "ご連絡をお待ちしております！",
+    "Hi": "こんにちは！",
+    "howCanWeHelp": "どのようにお手伝いできますか？",
+    "loggedInMessage": "ご質問やサポートが必要な場合は、サポートチームまでお問い合わせください。お手伝いします！",
+    "notLoggedInMessage": "サポートチームにお問い合わせいただくには、ログインしてください。お手伝いします！",
+    "loginNow": "今すぐログイン",
+    "contactSupport": "サポートに連絡する",
+    "goHome": "ホームに戻る"
+  },
   "orders": {
     "title": "注文履歴",
     "subtitle": "すべての注文を表示・追跡",

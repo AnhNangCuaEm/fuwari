@@ -206,6 +206,17 @@
     "payment": "Payment Platform",
     "maker": "Author"
   },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We would love to hear from you!",
+    "Hi": "Hi!",
+    "howCanWeHelp": "How can we help you?",
+    "loggedInMessage": "If you have any questions or need assistance, please reach out to our support team. We're here to help!",
+    "notLoggedInMessage": "Please log in to contact our support team. We're here to help!",
+    "loginNow": "Log In Now",
+    "contactSupport": "Contact Support",
+    "goHome": "Go Back Home"
+  },
   "orders": {
     "title": "Order History",
     "subtitle": "View and track all your orders",

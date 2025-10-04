@@ -134,7 +134,7 @@ export function ConditionalAuthContent({
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-[50px]">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-almond-5"></div>
             </div>
         )
     }

@@ -3,48 +3,95 @@ import Footer from "@/components/layout/Footer";
 import { ConditionalAuthContent } from "@/components/auth/AuthGuards";
 import { getCurrentUser } from "@/lib/auth-utils";
 import Link from "next/link";
+import { getTranslations } from 'next-intl/server';
+import Image from "next/image";
 
 export default async function ContactPage() {
     const currentUser = await getCurrentUser();
+    const t = await getTranslations('contact');
+
+        const decorativeImages = [
+        '/carouselimg/115.png',
+        '/carouselimg/19.png',
+        '/carouselimg/25.png',
+        '/carouselimg/40.png',
+        '/carouselimg/66.png',
+        '/carouselimg/124.png',
+    ];
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col relative">
+            {/* Background decorative images */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <Image
+                    src={decorativeImages[0]}
+                    alt=""
+                    width={200}
+                    height={200}
+                    className="absolute top-10 left-10 opacity-40 rotate-12 w-32 h-32 object-cover"
+                />
+                <Image
+                    src={decorativeImages[1]}
+                    alt=""
+                    width={150}
+                    height={150}
+                    className="absolute top-20 right-20 opacity-40 -rotate-6 w-24 h-24 object-cover"
+                />
+                <Image
+                    src={decorativeImages[2]}
+                    alt=""
+                    width={180}
+                    height={180}
+                    className="absolute bottom-32 left-16 opacity-40 rotate-45 w-36 h-36 object-cover"
+                />
+                <Image
+                    src={decorativeImages[3]}
+                    alt=""
+                    width={120}
+                    height={120}
+                    className="absolute bottom-20 right-32 opacity-40 -rotate-12 w-32 h-32 object-cover"
+                />
+                <Image
+                    src={decorativeImages[4]}
+                    alt=""
+                    width={160}
+                    height={160}
+                    className="absolute top-1/2 left-8 opacity-40 rotate-30 w-26 h-26 object-cover"
+                />
+                <Image
+                    src={decorativeImages[5]}
+                    alt=""
+                    width={140}
+                    height={140}
+                    className="absolute top-1/3 right-12 opacity-40 -rotate-25 w-22 h-22 object-cover"
+                />
+            </div>
             <Header />
-            <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 flex-1">
-                <div className="max-w-2xl w-full text-center">
-                    <h1 className="text-4xl font-bold mb-6">Contact Page</h1>
+            <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 flex-1 z-10">
+                <div className="max-w-4xl w-fit text-center">
+                    <h1 className="text-4xl font-bold mb-6">{t('title')}</h1>
+                    <p className="text-lg text-gray-600 mb-4">{t('subtitle')}</p>
 
                     {/* Show different content based on auth status */}
                     <div className="bg-white rounded-lg p-6 shadow-md">
                         {currentUser ? (
                             <div>
-                                <p className="text-green-600 mb-4">
-                                    こんにちは！<strong>{currentUser.name}</strong>!
-                                    あなたは<strong>{currentUser.role}</strong>としてログインしています。
-                                </p>
-
-                                {currentUser.role === 'admin' && (
-                                    <div className="bg-red-50 border border-red-200 rounded p-4 mb-4">
-                                        <p className="text-red-700">
-                                            🔧 Adminモード: 特別な情報を表示できます。
-                                        </p>
-                                    </div>
-                                )}
-
-                                <p className="text-gray-600">
-                                    あなたがログインしているので、パーソナライズされたサポートを提供できます。
+                                <p className="text-green-600">
+                                    {t('Hi')} <strong>{currentUser.name}</strong>
+                                    <br />
+                                    {t('howCanWeHelp')}
                                 </p>
                             </div>
                         ) : (
                             <div>
-                                <p className="text-gray-600 mb-4">
-                                    あなたはまだログインしていません。最適なサポートを受けるには、まずログインしてください。
+                                <p className="text-xl text-gray-600 mb-4">
+                                    {t('notLoggedInMessage')}
                                 </p>
                                 <Link
                                     href="/auth/signin"
-                                    className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    className="inline-block px-4 py-2 bg-almond-5 text-white rounded hover:bg-almond-6"
                                 >
-                                    今すぐログイン
+                                    {t('loginNow')}
                                 </Link>
                             </div>
                         )}
@@ -53,13 +100,6 @@ export default async function ContactPage() {
                     {/* Show content only for logged-in users */}
                     <ConditionalAuthContent
                         requireAuth={true}
-                        fallback={
-                            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
-                                <p className="text-yellow-700">
-                                    一部の特別な機能は、ログインすると表示されます。
-                                </p>
-                            </div>
-                        }
                     >
                         <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded">
                             <h3 className="font-semibold text-green-800 mb-2">
