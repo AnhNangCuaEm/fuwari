@@ -43,13 +43,26 @@ docker-compose up -d mysql
 
 ### **ステップ6: データベースをセットアップ（重要！）**
 ```bash
-npm run migrate
+npm run db:init
 ```
+
+このコマンドは2つのことを実行します：
+1. ✅ テーブルを作成（users, products, orders）
+2. ✅ サンプルデータを挿入
 
 成功すると以下のメッセージが表示されます：
 ```
-✅ Migration completed successfully!
+🎉 Initial setup completed!
 ```
+
+その後、migrationを実行（初回は何もしない）:
+```bash
+npm run migrate
+```
+
+**サンプルアカウント:**
+- 管理者: `admin@fuwari.com` / `admin123`
+- ユーザー: `user@example.com` / `user123`
 
 ---
 
@@ -59,6 +72,68 @@ npm run dev
 ```
 
 ブラウザで http://localhost:3000 を開いてください。
+
+---
+
+## 🔄 データベースの変更について
+
+### **データベース構造を変更する時:**
+
+1. 新しいmigrationファイルを作成:
+```bash
+npm run migrate:create add_categories_table
+```
+
+2. 生成されたファイル（`migrations/YYYYMMDDHHMMSS_add_categories_table.sql`）を編集してSQLを追加
+
+3. Migrationをテスト:
+```bash
+npm run migrate
+```
+
+4. 変更をコミット:
+```bash
+git add migrations/
+git commit -m "Add categories table"
+git push
+```
+
+### **メンバーが変更を取得:**
+
+```bash
+git pull
+npm run migrate
+```
+
+**重要:** `npm run migrate` は**新しいmigrationだけ**実行します。既存のデータは保持されます！✨
+
+---
+
+## 🛠️ 便利なコマンド
+
+### **初期セットアップ（テーブル + サンプルデータ）:**
+```bash
+npm run db:init
+```
+
+### **Migrationを実行（変更を適用）:**
+```bash
+npm run migrate
+```
+
+### **データベース完全リセット:**
+```bash
+npm run db:reset
+```
+
+または手動で:
+```bash
+docker-compose down -v
+docker-compose up -d mysql
+# 10秒待ってから
+npm run db:init
+npm run migrate
+```
 
 ---
 
@@ -79,9 +154,12 @@ docker-compose up -d mysql
 # 4. 10秒待つ（重要！）
 
 # 5. データベースをセットアップ
+npm run db:init
+
+# 6. Migrationを実行（初回は何もしない）
 npm run migrate
 
-# 6. 開発サーバーを起動
+# 7. 開発サーバーを起動
 npm run dev
 ```
 
@@ -109,7 +187,7 @@ docker-compose down
 docker-compose up -d mysql
 
 # 10秒待ってから
-npm run migrate
+npm run db:init
 ```
 
 ---
@@ -117,7 +195,7 @@ npm run migrate
 ### **"Table doesn't exist"**
 以下を実行してください：
 ```bash
-npm run migrate
+npm run db:init
 ```
 
 ---
@@ -127,6 +205,7 @@ npm run migrate
 ```bash
 docker-compose down -v
 docker-compose up -d mysql
+npm run db:init
 npm run migrate
 npm run dev
 ```
@@ -149,6 +228,7 @@ docker-compose down
 ```bash
 docker-compose down -v
 docker-compose up -d mysql
+npm run db:init
 npm run migrate
 npm run dev
 ```

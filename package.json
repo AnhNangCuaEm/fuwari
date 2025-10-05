@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "tsx scripts/migrate-json-to-mysql.ts",
+    "db:init": "tsx scripts/init-database.ts",
+    "db:reset": "docker-compose down -v && docker-compose up -d mysql && timeout /t 10 && npm run db:init && npm run migrate",
+    "migrate": "tsx scripts/migrate.ts",
+    "migrate:create": "node --input-type=module scripts/create-migration.js",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f"
