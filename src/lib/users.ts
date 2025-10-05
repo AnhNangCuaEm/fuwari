@@ -1,45 +1,49 @@
-import fs from 'fs/promises';
-import path from 'path';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { User, RegisterData } from '@/types/user';
-
-const USERS_FILE_PATH = path.join(process.cwd(), 'data', 'users.json');
+import { query, queryOne, RowDataPacket, toMySQLDateTime } from './db';
 
 export async function getUsers(): Promise<User[]> {
   try {
-    const data = await fs.readFile(USERS_FILE_PATH, 'utf-8');
-    return JSON.parse(data);
+    const users = await query<(RowDataPacket & User)[]>(
+      'SELECT * FROM users ORDER BY createdAt DESC'
+    );
+    return users;
   } catch (error) {
-    console.error('Error reading users file:', error);
+    console.error('Error fetching users:', error);
     return [];
   }
 }
 
-export async function saveUsers(users: User[]): Promise<void> {
+export async function findUserByEmail(email: string): Promise<User | null> {
   try {
-    await fs.writeFile(USERS_FILE_PATH, JSON.stringify(users, null, 2));
+    const user = await queryOne<RowDataPacket & User>(
+      'SELECT * FROM users WHERE email = ?',
+      [email]
+    );
+    return user;
   } catch (error) {
-    console.error('Error saving users file:', error);
-    throw new Error('Failed to save users');
+    console.error('Error finding user by email:', error);
+    return null;
   }
 }
 
-export async function findUserByEmail(email: string): Promise<User | null> {
-  const users = await getUsers();
-  return users.find(user => user.email === email) || null;
-}
-
 export async function findUserById(id: string): Promise<User | null> {
-  const users = await getUsers();
-  return users.find(user => user.id === id) || null;
+  try {
+    const user = await queryOne<RowDataPacket & User>(
+      'SELECT * FROM users WHERE id = ?',
+      [id]
+    );
+    return user;
+  } catch (error) {
+    console.error('Error finding user by id:', error);
+    return null;
+  }
 }
 
 export async function createUser(userData: RegisterData): Promise<User> {
-  const users = await getUsers();
-  
   // Check if user already exists
-  const existingUser = users.find(user => user.email === userData.email);
+  const existingUser = await findUserByEmail(userData.email);
   if (existingUser) {
     throw new Error('User already exists');
   }
@@ -47,38 +51,67 @@ export async function createUser(userData: RegisterData): Promise<User> {
   // Hash password
   const hashedPassword = await bcrypt.hash(userData.password, 12);
 
+  const now = new Date();
+  const mysqlDateTime = toMySQLDateTime(now);
+  
   const newUser: User = {
     id: uuidv4(),
     email: userData.email,
     name: userData.name,
     password: hashedPassword,
-    role: userData.role,
+    role: userData.role || 'user', // Default to 'user' if not provided
     status: 'active',
     provider: 'credentials',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: now.toISOString(),
+    updatedAt: now.toISOString(),
   };
 
-  users.push(newUser);
-  await saveUsers(users);
-
-  return newUser;
+  try {
+    await query(
+      `INSERT INTO users (id, email, name, password, provider, role, status, createdAt, updatedAt) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        newUser.id,
+        newUser.email,
+        newUser.name,
+        newUser.password,
+        newUser.provider,
+        newUser.role,
+        newUser.status,
+        mysqlDateTime,
+        mysqlDateTime,
+      ]
+    );
+    return newUser;
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw new Error('Failed to create user');
+  }
 }
 
 export async function createGoogleUser(profile: { email: string; name: string; picture?: string }): Promise<User> {
-  const users = await getUsers();
-  
   // Check if user already exists
-  const existingUser = users.find(user => user.email === profile.email);
+  const existingUser = await findUserByEmail(profile.email);
   if (existingUser) {
     // Update existing user's profile info but keep the role
-    existingUser.name = profile.name;
-    existingUser.image = profile.picture;
-    existingUser.updatedAt = new Date().toISOString();
-    await saveUsers(users);
-    return existingUser;
+    try {
+      const now = new Date();
+      const updatedAt = now.toISOString();
+      const mysqlDateTime = toMySQLDateTime(now);
+      await query(
+        'UPDATE users SET name = ?, image = ?, updatedAt = ? WHERE id = ?',
+        [profile.name, profile.picture, mysqlDateTime, existingUser.id]
+      );
+      return { ...existingUser, name: profile.name, image: profile.picture, updatedAt };
+    } catch (error) {
+      console.error('Error updating Google user:', error);
+      throw new Error('Failed to update user');
+    }
   }
 
+  const now = new Date();
+  const mysqlDateTime = toMySQLDateTime(now);
+  
   const newUser: User = {
     id: uuidv4(),
     email: profile.email,
@@ -87,14 +120,31 @@ export async function createGoogleUser(profile: { email: string; name: string; p
     status: 'active',
     provider: 'google',
     image: profile.picture,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: now.toISOString(),
+    updatedAt: now.toISOString(),
   };
 
-  users.push(newUser);
-  await saveUsers(users);
-
-  return newUser;
+  try {
+    await query(
+      `INSERT INTO users (id, email, name, provider, role, status, image, createdAt, updatedAt) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        newUser.id,
+        newUser.email,
+        newUser.name,
+        newUser.provider,
+        newUser.role,
+        newUser.status,
+        newUser.image,
+        mysqlDateTime,
+        mysqlDateTime,
+      ]
+    );
+    return newUser;
+  } catch (error) {
+    console.error('Error creating Google user:', error);
+    throw new Error('Failed to create user');
+  }
 }
 
 export async function verifyPassword(email: string, password: string): Promise<User | null> {
@@ -114,31 +164,90 @@ export async function verifyPassword(email: string, password: string): Promise<U
 }
 
 export async function updateUserRole(userId: string, newRole: 'user' | 'admin'): Promise<User | null> {
-  const users = await getUsers();
-  const userIndex = users.findIndex(user => user.id === userId);
-  
-  if (userIndex === -1) {
+  try {
+    const mysqlDateTime = toMySQLDateTime(new Date());
+    await query(
+      'UPDATE users SET role = ?, updatedAt = ? WHERE id = ?',
+      [newRole, mysqlDateTime, userId]
+    );
+    return await findUserById(userId);
+  } catch (error) {
+    console.error('Error updating user role:', error);
     return null;
   }
-  
-  users[userIndex].role = newRole;
-  users[userIndex].updatedAt = new Date().toISOString();
-  
-  await saveUsers(users);
-  return users[userIndex];
 }
 
 export async function updateUserStatus(userId: string, newStatus: 'active' | 'banned'): Promise<User | null> {
-  const users = await getUsers();
-  const userIndex = users.findIndex(user => user.id === userId);
-  
-  if (userIndex === -1) {
+  try {
+    const mysqlDateTime = toMySQLDateTime(new Date());
+    await query(
+      'UPDATE users SET status = ?, updatedAt = ? WHERE id = ?',
+      [newStatus, mysqlDateTime, userId]
+    );
+    return await findUserById(userId);
+  } catch (error) {
+    console.error('Error updating user status:', error);
     return null;
   }
-  
-  users[userIndex].status = newStatus;
-  users[userIndex].updatedAt = new Date().toISOString();
-  
-  await saveUsers(users);
-  return users[userIndex];
+}
+
+export async function updateUserProfile(
+  userId: string, 
+  profileData: {
+    name?: string;
+    phone?: string;
+    address?: string;
+    postalCode?: string;
+    city?: string;
+    image?: string;
+  }
+): Promise<User | null> {
+  try {
+    const mysqlDateTime = toMySQLDateTime(new Date());
+    const updates: string[] = [];
+    const values: (string | number)[] = [];
+
+    if (profileData.name !== undefined) {
+      updates.push('name = ?');
+      values.push(profileData.name);
+    }
+    if (profileData.phone !== undefined) {
+      updates.push('phone = ?');
+      values.push(profileData.phone);
+    }
+    if (profileData.address !== undefined) {
+      updates.push('address = ?');
+      values.push(profileData.address);
+    }
+    if (profileData.postalCode !== undefined) {
+      updates.push('postalCode = ?');
+      values.push(profileData.postalCode);
+    }
+    if (profileData.city !== undefined) {
+      updates.push('city = ?');
+      values.push(profileData.city);
+    }
+    if (profileData.image !== undefined) {
+      updates.push('image = ?');
+      values.push(profileData.image);
+    }
+
+    if (updates.length === 0) {
+      return await findUserById(userId);
+    }
+
+    updates.push('updatedAt = ?');
+    values.push(mysqlDateTime);
+    values.push(userId);
+
+    await query(
+      `UPDATE users SET ${updates.join(', ')} WHERE id = ?`,
+      values
+    );
+
+    return await findUserById(userId);
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    return null;
+  }
 }

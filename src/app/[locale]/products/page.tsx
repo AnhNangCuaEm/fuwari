@@ -1,35 +1,21 @@
-'use client'
-
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import { getAllProducts } from '@/lib/products';
 import { Product } from '@/types/product';
-import { useCart } from '@/lib/hooks/useCart';
-import { useTranslations, useLocale } from 'next-intl';
+import { getTranslations, getLocale } from 'next-intl/server';
+import AddToCartButton from '@/components/products/AddToCartButton';
 
-export default function ProductsPage() {
-    const products = getAllProducts();
-    const { addToCart } = useCart()
-    const t = useTranslations();
-    const locale = useLocale();
+export default async function ProductsPage() {
+    const products = await getAllProducts();
+    const t = await getTranslations();
+    const locale = await getLocale();
 
     // Helper function to get localized text
     const getLocalizedText = (jaText: string, enText: string) => {
         return locale === 'en' ? enText : jaText;
     };
-
-    const handleAddToCart = (product: Product, e: React.MouseEvent) => {
-        e.preventDefault() // Prevent the Link navigation
-        addToCart({
-            id: product.id,
-            name: getLocalizedText(product.name, product.engName),
-            description: getLocalizedText(product.description, product.engDescription),
-            price: product.price,
-            image: product.image
-        })
-    }
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -87,16 +73,16 @@ export default function ProductsPage() {
                                             : (locale === 'en' ? 'Sold Out' : '売り切れ')
                                         }
                                     </span>
-                                    <button
-                                        onClick={(e) => handleAddToCart(product, e)}
-                                        disabled={product.quantity === 0}
-                                        className={`py-2 px-4 rounded-lg font-medium transition-colors cursor-pointer ${product.quantity > 0
-                                            ? 'bg-almond-6/80 hover:bg-almond-5/80 text-white'
-                                            : 'bg-gray-400 text-gray-700 cursor-not-allowed!'
-                                            }`}
-                                    >
-                                        {product.quantity > 0 ? t("shopping.cart.addToCart") : t("shopping.stock.outOfStock")}
-                                    </button>
+                                    <AddToCartButton 
+                                        product={{
+                                            id: product.id,
+                                            name: getLocalizedText(product.name, product.engName),
+                                            description: getLocalizedText(product.description, product.engDescription),
+                                            price: product.price,
+                                            image: product.image,
+                                            quantity: product.quantity
+                                        }}
+                                    />
                                 </div>
 
                             </div>

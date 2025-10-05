@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { Product } from '@/types/product';
-import { getAllProducts } from '@/lib/products';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 
@@ -21,20 +20,23 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Load products on mount
+    // Load products from API when modal opens
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && products.length === 0) {
             setIsLoading(true);
-            try {
-                const allProducts = getAllProducts();
-                setProducts(allProducts);
-            } catch (error) {
-                console.error('Error loading products:', error);
-            } finally {
-                setIsLoading(false);
-            }
+            fetch('/api/products')
+                .then(res => res.json())
+                .then(data => {
+                    setProducts(data);
+                })
+                .catch(error => {
+                    console.error('Error loading products:', error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         }
-    }, [isOpen]);
+    }, [isOpen, products.length]);
 
     // Filter and sort products based on search criteria
     const filteredAndSortedProducts = useMemo(() => {

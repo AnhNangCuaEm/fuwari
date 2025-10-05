@@ -1,53 +1,33 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { Order, CreateOrderData } from '@/types/order';
+import { query, queryOne, RowDataPacket, toMySQLDateTime } from './db';
 
-const ordersFilePath = path.join(process.cwd(), 'data', 'orders.json');
-
-// Ensure orders file exists
-async function ensureOrdersFile(): Promise<void> {
-  try {
-    await fs.access(ordersFilePath);
-  } catch {
-    // File doesn't exist, create it
-    try {
-      await fs.mkdir(path.dirname(ordersFilePath), { recursive: true });
-      await fs.writeFile(ordersFilePath, JSON.stringify([], null, 2));
-    } catch (error) {
-      console.error('Error creating orders file:', error);
-      throw error;
-    }
-  }
-}
-
-// Read all orders from file
+// Read all orders from database
 export async function getOrders(): Promise<Order[]> {
   try {
-    await ensureOrdersFile();
-    const data = await fs.readFile(ordersFilePath, 'utf8');
-    return JSON.parse(data);
+    const orders = await query<(RowDataPacket & Order)[]>(
+      'SELECT * FROM orders ORDER BY createdAt DESC'
+    );
+    // Parse JSON fields
+    return orders.map(order => ({
+      ...order,
+      items: typeof order.items === 'string' ? JSON.parse(order.items) : order.items,
+      shippingAddress: typeof order.shippingAddress === 'string' ? JSON.parse(order.shippingAddress) : order.shippingAddress,
+    }));
   } catch (error) {
-    console.error('Error reading orders file:', error);
+    console.error('Error reading orders:', error);
     return [];
-  }
-}
-
-// Save orders to file
-async function saveOrders(orders: Order[]): Promise<void> {
-  try {
-    await fs.writeFile(ordersFilePath, JSON.stringify(orders, null, 2));
-  } catch (error) {
-    console.error('Error saving orders file:', error);
-    throw error;
   }
 }
 
 // Create a new order
 export async function createOrder(orderData: CreateOrderData): Promise<Order> {
+  const now = new Date();
+  const mysqlDateTime = toMySQLDateTime(now);
+
   const order: Order = {
     id: uuidv4(),
-    customerId: orderData.customerInfo.email,
+    customerId: orderData.userId || null, // Use userId if provided, otherwise NULL for guest
     customerEmail: orderData.customerInfo.email,
     items: orderData.items,
     subtotal: orderData.totals.subtotal,
@@ -57,41 +37,106 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
     status: 'paid',
     stripePaymentIntentId: orderData.stripePaymentIntentId,
     shippingAddress: orderData.customerInfo,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: now.toISOString(),
+    updatedAt: now.toISOString(),
   };
 
-  const orders = await getOrders();
-  orders.push(order);
-  await saveOrders(orders);
-
-  return order;
+  try {
+    await query(
+      `INSERT INTO orders (id, customerId, customerEmail, items, subtotal, tax, shipping, total, status, stripePaymentIntentId, shippingAddress, createdAt, updatedAt) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        order.id,
+        order.customerId,
+        order.customerEmail,
+        JSON.stringify(order.items),
+        order.subtotal,
+        order.tax,
+        order.shipping,
+        order.total,
+        order.status,
+        order.stripePaymentIntentId,
+        JSON.stringify(order.shippingAddress),
+        mysqlDateTime,
+        mysqlDateTime,
+      ]
+    );
+    return order;
+  } catch (error) {
+    console.error('Error creating order:', error);
+    throw new Error('Failed to create order');
+  }
 }
 
 // Get order by ID
 export async function getOrderById(orderId: string): Promise<Order | null> {
-  const orders = await getOrders();
-  return orders.find(order => order.id === orderId) || null;
+  try {
+    const order = await queryOne<RowDataPacket & Order>(
+      'SELECT * FROM orders WHERE id = ?',
+      [orderId]
+    );
+    if (order) {
+      return {
+        ...order,
+        items: typeof order.items === 'string' ? JSON.parse(order.items) : order.items,
+        shippingAddress: typeof order.shippingAddress === 'string' ? JSON.parse(order.shippingAddress) : order.shippingAddress,
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching order by ID:', error);
+    return null;
+  }
 }
 
-// Get orders by customer email
-export async function getOrdersByCustomer(customerEmail: string): Promise<Order[]> {
-  const orders = await getOrders();
-  return orders.filter(order => order.customerEmail === customerEmail);
+// Get orders by customer ID (for authenticated users)
+export async function getOrdersByCustomer(customerId: string): Promise<Order[]> {
+  try {
+    const orders = await query<(RowDataPacket & Order)[]>(
+      'SELECT * FROM orders WHERE customerId = ? ORDER BY createdAt DESC',
+      [customerId]
+    );
+    return orders.map(order => ({
+      ...order,
+      items: typeof order.items === 'string' ? JSON.parse(order.items) : order.items,
+      shippingAddress: typeof order.shippingAddress === 'string' ? JSON.parse(order.shippingAddress) : order.shippingAddress,
+    }));
+  } catch (error) {
+    console.error('Error fetching orders by customer:', error);
+    return [];
+  }
+}
+
+// Get orders by customer email (for guest users or email lookup)
+export async function getOrdersByEmail(customerEmail: string): Promise<Order[]> {
+  try {
+    const orders = await query<(RowDataPacket & Order)[]>(
+      'SELECT * FROM orders WHERE customerEmail = ? ORDER BY createdAt DESC',
+      [customerEmail]
+    );
+    return orders.map(order => ({
+      ...order,
+      items: typeof order.items === 'string' ? JSON.parse(order.items) : order.items,
+      shippingAddress: typeof order.shippingAddress === 'string' ? JSON.parse(order.shippingAddress) : order.shippingAddress,
+    }));
+  } catch (error) {
+    console.error('Error fetching orders by email:', error);
+    return [];
+  }
 }
 
 // Update order status
 export async function updateOrderStatus(orderId: string, status: Order['status']): Promise<Order | null> {
-  const orders = await getOrders();
-  const orderIndex = orders.findIndex(order => order.id === orderId);
+  const mysqlDateTime = toMySQLDateTime(new Date());
   
-  if (orderIndex === -1) {
+  try {
+    await query(
+      'UPDATE orders SET status = ?, updatedAt = ? WHERE id = ?',
+      [status, mysqlDateTime, orderId]
+    );
+    return await getOrderById(orderId);
+  } catch (error) {
+    console.error('Error updating order status:', error);
     return null;
   }
-
-  orders[orderIndex].status = status;
-  orders[orderIndex].updatedAt = new Date().toISOString();
-  
-  await saveOrders(orders);
-  return orders[orderIndex];
 }

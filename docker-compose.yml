@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  # MySQL Database Service
+  mysql:
+    image: mysql:8.0
+    container_name: fuwari-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: fuwari_root_password
+      MYSQL_DATABASE: ${DATABASE_NAME:-fuwari_db}
+      MYSQL_USER: ${DATABASE_USER:-fuwari_user}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-fuwari_password}
+    ports:
+      - "3306:3306"
+    volumes:
+      # Persistent data storage
+      - mysql_data:/var/lib/mysql
+      # Initialize database with schema on first run
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fuwari-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pfuwari_root_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Next.js Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fuwari-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Database connection (for Docker)
+      DATABASE_HOST: mysql
+      DATABASE_PORT: ${DATABASE_PORT:-3306}
+      DATABASE_NAME: ${DATABASE_NAME:-fuwari_db}
+      DATABASE_USER: ${DATABASE_USER:-fuwari_user}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-fuwari_password}
+      DATABASE_URL: mysql://${DATABASE_USER:-fuwari_user}:${DATABASE_PASSWORD:-fuwari_password}@mysql:3306/${DATABASE_NAME:-fuwari_db}
+      
+      # Next.js
+      NODE_ENV: ${NODE_ENV:-development}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+      
+      # NextAuth 
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-your-secret-key-change-this}
+      
+      # Google OAuth
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      
+      # Stripe Payment
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      
+      # PayPay Payment
+      PAYPAY_CLIENT_ID: ${PAYPAY_CLIENT_ID}
+      PAYPAY_CLIENT_SECRET: ${PAYPAY_CLIENT_SECRET}
+      PAYPAY_MERCHANT_ID: ${PAYPAY_MERCHANT_ID}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - fuwari-network
+    volumes:
+      # Mount source code for development (hot reload)
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+      # Mount uploads directory
+      - ./public/uploads:/app/public/uploads
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: fuwari-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: ${DATABASE_USER:-fuwari_user}
+      PMA_PASSWORD: ${DATABASE_PASSWORD:-fuwari_password}
+      MYSQL_ROOT_PASSWORD: fuwari_root_password
+    depends_on:
+      - mysql
+    networks:
+      - fuwari-network
+
+networks:
+  fuwari-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

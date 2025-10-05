@@ -28,7 +28,7 @@ export interface OrderTotals {
 
 export interface Order {
   id: string;
-  customerId: string;
+  customerId: string | null; // NULL for guest orders
   customerEmail: string;
   items: CartItem[];
   subtotal: number;
@@ -47,4 +47,5 @@ export interface CreateOrderData {
   totals: OrderTotals;
   customerInfo: ShippingAddress;
   stripePaymentIntentId: string;
+  userId?: string | null; // Optional user ID for authenticated users
 }

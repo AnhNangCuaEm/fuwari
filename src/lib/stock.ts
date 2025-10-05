@@ -1,9 +1,5 @@
-import fs from 'fs';
-import path from 'path';
-import { Product } from '@/types/product';
 import { getProductById } from './products';
-
-const PRODUCTS_FILE_PATH = path.join(process.cwd(), 'data', 'products.json');
+import { query } from './db';
 
 // Interface for stock check result
 export interface StockCheckResult {
@@ -30,7 +26,7 @@ export async function checkStockAvailability(cartItems: CartStockItem[]): Promis
   const unavailableItems: StockCheckResult['unavailableItems'] = [];
 
   for (const cartItem of cartItems) {
-    const product = getProductById(cartItem.id);
+    const product = await getProductById(cartItem.id);
     
     if (!product) {
       unavailableItems.push({
@@ -63,29 +59,13 @@ export async function checkStockAvailability(cartItems: CartStockItem[]): Promis
  */
 export async function updateStock(cartItems: CartStockItem[]): Promise<boolean> {
   try {
-    // Read current products.json file
-    const productsData: Product[] = JSON.parse(
-      fs.readFileSync(PRODUCTS_FILE_PATH, 'utf8')
-    );
-
-    // Update quantity for each product
-    const updatedProducts = productsData.map(product => {
-      const cartItem = cartItems.find(item => item.id === product.id);
-      
-      if (cartItem) {
-        // Subtract sold quantity
-        const newQuantity = Math.max(0, product.quantity - cartItem.quantity);
-        return {
-          ...product,
-          quantity: newQuantity
-        };
-      }
-      
-      return product;
-    });
-
-    // Write back to file
-    fs.writeFileSync(PRODUCTS_FILE_PATH, JSON.stringify(updatedProducts, null, 2));
+    // Update quantity for each product in database
+    for (const cartItem of cartItems) {
+      await query(
+        'UPDATE products SET quantity = GREATEST(0, quantity - ?) WHERE id = ?',
+        [cartItem.quantity, cartItem.id]
+      );
+    }
     
     return true;
   } catch (error) {
@@ -99,27 +79,13 @@ export async function updateStock(cartItems: CartStockItem[]): Promise<boolean> 
  */
 export async function rollbackStock(cartItems: CartStockItem[]): Promise<boolean> {
   try {
-    // Read current products.json file
-    const productsData: Product[] = JSON.parse(
-      fs.readFileSync(PRODUCTS_FILE_PATH, 'utf8')
-    );
-
-    // Restore quantity
-    const updatedProducts = productsData.map(product => {
-      const cartItem = cartItems.find(item => item.id === product.id);
-      
-      if (cartItem) {
-        return {
-          ...product,
-          quantity: product.quantity + cartItem.quantity
-        };
-      }
-      
-      return product;
-    });
-
-    // Write back to file
-    fs.writeFileSync(PRODUCTS_FILE_PATH, JSON.stringify(updatedProducts, null, 2));
+    // Restore quantity for each product in database
+    for (const cartItem of cartItems) {
+      await query(
+        'UPDATE products SET quantity = quantity + ? WHERE id = ?',
+        [cartItem.quantity, cartItem.id]
+      );
+    }
     
     return true;
   } catch (error) {

@@ -24,7 +24,7 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
-  role: 'user' | 'admin';
+  role?: 'user' | 'admin'; // Optional, defaults to 'user'
   status?: 'active' | 'banned';
   confirmPassword: string;
 }

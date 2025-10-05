@@ -1,49 +1,100 @@
 import { Product } from '@/types/product';
-import productsData from '../../data/products.json';
+import { query, queryOne, RowDataPacket } from './db';
 
 // Get all products
-export const getAllProducts = (): Product[] => {
-    return productsData;
+export const getAllProducts = async (): Promise<Product[]> => {
+    try {
+        const products = await query<(RowDataPacket & Product)[]>(
+            'SELECT * FROM products ORDER BY created_at DESC'
+        );
+        return products;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        return [];
+    }
 };
 
 // Get product by ID
-export const getProductById = (id: number): Product | undefined => {
-    return productsData.find(product => product.id === id);
+export const getProductById = async (id: number): Promise<Product | null> => {
+    try {
+        const product = await queryOne<RowDataPacket & Product>(
+            'SELECT * FROM products WHERE id = ?',
+            [id]
+        );
+        return product;
+    } catch (error) {
+        console.error('Error fetching product by ID:', error);
+        return null;
+    }
 };
 
 // Get products by name (search)
-export const searchProductsByName = (searchTerm: string): Product[] => {
-    return productsData.filter(product => 
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+export const searchProductsByName = async (searchTerm: string): Promise<Product[]> => {
+    try {
+        const products = await query<(RowDataPacket & Product)[]>(
+            'SELECT * FROM products WHERE name LIKE ? ORDER BY created_at DESC',
+            [`%${searchTerm}%`]
+        );
+        return products;
+    } catch (error) {
+        console.error('Error searching products by name:', error);
+        return [];
+    }
 };
 
 // Comprehensive search function
-export const searchProducts = (
+export const searchProducts = async (
     searchTerm?: string,
     minPrice?: number,
     maxPrice?: number
-): Product[] => {
-    return productsData.filter(product => {
-        // Text search (name, English name, description)
-        const matchesText = !searchTerm || 
-            product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.engName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.engDescription.toLowerCase().includes(searchTerm.toLowerCase());
+): Promise<Product[]> => {
+    try {
+        let sql = 'SELECT * FROM products WHERE 1=1';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const params: any[] = [];
+
+        // Text search
+        if (searchTerm) {
+            sql += ` AND (
+                name LIKE ? OR 
+                engName LIKE ? OR 
+                description LIKE ? OR 
+                engDescription LIKE ?
+            )`;
+            const searchPattern = `%${searchTerm}%`;
+            params.push(searchPattern, searchPattern, searchPattern, searchPattern);
+        }
 
         // Price range filter
-        const matchesPrice = 
-            (minPrice === undefined || product.price >= minPrice) &&
-            (maxPrice === undefined || product.price <= maxPrice);
+        if (minPrice !== undefined) {
+            sql += ' AND price >= ?';
+            params.push(minPrice);
+        }
+        if (maxPrice !== undefined) {
+            sql += ' AND price <= ?';
+            params.push(maxPrice);
+        }
 
-        return matchesText && matchesPrice;
-    });
+        sql += ' ORDER BY created_at DESC';
+
+        const products = await query<(RowDataPacket & Product)[]>(sql, params);
+        return products;
+    } catch (error) {
+        console.error('Error searching products:', error);
+        return [];
+    }
 };
 
 // Get products by price range
-export const getProductsByPriceRange = (minPrice: number, maxPrice: number): Product[] => {
-    return productsData.filter(product => 
-        product.price >= minPrice && product.price <= maxPrice
-    );
+export const getProductsByPriceRange = async (minPrice: number, maxPrice: number): Promise<Product[]> => {
+    try {
+        const products = await query<(RowDataPacket & Product)[]>(
+            'SELECT * FROM products WHERE price >= ? AND price <= ? ORDER BY created_at DESC',
+            [minPrice, maxPrice]
+        );
+        return products;
+    } catch (error) {
+        console.error('Error fetching products by price range:', error);
+        return [];
+    }
 };

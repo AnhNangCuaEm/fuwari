@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createOrder } from '@/lib/orders';
 import { CreateOrderData } from '@/types/order';
 import { updateStock, rollbackStock, CartStockItem } from '@/lib/stock';
+import { auth } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +13,9 @@ export async function POST(request: NextRequest) {
       customerInfo: CreateOrderData['customerInfo'];
       totals: CreateOrderData['totals'];
     } = body;
+    
+    // Get user session if available (for authenticated users)
+    const session = await auth();
 
     // Validate required fields
     if (!paymentIntentId || !cartItems || !customerInfo || !totals) {
@@ -42,6 +46,7 @@ export async function POST(request: NextRequest) {
       totals,
       customerInfo,
       stripePaymentIntentId: paymentIntentId,
+      userId: session?.user?.id || null, // Pass user ID if logged in, null for guest
     };
 
     // Convert cart items to stock format

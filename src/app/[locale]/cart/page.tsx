@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -10,9 +10,9 @@ import Image from "next/image";
 import { Link } from '@/i18n/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { useCart } from "@/lib/hooks/useCart";
-import { getProductById } from "@/lib/products";
 import CheckoutModal from "@/components/cart/CheckoutModal";
 import AlertModal from "@/components/ui/AlertModal";
+import type { Product } from "@/types/product";
 import { OrderTotals } from "@/types/order";
 
 // Initialize Stripe with error handling
@@ -41,6 +41,23 @@ export default function CartPage() {
     const [showRemoveAlert, setShowRemoveAlert] = useState(false);
     const [itemToRemove, setItemToRemove] = useState<number | null>(null);
     const [showStockErrorAlert, setShowStockErrorAlert] = useState(false);
+    const [products, setProducts] = useState<Product[]>([]);
+
+    // Fetch products on mount
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('/api/products');
+                if (response.ok) {
+                    const data = await response.json();
+                    setProducts(data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch products:', error);
+            }
+        };
+        fetchProducts();
+    }, []);
 
     // Handle remove confirmation
     const handleRemoveClick = (itemId: number) => {
@@ -57,7 +74,7 @@ export default function CartPage() {
 
     // Helper function to get localized product name and description
     const getLocalizedProductInfo = (item: { id: number; name: string; description: string }) => {
-        const product = getProductById(item.id);
+        const product = products.find(p => p.id === item.id);
         if (product) {
             return {
                 name: locale === 'en' ? product.engName : product.name,
