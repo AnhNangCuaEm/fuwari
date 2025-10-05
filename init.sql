@@ -2,10 +2,16 @@
 -- Created for Docker MySQL setup
 -- Based on existing JSON data structure
 
+-- Disable foreign key checks to allow dropping tables
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- Drop tables if exists (for clean restart)
 DROP TABLE IF EXISTS `orders`;
 DROP TABLE IF EXISTS `products`;
 DROP TABLE IF EXISTS `users`;
+
+-- Re-enable foreign key checks
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- =====================================================
 -- USERS TABLE

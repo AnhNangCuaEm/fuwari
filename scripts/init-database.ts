@@ -24,35 +24,24 @@ async function initDatabase() {
   let connection: mysql.Connection | null = null;
   
   try {
-    connection = await mysql.createConnection(dbConfig);
+    connection = await mysql.createConnection({
+      ...dbConfig,
+      multipleStatements: true,
+    });
     console.log('✅ Connected!\n');
     
     const initSqlPath = path.join(process.cwd(), 'init.sql');
     const sql = fs.readFileSync(initSqlPath, 'utf8');
     
-    const statements = sql
-      .split(';')
-      .map(s => s.trim())
-      .filter(s => s.length > 0 && !s.startsWith('--'));
-    
-    for (const statement of statements) {
-      if (!statement.trim()) continue;
-      
-      try {
-        await connection.execute(statement);
-        
-        if (statement.includes('CREATE TABLE')) {
-          const match = statement.match(/CREATE TABLE `?(\w+)`?/i);
-          if (match) console.log(`✅ Created table: ${match[1]}`);
-        } else if (statement.includes('INSERT INTO')) {
-          const match = statement.match(/INSERT INTO `?(\w+)`?/i);
-          if (match) console.log(`✅ Inserted sample data into: ${match[1]}`);
-        }
-      } catch (error: any) {
-        if (error.code !== 'ER_TABLE_EXISTS_ERROR') {
-          console.error(`❌ Error:`, error.message);
-        }
-      }
+    // Execute all SQL at once to maintain session variables like FOREIGN_KEY_CHECKS
+    try {
+      await connection.query(sql);
+      console.log('✅ Executed init.sql successfully');
+      console.log('✅ Created tables: users, products, orders');
+      console.log('✅ Inserted sample data');
+    } catch (error: any) {
+      console.error(`❌ Error executing init.sql:`, error.message);
+      throw error;
     }
     
     console.log('\n🎉 Initial setup completed!');
