@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Order, CreateOrderData } from '@/types/order';
-import { query, queryOne, RowDataPacket, toMySQLDateTime } from './db';
+import { query, queryOne, RowDataPacket } from './db';
 
 // Read all orders from database
 export async function getOrders(): Promise<Order[]> {
@@ -23,7 +23,6 @@ export async function getOrders(): Promise<Order[]> {
 // Create a new order
 export async function createOrder(orderData: CreateOrderData): Promise<Order> {
   const now = new Date();
-  const mysqlDateTime = toMySQLDateTime(now);
 
   const order: Order = {
     id: uuidv4(),
@@ -44,7 +43,7 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
   try {
     await query(
       `INSERT INTO orders (id, customerId, customerEmail, items, subtotal, tax, shipping, total, status, stripePaymentIntentId, shippingAddress, createdAt, updatedAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         order.id,
         order.customerId,
@@ -57,8 +56,6 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
         order.status,
         order.stripePaymentIntentId,
         JSON.stringify(order.shippingAddress),
-        mysqlDateTime,
-        mysqlDateTime,
       ]
     );
     return order;
@@ -127,12 +124,10 @@ export async function getOrdersByEmail(customerEmail: string): Promise<Order[]> 
 
 // Update order status
 export async function updateOrderStatus(orderId: string, status: Order['status']): Promise<Order | null> {
-  const mysqlDateTime = toMySQLDateTime(new Date());
-  
   try {
     await query(
-      'UPDATE orders SET status = ?, updatedAt = ? WHERE id = ?',
-      [status, mysqlDateTime, orderId]
+      'UPDATE orders SET status = ?, updatedAt = NOW() WHERE id = ?',
+      [status, orderId]
     );
     return await getOrderById(orderId);
   } catch (error) {

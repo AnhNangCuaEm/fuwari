@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { User, RegisterData } from '@/types/user';
-import { query, queryOne, RowDataPacket, toMySQLDateTime } from './db';
+import { query, queryOne, RowDataPacket } from './db';
 
 export async function getUsers(): Promise<User[]> {
   try {
@@ -52,7 +52,6 @@ export async function createUser(userData: RegisterData): Promise<User> {
   const hashedPassword = await bcrypt.hash(userData.password, 12);
 
   const now = new Date();
-  const mysqlDateTime = toMySQLDateTime(now);
   
   const newUser: User = {
     id: uuidv4(),
@@ -69,7 +68,7 @@ export async function createUser(userData: RegisterData): Promise<User> {
   try {
     await query(
       `INSERT INTO users (id, email, name, password, provider, role, status, createdAt, updatedAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         newUser.id,
         newUser.email,
@@ -78,8 +77,6 @@ export async function createUser(userData: RegisterData): Promise<User> {
         newUser.provider,
         newUser.role,
         newUser.status,
-        mysqlDateTime,
-        mysqlDateTime,
       ]
     );
     return newUser;
@@ -97,10 +94,9 @@ export async function createGoogleUser(profile: { email: string; name: string; p
     try {
       const now = new Date();
       const updatedAt = now.toISOString();
-      const mysqlDateTime = toMySQLDateTime(now);
       await query(
-        'UPDATE users SET name = ?, image = ?, updatedAt = ? WHERE id = ?',
-        [profile.name, profile.picture, mysqlDateTime, existingUser.id]
+        'UPDATE users SET name = ?, image = ?, updatedAt = NOW() WHERE id = ?',
+        [profile.name, profile.picture, existingUser.id]
       );
       return { ...existingUser, name: profile.name, image: profile.picture, updatedAt };
     } catch (error) {
@@ -110,7 +106,6 @@ export async function createGoogleUser(profile: { email: string; name: string; p
   }
 
   const now = new Date();
-  const mysqlDateTime = toMySQLDateTime(now);
   
   const newUser: User = {
     id: uuidv4(),
@@ -127,7 +122,7 @@ export async function createGoogleUser(profile: { email: string; name: string; p
   try {
     await query(
       `INSERT INTO users (id, email, name, provider, role, status, image, createdAt, updatedAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         newUser.id,
         newUser.email,
@@ -136,8 +131,6 @@ export async function createGoogleUser(profile: { email: string; name: string; p
         newUser.role,
         newUser.status,
         newUser.image,
-        mysqlDateTime,
-        mysqlDateTime,
       ]
     );
     return newUser;
@@ -165,10 +158,9 @@ export async function verifyPassword(email: string, password: string): Promise<U
 
 export async function updateUserRole(userId: string, newRole: 'user' | 'admin'): Promise<User | null> {
   try {
-    const mysqlDateTime = toMySQLDateTime(new Date());
     await query(
-      'UPDATE users SET role = ?, updatedAt = ? WHERE id = ?',
-      [newRole, mysqlDateTime, userId]
+      'UPDATE users SET role = ?, updatedAt = NOW() WHERE id = ?',
+      [newRole, userId]
     );
     return await findUserById(userId);
   } catch (error) {
@@ -179,10 +171,9 @@ export async function updateUserRole(userId: string, newRole: 'user' | 'admin'):
 
 export async function updateUserStatus(userId: string, newStatus: 'active' | 'banned'): Promise<User | null> {
   try {
-    const mysqlDateTime = toMySQLDateTime(new Date());
     await query(
-      'UPDATE users SET status = ?, updatedAt = ? WHERE id = ?',
-      [newStatus, mysqlDateTime, userId]
+      'UPDATE users SET status = ?, updatedAt = NOW() WHERE id = ?',
+      [newStatus, userId]
     );
     return await findUserById(userId);
   } catch (error) {
@@ -203,7 +194,6 @@ export async function updateUserProfile(
   }
 ): Promise<User | null> {
   try {
-    const mysqlDateTime = toMySQLDateTime(new Date());
     const updates: string[] = [];
     const values: (string | number)[] = [];
 
@@ -236,8 +226,7 @@ export async function updateUserProfile(
       return await findUserById(userId);
     }
 
-    updates.push('updatedAt = ?');
-    values.push(mysqlDateTime);
+    updates.push('updatedAt = NOW()');
     values.push(userId);
 
     await query(
