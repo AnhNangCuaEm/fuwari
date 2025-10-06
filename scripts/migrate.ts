@@ -14,6 +14,7 @@ const dbConfig = {
   user: process.env.DATABASE_USER || 'fuwari_user',
   password: process.env.DATABASE_PASSWORD || 'fuwari_password',
   database: process.env.DATABASE_NAME || 'fuwari_db',
+  charset: 'utf8mb4',
 };
 
 async function runMigrations() {
@@ -23,6 +24,10 @@ async function runMigrations() {
   
   try {
     connection = await mysql.createConnection(dbConfig);
+    
+    // Set connection charset to UTF-8
+    await connection.query("SET NAMES 'utf8mb4'");
+    await connection.query("SET CHARACTER SET utf8mb4");
     
     await connection.execute(`
       CREATE TABLE IF NOT EXISTS migrations (

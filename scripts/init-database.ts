@@ -15,6 +15,7 @@ const dbConfig = {
   password: process.env.DATABASE_PASSWORD || 'fuwari_password',
   database: process.env.DATABASE_NAME || 'fuwari_db',
   multipleStatements: true,
+  charset: 'utf8mb4',
 };
 
 async function initDatabase() {
@@ -29,6 +30,10 @@ async function initDatabase() {
       multipleStatements: true,
     });
     console.log('✅ Connected!\n');
+    
+    // Set connection charset to UTF-8
+    await connection.query("SET NAMES 'utf8mb4'");
+    await connection.query("SET CHARACTER SET utf8mb4");
     
     const initSqlPath = path.join(process.cwd(), 'init.sql');
     const sql = fs.readFileSync(initSqlPath, 'utf8');
