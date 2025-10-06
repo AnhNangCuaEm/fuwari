@@ -220,6 +220,8 @@
   "orders": {
     "title": "Order History",
     "subtitle": "View and track all your orders",
+    "subtitle2": "To cancel, please copy the order number and contact support.",
+    "copyOrderNumber": "Click to copy order number",
     "noOrders": "No Orders Yet",
     "noOrdersDesc": "You haven't placed any orders yet. Start shopping to see your orders here!",
     "startShopping": "Start Shopping",
