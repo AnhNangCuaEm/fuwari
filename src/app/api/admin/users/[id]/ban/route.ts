@@ -4,9 +4,10 @@ import { updateUserStatus } from '@/lib/users'
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await auth()
     
     if (!session || session.user.role !== 'admin') {
@@ -25,7 +26,7 @@ export async function PATCH(
       )
     }
 
-    const updatedUser = await updateUserStatus(params.id, status)
+    const updatedUser = await updateUserStatus(id, status)
     
     if (!updatedUser) {
       return NextResponse.json(

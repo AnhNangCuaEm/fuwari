@@ -6,11 +6,13 @@ services:
     image: mysql:8.0
     container_name: fuwari-mysql
     restart: unless-stopped
+    command: --default-time-zone=+09:00
     environment:
       MYSQL_ROOT_PASSWORD: fuwari_root_password
       MYSQL_DATABASE: ${DATABASE_NAME:-fuwari_db}
       MYSQL_USER: ${DATABASE_USER:-fuwari_user}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD:-fuwari_password}
+      TZ: Asia/Tokyo
     ports:
       - "3306:3306"
     volumes:
