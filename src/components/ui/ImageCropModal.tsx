@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
+import { useTranslations } from 'next-intl';
 
 interface Area {
   x: number;
@@ -94,6 +95,8 @@ export default function ImageCropModal({
     []
   );
 
+  const t = useTranslations('ImageCropModal');
+
   const handleApplyCrop = useCallback(async () => {
     if (!croppedAreaPixels) return;
 
@@ -119,20 +122,20 @@ export default function ImageCropModal({
           className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
           onClick={onClose}
         />
-        
+
         {/* Modal */}
-        <div className="relative w-full max-w-2xl bg-white rounded-lg shadow-xl">
+        <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-xl">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">
-              Crop Avatar
+            <h3 className="text-xl font-medium text-gray-900">
+              {t('title')}
             </h3>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
           </div>
@@ -174,19 +177,19 @@ export default function ImageCropModal({
               <button
                 onClick={onClose}
                 disabled={isProcessing}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50"
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 cursor-pointer"
               >
-                Cancel
+                {t('cancel')}
               </button>
               <button
                 onClick={handleApplyCrop}
                 disabled={isProcessing}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50 flex items-center space-x-2"
+                className="px-4 py-2 bg-almond-5 text-white rounded-lg hover:bg-almond-6 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 flex items-center space-x-2 cursor-pointer"
               >
                 {isProcessing && (
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
                 )}
-                <span>{isProcessing ? 'Processing...' : 'Apply'}</span>
+                <span>{isProcessing ? t('processing') : t('apply')}</span>
               </button>
             </div>
           </div>

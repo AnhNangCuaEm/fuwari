@@ -250,5 +250,11 @@
     "noResults": "No products found.",
     "startSearching": "Start searching to see products.",
     "clearSearch": "Clear Search"
+  },
+  "ImageCropModal": {
+    "title": "Crop Image",
+    "processing": "Processing...",
+    "apply": "Apply",
+    "cancel": "Cancel"
   }
 }

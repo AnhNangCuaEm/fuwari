@@ -93,7 +93,7 @@ VALUES (
   'admin-001',
   'admin@fuwari.com',
   'Admin User',
-  '$2b$12$kwQ0xm02zaUjhbiFqRoaauUy8zw.wUjktt9T50rycvVU4y29FpYKy', -- password: admin123
+  '$2b$12$kwQ0xm02zaUjhbiFqRoaauUy8zw.wUjktt9T50rycvVU4y29FpYKy', -- password: abc123123
   'credentials',
   'admin',
   'active',
@@ -110,7 +110,7 @@ VALUES (
   'user-001',
   'user@example.com',
   'Test User',
-  '$2b$12$kwQ0xm02zaUjhbiFqRoaauUy8zw.wUjktt9T50rycvVU4y29FpYKy', -- password: user123
+  '$2b$12$kwQ0xm02zaUjhbiFqRoaauUy8zw.wUjktt9T50rycvVU4y29FpYKy', -- password: abc123123
   'credentials',
   'user',
   'active'

@@ -250,5 +250,11 @@
     "noResults": "該当する商品が見つかりません。",
     "startSearching": "検索を開始して商品を見つけましょう。",
     "clearSearch": "検索をクリア"
+  },
+  "ImageCropModal": {
+    "title": "画像をトリミング",
+    "processing": "処理中...",
+    "apply": "適用",
+    "cancel": "キャンセル"
   }
 }
