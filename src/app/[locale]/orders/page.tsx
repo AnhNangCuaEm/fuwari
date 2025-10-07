@@ -50,6 +50,20 @@ export default function OrdersPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
+
+    const handleCopyOrderId = async (orderId: string) => {
+        try {
+            await navigator.clipboard.writeText(orderId);
+            setCopiedOrderId(orderId);
+            setTimeout(() => {
+                setCopiedOrderId(null);
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
+    };
+
     useEffect(() => {
         if (status === 'loading') return;
         if (!session) {
@@ -205,15 +219,46 @@ export default function OrdersPage() {
                                     {/* Order Header */}
                                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 pb-4 border-b border-gray-100">
                                         <div className="mb-2 sm:mb-0">
-                                            <h3 className="text-lg font-semibold text-gray-900 cursor-pointer"
-                                                title={t('orders.copyOrderNumber')}
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(order.id).then(() => {
-                                                    });
-                                                }}
-                                            >
-                                                {t('orders.orderNumber')}: <span className='text-almond-5'>#{order.id.slice(-8).toUpperCase()}</span>
-                                            </h3>
+                                            <div className="flex items-center space-x-2">
+                                                <h3 className="text-lg font-semibold text-gray-900">
+                                                    {t('orders.orderNumber')}: <span className='text-almond-5'>#{order.id.slice(-8).toUpperCase()}</span>
+                                                </h3>
+                                                <button
+                                                    onClick={() => handleCopyOrderId(order.id)}
+                                                    className="p-1 hover:bg-gray-100 rounded-md transition-colors"
+                                                    title={t('orders.copyOrderNumber')}
+                                                >
+                                                    {copiedOrderId === order.id ? (
+                                                        <svg
+                                                            className="w-5 h-5 text-green-600 animate-scale-check"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={2}
+                                                                d="M5 13l4 4L19 7"
+                                                            />
+                                                        </svg>
+                                                    ) : (
+                                                        <svg
+                                                            className="w-5 h-5 text-gray-600 animate-fade-in"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={2}
+                                                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                                            />
+                                                        </svg>
+                                                    )}
+                                                </button>
+                                            </div>
                                             <p className="text-sm text-gray-500">{formatDate(order.createdAt)}</p>
                                         </div>
                                         <div className="flex flex-col sm:items-end">
@@ -302,6 +347,36 @@ export default function OrdersPage() {
             </main>
 
             <Footer />
+            <style jsx global>{`
+                @keyframes scale-check {
+                    0% {
+                        transform: scale(0);
+                    }
+                    50% {
+                        transform: scale(1.2);
+                    }
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+                
+                .animate-scale-check {
+                    animation: scale-check 0.3s ease-in-out;
+                }
+
+                @keyframes fade-in {
+                    0% {
+                        opacity: 0;
+                    }
+                    100% {
+                        opacity: 1;
+                    }
+                }
+                    
+                .animate-fade-in {
+                    animation: fade-in 0.3s ease-in-out;
+                }
+            `}</style>
         </div>
     );
 }
