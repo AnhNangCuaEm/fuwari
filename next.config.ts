@@ -6,11 +6,22 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const nextConfig: NextConfig = {
   images: {
     domains: ['lh3.googleusercontent.com'], // Google profile pictures
-    remotePatterns: [ //TODO: Replace localhost with real domain in production
+    remotePatterns: [
       {
         protocol: 'http',
         hostname: 'localhost',
         port: '3000',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: process.env.NEXT_PUBLIC_HOST || 'localhost',
+        port: process.env.NEXT_PUBLIC_PORT || '',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_HOST || 'localhost',
         pathname: '/uploads/**',
       },
     ],
