@@ -6,20 +6,28 @@ services:
     image: mysql:8.0
     container_name: fuwari-mysql
     restart: unless-stopped
-    command: --default-time-zone=+09:00
+    command: 
+      - --default-time-zone=+09:00
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: fuwari_root_password
       MYSQL_DATABASE: ${DATABASE_NAME:-fuwari_db}
       MYSQL_USER: ${DATABASE_USER:-fuwari_user}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD:-fuwari_password}
       TZ: Asia/Tokyo
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
     ports:
-      - "3306:3306"
+      - "${DATABASE_PORT:-3306}:3306"
     volumes:
       # Persistent data storage
       - mysql_data:/var/lib/mysql
       # Initialize database with schema on first run
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      # MySQL configuration file for UTF-8 support
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf:ro
     networks:
       - fuwari-network
     healthcheck:

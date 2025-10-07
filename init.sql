@@ -1,6 +1,14 @@
 -- Fuwari Database Schema
 -- Created for Docker MySQL setup
 -- Based on existing JSON data structure
+
+-- Set UTF-8 encoding for Japanese characters
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+SET character_set_client = utf8mb4;
+SET character_set_connection = utf8mb4;
+SET character_set_results = utf8mb4;
+
 -- Disable foreign key checks to allow dropping tables
 SET
   FOREIGN_KEY_CHECKS = 0;
