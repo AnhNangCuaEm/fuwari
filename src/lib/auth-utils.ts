@@ -17,6 +17,7 @@ export async function getCurrentUser(): Promise<User | null> {
       role: session.user.role as 'user' | 'admin',
       provider: 'credentials', // This could be enhanced to track actual provider
       image: session.user.image || undefined,
+      status: 'active',
       createdAt: '', // These would need to be fetched from user store if needed
       updatedAt: ''
     }
