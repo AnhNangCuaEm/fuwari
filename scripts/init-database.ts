@@ -36,8 +36,11 @@ async function initDatabase() {
     await connection.query("SET CHARACTER SET utf8mb4");
     
     const initSqlPath = path.join(process.cwd(), 'init.sql');
-    const sql = fs.readFileSync(initSqlPath, 'utf8');
-    
+    let sql = fs.readFileSync(initSqlPath, 'utf-8'); 
+    //Remove Bom if exists
+    if (sql.charCodeAt(0) === 0xFEFF) {
+      sql = sql.slice(1);
+    }   
     // Execute all SQL at once to maintain session variables like FOREIGN_KEY_CHECKS
     try {
       await connection.query(sql);
