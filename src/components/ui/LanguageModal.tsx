@@ -58,7 +58,7 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
           </h3>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
+            className="p-2 hover:bg-gray-100 rounded-full"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -71,7 +71,7 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
             <button
               key={lng}
               onClick={() => handleLocaleChange(lng)}
-              className={`w-full text-left px-4 py-3 rounded-lg transition-colors cursor-pointer ${locale === lng
+              className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${locale === lng
                   ? 'bg-almond-5 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}

@@ -121,7 +121,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-almond-5 text-white py-2 px-4 rounded-md cursor-pointer hover:bg-almond-6 focus:outline-none focus:ring-2 focus:ring-almond-5 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-almond-5 text-white py-2 px-4 rounded-md hover:bg-almond-6 focus:outline-none focus:ring-2 focus:ring-almond-5 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? t('auth.signing') : t('common.signin')}
         </button>
@@ -139,7 +139,7 @@ export default function LoginForm() {
 
         <button
           onClick={handleGoogleSignIn}
-          className="mt-4 w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center cursor-pointer"
+          className="mt-4 w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center"
         >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
             <path

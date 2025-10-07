@@ -89,7 +89,7 @@ export default function AlertModal({
                         {showCancel && (
                             <button
                                 onClick={onClose}
-                                className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors cursor-pointer"
+                                className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors "
                             >
                                 {cancelText}
                             </button>
@@ -99,7 +99,7 @@ export default function AlertModal({
                                 onConfirm?.()
                                 onClose()
                             }}
-                            className="px-4 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 transition-colors cursor-pointer"
+                            className="px-4 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 transition-colors"
                         >
                             {confirmText}
                         </button>

@@ -511,7 +511,7 @@ export default function Mypage() {
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setShowLogoutModal(true)}
-                  className="flex items-center gap-1 text-xs sm:text-base sm:px-4 sm:py-3 bg-red-200 rounded-lg px-2 py-2 hover:bg-red-100 transition-colors text-red-600 cursor-pointer"
+                  className="flex items-center gap-1 text-xs sm:text-base sm:px-4 sm:py-3 bg-red-200 rounded-lg px-2 py-2 hover:bg-red-100 transition-colors text-red-600"
                 >
                   <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M15 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H15" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path><path d="M19 12L15 8M19 12L15 16M19 12H9" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></g></svg>
                   {tCommon('logout')}

@@ -53,7 +53,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     <h2 className="text-xl font-bold">{t('shopping.cart.title')}</h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
+                        className="p-2 hover:bg-gray-100 rounded-full"
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -69,7 +69,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                             <p className="text-lg">{t('cart.emptyMessage')}</p>
                             <p className="text-sm mt-2 text-gray-400">{t('cart.emptySuggestion')}</p>
                             <Link href="/products">
-                                <button className="mt-6 px-4 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 transition-colors cursor-pointer">
+                                <button className="mt-6 px-4 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 transition-colors">
                                     {t('cart.continueShopping')}
                                 </button>
                             </Link>
@@ -99,21 +99,21 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                                                 <button
                                                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                                     disabled={item.quantity <= 1}
-                                                    className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-semibold cursor-pointer disabled:bg-gray-100 disabled:text-gray-400"
+                                                    className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-semibold disabled:bg-gray-100 disabled:text-gray-400"
                                                 >
                                                     -
                                                 </button>
                                                 <span className="w-8 text-center font-medium">{item.quantity}</span>
                                                 <button
                                                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                    className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-semibold cursor-pointer"
+                                                    className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-semibold"
                                                 >
                                                     +
                                                 </button>
                                             </div>
                                             <button
                                                 onClick={() => handleRemoveClick(item.id)}
-                                                className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+                                                className="text-red-500 hover:text-red-700 text-sm font-medium"
                                             >
                                                 {t('cart.remove')}
                                             </button>
@@ -146,7 +146,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         </Link>
                         <Link
                             href="/products"
-                            className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors cursor-pointer"
+                            className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors"
                         >
                             {t("cart.continueShopping")}
                         </Link>

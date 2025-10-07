@@ -27,7 +27,7 @@ export default function NavMenu() {
             <div className="flex items-center">
                 <button
                     onClick={() => setIsSearchModalOpen(true)}
-                    className="flex items-center font-bold gap-2 pl-3 pr-2 py-1 rounded-4xl bg-[#ffffff99] cursor-pointer hover:bg-[#ffffffaa] transition-colors"
+                    className="flex items-center font-bold gap-2 pl-3 pr-2 py-1 rounded-4xl bg-[#ffffff99] hover:bg-[#ffffffaa] transition-colors"
                 >
                     <span className="hidden sm:inline">{t('common.search')}</span>
                     <div className="relative">
@@ -156,7 +156,7 @@ export default function NavMenu() {
                             setIsLanguageModalOpen(true)
                             setIsOpen(false)
                         }}
-                        className="w-full text-left block px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
+                        className="w-full text-left block px-4 py-3 hover:bg-gray-50 transition-colors "
                     >
                         🌐 {t('common.language')}
                     </button>

@@ -27,6 +27,11 @@ body {
   font-family: Noto Sans JP, Helvetica, sans-serif;
 }
 
+button:hover,
+a:hover {
+  cursor: pointer;
+}
+
 *:focus {
   outline: var(--color-almond-5) solid 2px;
 }

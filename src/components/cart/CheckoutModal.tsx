@@ -226,7 +226,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
           <h2 className="text-2xl font-semibold">{t('payment.title')}</h2>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
+            className="p-2 hover:bg-gray-100 rounded-full"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -382,14 +382,14 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
                 type="button"
                 onClick={handleClose}
                 disabled={loading}
-                className="flex-1 border border-gray-300 hover:border-gray-500 text-gray-700 py-3 px-4 rounded-lg font-semibold transition-colors disabled:opacity-50 cursor-pointer"
+                className="flex-1 border border-gray-300 hover:border-gray-500 text-gray-700 py-3 px-4 rounded-lg font-semibold transition-colors disabled:opacity-50"
               >
                 {t('payment.cancel')}
               </button>
               <button
                 type="submit"
                 disabled={!stripe || loading}
-                className="flex-1 bg-almond-6 hover:bg-almond-5 disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-semibold transition-colors cursor-pointer"
+                className="flex-1 bg-almond-6 hover:bg-almond-5 disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">

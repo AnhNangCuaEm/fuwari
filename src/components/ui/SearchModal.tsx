@@ -122,7 +122,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
                             <button
                                 onClick={handleClose}
-                                className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
+                                className="p-2 hover:bg-gray-100 rounded-full"
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -166,7 +166,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             {searchTerm && (
                                 <button
                                     onClick={clearSearch}
-                                    className="px-4 py-2 bg-[#CC8409] text-white rounded-md hover:bg-[#D69E2E] transition-colors cursor-pointer"
+                                    className="px-4 py-2 bg-[#CC8409] text-white rounded-md hover:bg-[#D69E2E] transition-colors"
                                 >
                                     {t('search.clearSearch')}
                                 </button>

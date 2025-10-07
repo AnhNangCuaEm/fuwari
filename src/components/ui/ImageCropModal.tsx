@@ -132,7 +132,7 @@ export default function ImageCropModal({
             </h3>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
+              className="p-2 hover:bg-gray-100 rounded-full"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -177,14 +177,14 @@ export default function ImageCropModal({
               <button
                 onClick={onClose}
                 disabled={isProcessing}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 cursor-pointer"
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50"
               >
                 {t('cancel')}
               </button>
               <button
                 onClick={handleApplyCrop}
                 disabled={isProcessing}
-                className="px-4 py-2 bg-almond-5 text-white rounded-lg hover:bg-almond-6 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 flex items-center space-x-2 cursor-pointer"
+                className="px-4 py-2 bg-almond-5 text-white rounded-lg hover:bg-almond-6 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 flex items-center space-x-2"
               >
                 {isProcessing && (
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />

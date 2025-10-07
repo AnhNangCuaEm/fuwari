@@ -247,14 +247,14 @@ export default function CartPage() {
                                                             <button
                                                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                                                 disabled={item.quantity === 1}
-                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer disabled:bg-gray-50 disabled:text-gray-400"
+                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center disabled:bg-gray-50 disabled:text-gray-400"
                                                             >
                                                                 -
                                                             </button>
                                                             <span className="font-medium">{item.quantity}</span>
                                                             <button
                                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center cursor-pointer"
+                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
                                                             >
                                                                 +
                                                             </button>
@@ -266,7 +266,7 @@ export default function CartPage() {
                                                             </span>
                                                             <button
                                                                 onClick={() => handleRemoveClick(item.id)}
-                                                                className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+                                                                className="text-red-500 hover:text-red-700 text-sm font-medium"
                                                             >
                                                                 {t("cart.remove")}
                                                             </button>
@@ -339,7 +339,7 @@ export default function CartPage() {
                                                 }
                                             }}
                                             disabled={isCheckingStock}
-                                            className="w-full bg-almond-6 hover:bg-almond-5 text-white p-3 rounded-lg font-semibold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                            className="w-full bg-almond-6 hover:bg-almond-5 text-white p-3 rounded-lg font-semibold transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                                         >
                                             {isCheckingStock ? t("cart.checkingStock") : t("cart.checkout")}
                                         </button>
@@ -347,7 +347,7 @@ export default function CartPage() {
 
                                     <Link
                                         href="/products"
-                                        className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors cursor-pointer"
+                                        className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors"
                                     >
                                         {t("cart.continueShopping")}
                                     </Link>

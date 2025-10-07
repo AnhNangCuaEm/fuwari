@@ -175,7 +175,7 @@ export default function UsersManagement() {
                 <td className="px-4 py-2">
                   <button 
                     onClick={() => handleUserDetail(user)}
-                    className="text-blue-600 hover:bg-gray-200 hover:cursor-pointer text-sm font-medium p-1 rounded-md transition-colors duration-200"
+                    className="text-blue-600 hover:bg-gray-200 text-sm font-medium p-1 rounded-md transition-colors duration-200"
                   >
                     詳細
                   </button>

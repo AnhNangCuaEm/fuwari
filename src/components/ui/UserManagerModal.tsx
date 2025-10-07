@@ -84,7 +84,7 @@ export default function UserManagerModal({ user, isOpen, onClose, onUserUpdate }
                         <h2 className="text-xl font-semibold text-gray-800">ユーザー詳細</h2>
                         <button
                             onClick={onClose}
-                            className="text-gray-500 hover:text-gray-700 hover:cursor-pointer"
+                            className="text-gray-500 hover:text-gray-700"
                             disabled={loading}
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@ export default function UserManagerModal({ user, isOpen, onClose, onUserUpdate }
                         <button
                             onClick={handleRoleChange}
                             disabled={loading}
-                            className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 hover:cursor-pointer disabled:bg-gray-400 text-sm"
+                            className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:bg-gray-400 text-sm"
                         >
                             {loading ? '処理中...' : user.role === 'admin' ? 'Userに変更' : 'Adminに変更'}
                         </button>
@@ -190,7 +190,7 @@ export default function UserManagerModal({ user, isOpen, onClose, onUserUpdate }
                         <button
                             onClick={handleBanUser}
                             disabled={loading}
-                            className={`px-4 py-2 text-white rounded text-sm hover:cursor-pointer disabled:bg-gray-400 ${user.status === 'banned'
+                            className={`px-4 py-2 text-white rounded text-sm disabled:bg-gray-400 ${user.status === 'banned'
                                     ? 'bg-green-500 hover:bg-green-600'
                                     : 'bg-red-500 hover:bg-red-600'
                                 }`}
@@ -202,7 +202,7 @@ export default function UserManagerModal({ user, isOpen, onClose, onUserUpdate }
                     <button
                         onClick={onClose}
                         disabled={loading}
-                        className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 hover:cursor-pointer disabled:bg-gray-400 text-sm"
+                        className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:bg-gray-400 text-sm"
                     >
                         閉じる
                     </button>
