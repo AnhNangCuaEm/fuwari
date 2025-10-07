@@ -26,10 +26,11 @@ export async function middleware(request: NextRequest) {
   // Handle internationalization first
   const response = intlMiddleware(request);
   
-  // Get token
+  // Get token with cookieName to ensure compatibility
   const token = await getToken({ 
     req: request, 
-    secret: process.env.NEXTAUTH_SECRET 
+    secret: process.env.NEXTAUTH_SECRET,
+    secureCookie: process.env.NODE_ENV === "production",
   })
   
   // Helper function to check if path matches protected routes
