@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google"
 import { verifyPassword, createGoogleUser } from "@/lib/users"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true, // Required for production deployment
   providers: [
     CredentialsProvider({
       name: "credentials",
