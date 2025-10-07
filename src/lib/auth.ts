@@ -109,17 +109,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
+  // Simplified cookie configuration for better compatibility
   cookies: {
     sessionToken: {
-      name: process.env.NODE_ENV === "production" 
-        ? `__Secure-next-auth.session-token` 
-        : `next-auth.session-token`,
+      name: `next-auth.session-token`,
       options: {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: process.env.NODE_ENV === "production",
+        secure: false, // Set to false if not using HTTPS
       },
     },
   },
+  // Add debug logging
+  debug: process.env.NODE_ENV === "development",
 })

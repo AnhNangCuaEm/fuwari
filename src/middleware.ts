@@ -30,7 +30,7 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ 
     req: request, 
     secret: process.env.NEXTAUTH_SECRET,
-    secureCookie: process.env.NODE_ENV === "production",
+    secureCookie: false, // Set to false for better compatibility, especially without HTTPS
   })
   
   // Helper function to check if path matches protected routes
