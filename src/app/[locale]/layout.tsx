@@ -41,6 +41,10 @@ export default async function LocaleLayout({
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages();
+  
+  // Get session on server side to pass to SessionProvider
+  const { auth } = await import('@/lib/auth');
+  const session = await auth();
 
   return (
     <html lang={locale}>
@@ -48,7 +52,7 @@ export default async function LocaleLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-          <Providers>
+          <Providers session={session}>
             {children}
           </Providers>
         </NextIntlClientProvider>

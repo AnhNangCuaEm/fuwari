@@ -110,19 +110,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  // Cookie configuration - for HTTPS with reverse proxy
-  cookies: {
-    sessionToken: {
-      name: 'next-auth.session-token',
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        // Use secure cookies when NEXTAUTH_URL is https
-        secure: process.env.NEXTAUTH_URL?.startsWith('https://') ?? true,
-      },
-    },
-  },
   // Add debug logging
   debug: process.env.NODE_ENV === "development",
 })
