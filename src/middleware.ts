@@ -7,7 +7,8 @@ import createIntlMiddleware from 'next-intl/middleware';
 const intlMiddleware = createIntlMiddleware({
   locales: ['ja', 'en'],
   defaultLocale: 'ja',
-  localePrefix: 'as-needed'
+  localePrefix: 'as-needed',
+  localeDetection: true // Enable automatic locale detection from browser
 });
 
 export const config = {

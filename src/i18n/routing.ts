@@ -8,5 +8,8 @@ export const routing = defineRouting({
   defaultLocale: 'ja',
 
   // The locale prefix strategy
-  localePrefix: 'as-needed'
+  localePrefix: 'as-needed',
+  
+  // Enable automatic locale detection from browser
+  localeDetection: true
 });
