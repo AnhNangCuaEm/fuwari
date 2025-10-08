@@ -1,13 +1,12 @@
 'use client';
 
 import {useLocale} from 'next-intl';
-import {useRouter, usePathname} from '@/i18n/navigation';
+import {usePathname} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname(); // Use Next.js pathname to get full path with locale
 
   const handleLocaleChange = (newLocale: string) => {
     // Save current cart state before language switch
@@ -21,9 +20,29 @@ export default function LanguageSwitcher() {
       console.error('Error backing up cart before locale change:', error)
     }
     
+    // Get the path without the current locale prefix
+    let pathWithoutLocale = pathname;
+    routing.locales.forEach(loc => {
+      if (pathname.startsWith(`/${loc}/`)) {
+        pathWithoutLocale = pathname.slice(loc.length + 1);
+      } else if (pathname === `/${loc}`) {
+        pathWithoutLocale = '/';
+      }
+    });
+    
+    // Build new path with new locale
+    let newPath;
+    if (newLocale === 'ja') {
+      // Japanese is default, no prefix needed
+      newPath = pathWithoutLocale;
+    } else {
+      // Add locale prefix for other languages
+      newPath = `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+    }
+    
     // Small delay to ensure localStorage operations complete
     setTimeout(() => {
-      router.replace(pathname, {locale: newLocale});
+      window.location.href = newPath;
     }, 10);
   };
 
