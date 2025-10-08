@@ -5,6 +5,7 @@ import { verifyPassword, createGoogleUser } from "@/lib/users"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true, // Required for production deployment
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "credentials",
