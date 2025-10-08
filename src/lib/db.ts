@@ -15,9 +15,12 @@ const dbConfig = {
   charset: 'utf8mb4',
   waitForConnections: true,
   connectionLimit: 10,
+  maxIdle: 10, // Max idle connections for serverless
+  idleTimeout: 60000, // Close idle connections after 60s
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
+  connectTimeout: 10000, // 10s connection timeout
 };
 
 // Create connection pool
