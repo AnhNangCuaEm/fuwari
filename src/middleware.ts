@@ -29,14 +29,26 @@ export async function middleware(request: NextRequest) {
   
   // Get token - secureCookie should match auth.ts cookie configuration
   const isProduction = process.env.NODE_ENV === "production";
+  const cookieName = isProduction 
+    ? '__Secure-next-auth.session-token'
+    : 'next-auth.session-token';
+  
   const token = await getToken({ 
     req: request, 
     secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
     secureCookie: isProduction,
-    cookieName: isProduction 
-      ? '__Secure-next-auth.session-token'
-      : 'next-auth.session-token',
+    cookieName: cookieName,
   })
+  
+  // Debug logging in production
+  if (process.env.NODE_ENV === "production" && (pathname.includes('/mypage') || pathname.includes('/admin'))) {
+    console.log('[Middleware] Path:', pathname);
+    console.log('[Middleware] Cookie Name:', cookieName);
+    console.log('[Middleware] Has Token:', !!token);
+    console.log('[Middleware] Token Role:', token?.role);
+    const cookies = request.cookies.getAll();
+    console.log('[Middleware] All Cookies:', cookies.map(c => c.name).join(', '));
+  }
   
   // Helper function to check if path matches protected routes
   const isProtectedPath = (path: string, routes: string[]) => {
