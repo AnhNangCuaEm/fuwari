@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { put } from '@vercel/blob';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(request: NextRequest) {
@@ -22,31 +21,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
     // Generate unique filename
     const fileExtension = file.name.split('.').pop() || 'jpg';
     const fileName = `avatar-${uuidv4()}.${fileExtension}`;
-    const filePath = join(process.cwd(), 'public', 'uploads', fileName);
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = join(process.cwd(), 'public', 'uploads');
-    try {
-      await writeFile(join(uploadsDir, '.gitkeep'), '');
-    } catch {
-      // Directory might already exist, that's ok
-    }
-
-    // Write the file
-    await writeFile(filePath, buffer);
-
-    // Return the public URL
-    const imageUrl = `/uploads/${fileName}`;
+    // Upload to Vercel Blob
+    const blob = await put(fileName, file, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
 
     return NextResponse.json({ 
       success: true, 
-      imageUrl,
+      imageUrl: blob.url,
       message: 'Avatar uploaded successfully'
     });
 
