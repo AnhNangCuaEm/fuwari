@@ -22,28 +22,39 @@ export default function LanguageSwitcher() {
     
     // Get the path without the current locale prefix
     let pathWithoutLocale = pathname;
-    routing.locales.forEach(loc => {
-      if (pathname.startsWith(`/${loc}/`)) {
-        pathWithoutLocale = pathname.slice(loc.length + 1);
-      } else if (pathname === `/${loc}`) {
-        pathWithoutLocale = '/';
-      }
-    });
+    
+    // Remove current locale prefix if it exists
+    if (pathname.startsWith('/en/')) {
+      pathWithoutLocale = pathname.slice(3); // Remove '/en'
+    } else if (pathname === '/en') {
+      pathWithoutLocale = '/';
+    } else if (pathname.startsWith('/ja/')) {
+      pathWithoutLocale = pathname.slice(3); // Remove '/ja'
+    } else if (pathname === '/ja') {
+      pathWithoutLocale = '/';
+    }
+    
+    // Ensure pathWithoutLocale starts with '/' unless it's empty
+    if (pathWithoutLocale && !pathWithoutLocale.startsWith('/')) {
+      pathWithoutLocale = '/' + pathWithoutLocale;
+    }
     
     // Build new path with new locale
     let newPath;
     if (newLocale === 'ja') {
       // Japanese is default, no prefix needed
-      newPath = pathWithoutLocale;
+      newPath = pathWithoutLocale || '/';
+      // Set a flag to help with redirect handling if needed
+      if (pathname.startsWith('/en')) {
+        sessionStorage.setItem('redirectToJapanese', 'true');
+      }
     } else {
       // Add locale prefix for other languages
-      newPath = `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+      newPath = `/${newLocale}${pathWithoutLocale || ''}`;
     }
     
-    // Small delay to ensure localStorage operations complete
-    setTimeout(() => {
-      window.location.href = newPath;
-    }, 10);
+    // Use window.location.href for reliable navigation
+    window.location.href = newPath;
   };
 
   return (

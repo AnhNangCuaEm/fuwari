@@ -8,7 +8,7 @@ const intlMiddleware = createIntlMiddleware({
   locales: ['ja', 'en'],
   defaultLocale: 'ja',
   localePrefix: 'as-needed',
-  localeDetection: true // Enable automatic locale detection from browser
+  localeDetection: false // Disable automatic locale detection to prevent unwanted redirects
 });
 
 export const config = {

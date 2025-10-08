@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import Providers from "@/components/Providers";
+import LocaleHandler from "@/components/LocaleHandler";
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
@@ -53,6 +54,7 @@ export default async function LocaleLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <Providers session={session}>
+            <LocaleHandler />
             {children}
           </Providers>
         </NextIntlClientProvider>

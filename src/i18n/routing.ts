@@ -10,6 +10,6 @@ export const routing = defineRouting({
   // The locale prefix strategy
   localePrefix: 'as-needed',
   
-  // Enable automatic locale detection from browser
-  localeDetection: true
+  // Disable automatic locale detection to prevent unwanted redirects
+  localeDetection: false
 });
