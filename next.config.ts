@@ -27,6 +27,12 @@ const nextConfig: NextConfig = {
         port: process.env.NEXT_PUBLIC_PORT || '',
         pathname: '/uploads/**',
       }] : []),
+      // Vercel Blob Storage
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (config, { isServer }) => {
