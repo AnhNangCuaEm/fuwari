@@ -26,11 +26,11 @@ export async function middleware(request: NextRequest) {
   // Handle internationalization first
   const response = intlMiddleware(request);
   
-  // Get token with cookieName to ensure compatibility
+  // Get token - secureCookie should match auth.ts cookie configuration
   const token = await getToken({ 
     req: request, 
     secret: process.env.NEXTAUTH_SECRET,
-    secureCookie: false, // Set to false for better compatibility, especially without HTTPS
+    secureCookie: process.env.NEXTAUTH_URL?.startsWith('https://') ?? false,
   })
   
   // Helper function to check if path matches protected routes
