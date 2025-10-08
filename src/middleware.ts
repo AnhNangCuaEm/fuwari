@@ -28,10 +28,14 @@ export async function middleware(request: NextRequest) {
   const response = intlMiddleware(request);
   
   // Get token - secureCookie should match auth.ts cookie configuration
+  const isProduction = process.env.NODE_ENV === "production";
   const token = await getToken({ 
     req: request, 
     secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
-    secureCookie: process.env.NEXTAUTH_URL?.startsWith('https://') ?? true,
+    secureCookie: isProduction,
+    cookieName: isProduction 
+      ? '__Secure-next-auth.session-token'
+      : 'next-auth.session-token',
   })
   
   // Helper function to check if path matches protected routes

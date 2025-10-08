@@ -18,8 +18,9 @@ export async function GET(request: Request) {
     
     // Get cookies from request
     const cookies = request.headers.get('cookie')
-    const sessionCookie = cookies?.split(';').find(c => c.trim().startsWith('next-auth.session-token='))
-    const secureCookie = cookies?.split(';').find(c => c.trim().startsWith('__Secure-next-auth.session-token='))
+    const allCookies = cookies?.split(';').map(c => c.trim()) || []
+    const sessionCookie = allCookies.find(c => c.startsWith('next-auth.session-token='))
+    const secureCookie = allCookies.find(c => c.startsWith('__Secure-next-auth.session-token='))
     
     return NextResponse.json({
       environment: {
@@ -39,10 +40,12 @@ export async function GET(request: Request) {
         email: token.email,
       } : null,
       cookies: {
+        allCookieNames: allCookies.map(c => c.split('=')[0]),
         hasCookie: !!sessionCookie,
         hasSecureCookie: !!secureCookie,
         rawCookie: sessionCookie ? '[PRESENT]' : '[MISSING]',
         rawSecureCookie: secureCookie ? '[PRESENT]' : '[MISSING]',
+        totalCookies: allCookies.length,
       }
     }, { status: 200 })
   } catch (error) {
