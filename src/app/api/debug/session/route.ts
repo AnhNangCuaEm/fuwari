@@ -9,6 +9,8 @@ export async function GET(request: Request) {
     
     // Get token from JWT
     const token = await getToken({
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       req: request as unknown as any,
       secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
       secureCookie: process.env.NEXTAUTH_URL?.startsWith('https://') ?? true,
