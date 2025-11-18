@@ -179,7 +179,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                     key={product.id}
                                     href={`/products/${product.id}`}
                                     onClick={handleClose}
-                                    className="relative flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-80"
+                                    className="relative flex flex-col bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden h-80"
                                 >
                                     {/* Background Image */}
                                     <div className="absolute inset-0">
@@ -187,7 +187,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                             src={product.image}
                                             alt={`${product.name} (${product.engName})`}
                                             fill
-                                            className="object-cover rounded-xl hover:scale-105 transition-transform duration-300"
+                                            className="object-cover rounded-xl"
                                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         />
                                     </div>

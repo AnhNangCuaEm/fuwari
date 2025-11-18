@@ -85,7 +85,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                         {product.modelPath ? (
                             <button
                                 onClick={toggleView}
-                                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300"
+                                className="inline-flex items-center justify-center gap-2 p-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300"
                                 title={showModel ? "画像を表示" : "3Dモデルに切り替え"}
                             >
                                 {showModel ? (
@@ -101,11 +101,12 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                                     </>
                                 ) : (
                                     <>
-                                        <div className="w-10 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded flex items-center justify-center">
-                                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                            </svg>
-                                        </div>
+                                        <Image
+                                            src="/cube.svg"
+                                            alt="3D Model Icon"
+                                            width={20}
+                                            height={20}
+                                        />
                                         <span className="text-sm font-medium text-gray-600">3D Model</span>
                                     </>
                                 )}
@@ -167,17 +168,16 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                             {product.quantity > 0 ? t('shopping.addToCartBtn') : t('shopping.soldOut')}
                         </button>
 
-                        <button 
+                        <button
                             onClick={() => {
                                 handleAddToCart();
                                 window.location.href = `/${locale}/cart`;
                             }}
                             disabled={product.quantity === 0}
-                            className={`w-full py-3 px-6 rounded-lg transition-colors duration-300 font-semibold ${
-                                product.quantity > 0
+                            className={`w-full py-3 px-6 rounded-lg transition-colors duration-300 font-semibold ${product.quantity > 0
                                     ? 'bg-green-600 text-white hover:bg-green-700'
                                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                            }`}
+                                }`}
                         >
                             {product.quantity > 0 ? t('shopping.buyNow') : t('shopping.soldOut')}
                         </button>
@@ -194,7 +194,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-600">{t('shopping.stockStatus')}:</span>
-                            <span className={`font-medium ${getStockStatus(product.quantity).color}`}>{getStockStatus(product.quantity).text}</span>
+                            <span className={`font-medium ${getStockStatus(product.quantity).color}`}>{getStockStatus(product.quantity).text}<span className="ml-1">({product.quantity})</span></span>
                         </div>
                     </div>
                 </div>
