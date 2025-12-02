@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { Product } from '@/types/product';
 import Image from 'next/image';
@@ -20,6 +20,24 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Filter states
+    const [minPrice, setMinPrice] = useState<string>('');
+    const [maxPrice, setMaxPrice] = useState<string>('');
+    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+    const [isIngredientDropdownOpen, setIsIngredientDropdownOpen] = useState(false);
+    const ingredientDropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (ingredientDropdownRef.current && !ingredientDropdownRef.current.contains(event.target as Node)) {
+                setIsIngredientDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     // Load products from API when modal opens
     useEffect(() => {
         if (isOpen && products.length === 0) {
@@ -38,6 +56,17 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         }
     }, [isOpen, products.length]);
 
+    // Extract unique ingredients from all products
+    const availableIngredients = useMemo(() => {
+        const ingredientSet = new Set<string>();
+        products.forEach(product => {
+            product.ingredients.forEach(ingredient => {
+                ingredientSet.add(ingredient.toLowerCase().trim());
+            });
+        });
+        return Array.from(ingredientSet).sort();
+    }, [products]);
+
     // Filter and sort products based on search criteria
     const filteredAndSortedProducts = useMemo(() => {
         if (!products.length) return [];
@@ -52,6 +81,27 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 product.engName.toLowerCase().includes(term) ||
                 product.description.toLowerCase().includes(term) ||
                 product.engDescription.toLowerCase().includes(term)
+            );
+        }
+
+        // Price filter
+        const min = minPrice ? parseFloat(minPrice) : null;
+        const max = maxPrice ? parseFloat(maxPrice) : null;
+        if (min !== null) {
+            filtered = filtered.filter(product => product.price >= min);
+        }
+        if (max !== null) {
+            filtered = filtered.filter(product => product.price <= max);
+        }
+
+        // Ingredients filter
+        if (selectedIngredients.length > 0) {
+            filtered = filtered.filter(product =>
+                selectedIngredients.some(selectedIng =>
+                    product.ingredients.some(ing =>
+                        ing.toLowerCase().trim() === selectedIng
+                    )
+                )
             );
         }
 
@@ -74,12 +124,25 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         }
 
         return sorted;
-    }, [products, searchTerm, sortBy]);
+    }, [products, searchTerm, sortBy, minPrice, maxPrice, selectedIngredients]);
 
     const clearSearch = () => {
         setSearchTerm('');
         setSortBy('relevance');
+        setMinPrice('');
+        setMaxPrice('');
+        setSelectedIngredients([]);
     };
+
+    const toggleIngredient = (ingredient: string) => {
+        setSelectedIngredients(prev =>
+            prev.includes(ingredient)
+                ? prev.filter(i => i !== ingredient)
+                : [...prev, ingredient]
+        );
+    };
+
+    const hasActiveFilters = minPrice || maxPrice || selectedIngredients.length > 0;
 
     const handleClose = () => {
         clearSearch();
@@ -137,16 +200,143 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                 <p
                                     key={option.value}
                                     onClick={() => setSortBy(option.value as SortOption)}
-                                    className={`px-3 py-1 text-sm rounded-full cursor-pointer transition-colors ${
-                                        sortBy === option.value
+                                    className={`px-3 py-1 text-sm rounded-full cursor-pointer transition-colors ${sortBy === option.value
                                             ? 'bg-almond-6 text-white'
                                             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    }`}
+                                        }`}
                                 >
                                     {option.label}
                                 </p>
                             ))}
                         </div>
+
+                        <div className='flex flex-wrap gap-4'>
+                            {/* Price Range Filter */}
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className="text-sm font-medium text-gray-700 mr-2">{t('search.priceRange')}:</span>
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="number"
+                                        value={minPrice}
+                                        onChange={(e) => setMinPrice(e.target.value)}
+                                        placeholder={t('search.minPrice')}
+                                        className="w-24 px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-almond-5 focus:border-transparent"
+                                        min="0"
+                                    />
+                                    <span className="text-gray-500">-</span>
+                                    <input
+                                        type="number"
+                                        value={maxPrice}
+                                        onChange={(e) => setMaxPrice(e.target.value)}
+                                        placeholder={t('search.maxPrice')}
+                                        className="w-24 px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-almond-5 focus:border-transparent"
+                                        min="0"
+                                    />
+                                    <span className="text-gray-500 text-sm">¥</span>
+                                </div>
+                            </div>
+
+                            {/* Ingredients Filter - Dropdown */}
+                            {availableIngredients.length > 0 && (
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <span className="text-sm font-medium text-gray-700 mr-2">{t('search.ingredients')}:</span>
+                                    <div className="relative" ref={ingredientDropdownRef}>
+                                        <button
+                                            onClick={() => setIsIngredientDropdownOpen(!isIngredientDropdownOpen)}
+                                            className={`px-3 py-1.5 text-sm rounded-md border transition-colors flex items-center gap-2 ${selectedIngredients.length > 0
+                                                    ? 'bg-almond-6 text-white border-almond-6'
+                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                }`}
+                                        >
+                                            <span>
+                                                {selectedIngredients.length > 0
+                                                    ? `${selectedIngredients.length} ${t('search.selected')}`
+                                                    : t('search.selectIngredients')}
+                                            </span>
+                                            <svg
+                                                className={`w-4 h-4 transition-transform ${isIngredientDropdownOpen ? 'rotate-180' : ''}`}
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </button>
+
+                                        {/* Dropdown Menu */}
+                                        {isIngredientDropdownOpen && (
+                                            <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                                                <div className="p-2">
+                                                    {availableIngredients.map((ingredient) => (
+                                                        <label
+                                                            key={ingredient}
+                                                            className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-100 rounded cursor-pointer"
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={selectedIngredients.includes(ingredient)}
+                                                                onChange={() => toggleIngredient(ingredient)}
+                                                                className="w-4 h-4 text-almond-6 border-gray-300 rounded focus:ring-almond-5"
+                                                            />
+                                                            <span className="text-sm text-gray-700 capitalize">{ingredient}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                                {selectedIngredients.length > 0 && (
+                                                    <div className="border-t border-gray-200 p-2">
+                                                        <button
+                                                            onClick={() => setSelectedIngredients([])}
+                                                            className="w-full text-sm text-center text-almond-6 hover:text-almond-7"
+                                                        >
+                                                            {t('search.clearSelection')}
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Selected ingredients tags */}
+                                    {selectedIngredients.length > 0 && (
+                                        <div className="flex flex-wrap gap-1">
+                                            {selectedIngredients.map((ingredient) => (
+                                                <span
+                                                    key={ingredient}
+                                                    className="inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-almond-2 text-almond-7 rounded-full capitalize"
+                                                >
+                                                    {ingredient}
+                                                    <button
+                                                        onClick={() => toggleIngredient(ingredient)}
+                                                        className="hover:text-almond-9"
+                                                    >
+                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
+
+                        {/* Clear Filters Button */}
+                        {hasActiveFilters && (
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={() => {
+                                        setMinPrice('');
+                                        setMaxPrice('');
+                                        setSelectedIngredients([]);
+                                    }}
+                                    className="text-sm text-almond-6 hover:text-almond-7 underline"
+                                >
+                                    {t('search.clearFilters')}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -159,11 +349,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     ) : filteredAndSortedProducts.length === 0 ? (
                         <div className="text-center py-8">
                             <p className="text-gray-500 mb-4">
-                                {searchTerm
+                                {(searchTerm || hasActiveFilters)
                                     ? t('search.noResults')
                                     : t('search.startSearching')}
                             </p>
-                            {searchTerm && (
+                            {(searchTerm || hasActiveFilters) && (
                                 <button
                                     onClick={clearSearch}
                                     className="px-4 py-2 bg-[#CC8409] text-white rounded-md hover:bg-[#D69E2E] transition-colors"

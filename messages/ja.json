@@ -249,7 +249,17 @@
     "priceHighLow": "価格：高い順",
     "noResults": "該当する商品が見つかりません。",
     "startSearching": "検索を開始して商品を見つけましょう。",
-    "clearSearch": "検索をクリア"
+    "clearSearch": "検索をクリア",
+    "filter": "フィルター",
+    "priceRange": "価格帯",
+    "minPrice": "最低",
+    "maxPrice": "最高",
+    "ingredients": "原材料",
+    "allIngredients": "すべて",
+    "clearFilters": "フィルターをクリア",
+    "selectIngredients": "原材料を選択",
+    "selected": "件選択中",
+    "clearSelection": "選択をクリア"
   },
   "ImageCropModal": {
     "title": "画像をトリミング",

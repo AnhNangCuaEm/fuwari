@@ -249,7 +249,17 @@
     "priceHighLow": "Price: High to Low",
     "noResults": "No products found.",
     "startSearching": "Start searching to see products.",
-    "clearSearch": "Clear Search"
+    "clearSearch": "Clear Search",
+    "filter": "Filter",
+    "priceRange": "Price Range",
+    "minPrice": "Min",
+    "maxPrice": "Max",
+    "ingredients": "Ingredients",
+    "allIngredients": "All",
+    "clearFilters": "Clear Filters",
+    "selectIngredients": "Select ingredients",
+    "selected": "selected",
+    "clearSelection": "Clear selection"
   },
   "ImageCropModal": {
     "title": "Crop Image",
