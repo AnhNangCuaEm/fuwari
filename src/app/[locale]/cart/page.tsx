@@ -11,6 +11,7 @@ import { Link } from '@/i18n/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { useCart } from "@/lib/hooks/useCart";
 import CheckoutModal from "@/components/cart/CheckoutModal";
+import DeliveryDatePicker from "@/components/cart/DeliveryDatePicker";
 import AlertModal from "@/components/ui/AlertModal";
 import type { Product } from "@/types/product";
 import { OrderTotals } from "@/types/order";
@@ -42,6 +43,7 @@ export default function CartPage() {
     const [itemToRemove, setItemToRemove] = useState<number | null>(null);
     const [showStockErrorAlert, setShowStockErrorAlert] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
+    const [selectedDeliveryDate, setSelectedDeliveryDate] = useState<Date | null>(null);
 
     // Fetch products on mount
     useEffect(() => {
@@ -324,11 +326,26 @@ export default function CartPage() {
                                         <span className="text-green-600">¥{getTotal()}</span>
                                     </div>
 
+                                    {/* Delivery Date Picker */}
+                                    <div className="mt-4">
+                                        <DeliveryDatePicker
+                                            selectedDate={selectedDeliveryDate}
+                                            onDateSelect={setSelectedDeliveryDate}
+                                            minDaysFromNow={1}
+                                        />
+                                    </div>
+
                                     {!showCheckout ? (
                                         <button
                                             onClick={async () => {
                                                 if (!stripePromise) {
                                                     alert('Payment system is not available. Please check environment configuration.');
+                                                    return;
+                                                }
+
+                                                // Check if delivery date is selected
+                                                if (!selectedDeliveryDate) {
+                                                    alert(t('delivery.pleaseSelect'));
                                                     return;
                                                 }
 
@@ -338,7 +355,7 @@ export default function CartPage() {
                                                     setShowCheckout(true);
                                                 }
                                             }}
-                                            disabled={isCheckingStock}
+                                            disabled={isCheckingStock || !selectedDeliveryDate}
                                             className="w-full bg-almond-6 hover:bg-almond-5 text-white p-3 rounded-lg font-semibold transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                                         >
                                             {isCheckingStock ? t("cart.checkingStock") : t("cart.checkout")}
@@ -394,6 +411,7 @@ export default function CartPage() {
                         isOpen={showCheckout}
                         cartItems={cartItems}
                         totals={totals}
+                        deliveryDate={selectedDeliveryDate!}
                         onSuccess={handlePaymentSuccess}
                         onClose={handleCheckoutCancel}
                     />

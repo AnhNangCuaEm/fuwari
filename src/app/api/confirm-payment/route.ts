@@ -7,18 +7,19 @@ import { auth } from '@/lib/auth';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { paymentIntentId, cartItems, customerInfo, totals }: {
+    const { paymentIntentId, cartItems, customerInfo, totals, deliveryDate }: {
       paymentIntentId: string;
       cartItems: CreateOrderData['items'];
       customerInfo: CreateOrderData['customerInfo'];
       totals: CreateOrderData['totals'];
+      deliveryDate: string;
     } = body;
     
     // Get user session if available (for authenticated users)
     const session = await auth();
 
     // Validate required fields
-    if (!paymentIntentId || !cartItems || !customerInfo || !totals) {
+    if (!paymentIntentId || !cartItems || !customerInfo || !totals || !deliveryDate) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -47,6 +48,7 @@ export async function POST(request: NextRequest) {
       customerInfo,
       stripePaymentIntentId: paymentIntentId,
       userId: session?.user?.id || null, // Pass user ID if logged in, null for guest
+      deliveryDate: deliveryDate,
     };
 
     // Convert cart items to stock format

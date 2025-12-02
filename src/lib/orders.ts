@@ -36,14 +36,15 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
     status: 'paid',
     stripePaymentIntentId: orderData.stripePaymentIntentId,
     shippingAddress: orderData.customerInfo,
+    deliveryDate: orderData.deliveryDate,
     createdAt: now.toISOString(),
     updatedAt: now.toISOString(),
   };
 
   try {
     await query(
-      `INSERT INTO orders (id, customerId, customerEmail, items, subtotal, tax, shipping, total, status, stripePaymentIntentId, shippingAddress, createdAt, updatedAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO orders (id, customerId, customerEmail, items, subtotal, tax, shipping, total, status, stripePaymentIntentId, shippingAddress, deliveryDate, createdAt, updatedAt) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         order.id,
         order.customerId,
@@ -56,6 +57,7 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
         order.status,
         order.stripePaymentIntentId,
         JSON.stringify(order.shippingAddress),
+        order.deliveryDate,
       ]
     );
     return order;

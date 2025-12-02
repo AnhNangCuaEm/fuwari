@@ -95,12 +95,14 @@ CREATE TABLE
     ) NOT NULL DEFAULT 'pending',
     `stripePaymentIntentId` VARCHAR(255) DEFAULT NULL,
     `shippingAddress` JSON NOT NULL COMMENT 'Shipping address object',
+    `deliveryDate` VARCHAR(255) NOT NULL COMMENT 'Scheduled delivery date in ISO format',
     `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX `idx_customerId` (`customerId`),
     INDEX `idx_customerEmail` (`customerEmail`),
     INDEX `idx_status` (`status`),
     INDEX `idx_createdAt` (`createdAt`),
+    INDEX `idx_deliveryDate` (`deliveryDate`),
     FOREIGN KEY (`customerId`) REFERENCES `users` (`id`) ON DELETE SET NULL
   ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 

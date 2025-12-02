@@ -38,6 +38,7 @@ export interface Order {
   status: 'pending' | 'paid' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   stripePaymentIntentId?: string;
   shippingAddress: ShippingAddress;
+  deliveryDate: string; // ISO date string for scheduled delivery
   createdAt: string;
   updatedAt: string;
 }
@@ -48,4 +49,5 @@ export interface CreateOrderData {
   customerInfo: ShippingAddress;
   stripePaymentIntentId: string;
   userId?: string | null; // Optional user ID for authenticated users
+  deliveryDate: string; // ISO date string for scheduled delivery
 }

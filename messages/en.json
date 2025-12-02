@@ -266,5 +266,35 @@
     "processing": "Processing...",
     "apply": "Apply",
     "cancel": "Cancel"
+  },
+  "delivery": {
+    "title": "Select Delivery Date",
+    "selectedDate": "Selected Delivery Date",
+    "deliveryDate": "Delivery Date",
+    "pleaseSelect": "Please select a delivery date",
+    "hint": "※ You can select a delivery date starting from tomorrow",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "days": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    }
   }
 }

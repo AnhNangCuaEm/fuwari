@@ -266,5 +266,35 @@
     "processing": "処理中...",
     "apply": "適用",
     "cancel": "キャンセル"
+  },
+  "delivery": {
+    "title": "配送日を選択",
+    "selectedDate": "選択された配送日",
+    "deliveryDate": "配送日",
+    "pleaseSelect": "配送日を選択してください",
+    "hint": "※配送日は明日以降から選択できます",
+    "months": {
+      "january": "1月",
+      "february": "2月",
+      "march": "3月",
+      "april": "4月",
+      "may": "5月",
+      "june": "6月",
+      "july": "7月",
+      "august": "8月",
+      "september": "9月",
+      "october": "10月",
+      "november": "11月",
+      "december": "12月"
+    },
+    "days": {
+      "sun": "日",
+      "mon": "月",
+      "tue": "火",
+      "wed": "水",
+      "thu": "木",
+      "fri": "金",
+      "sat": "土"
+    }
   }
 }

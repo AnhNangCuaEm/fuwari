@@ -10,6 +10,7 @@ interface CheckoutModalProps {
   isOpen: boolean;
   cartItems: CartItem[];
   totals: OrderTotals;
+  deliveryDate: Date;
   onSuccess: (paymentIntentId: string, orderId: string) => void;
   onClose: () => void;
 }
@@ -30,7 +31,7 @@ const cardElementOptions = {
   hidePostalCode: true,
 };
 
-export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, onClose }: CheckoutModalProps) {
+export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate, onSuccess, onClose }: CheckoutModalProps) {
   const stripe = useStripe();
   const elements = useElements();
   const { data: session } = useSession();
@@ -161,6 +162,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
           cartItems,
           customerInfo,
           totals,
+          deliveryDate: deliveryDate.toISOString(),
         }),
       });
 
@@ -255,6 +257,19 @@ export default function CheckoutModal({ isOpen, cartItems, totals, onSuccess, on
               <div className="border-t pt-2 flex justify-between font-bold text-lg">
                 <span>{t('payment.total')}:</span>
                 <span className="text-green-600">¥{totals.total}</span>
+              </div>
+              {/* Delivery Date Display */}
+              <div className="border-t pt-2 mt-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">{t('delivery.deliveryDate')}:</span>
+                  <span className="text-[#8B7355] font-semibold">
+                    {deliveryDate.toLocaleDateString('ja-JP', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
