@@ -410,7 +410,109 @@ VALUES
     20,
     '/2dimage/strawberrycake.jpg',
     '/3dmodels/strawberrycake/scene.gltf'
-  );
+  ),
+  (
+    5,
+    '誕生ケーキ',
+    'Birthday Cake',
+    'フルーツとクリームの豪華な誕生ケーキ。',
+    'Luxurious birthday cake with fruits and cream.',
+    JSON_ARRAY (
+      '小麦粉',
+      '砂糖',
+      'バター',
+      '卵',
+      'フルーツミックス',
+      '生クリーム',
+      'ベーキングパウダー',
+      'バニラエッセンス'
+    ),
+    JSON_ARRAY (
+      'Flour',
+      'Sugar',
+      'Butter',
+      'Eggs',
+      'Mixed Fruits',
+      'Heavy Cream',
+      'Baking Powder',
+      'Vanilla Extract'
+    ),
+    JSON_ARRAY ('小麦', '卵', '乳', 'ナッツ'),
+    JSON_ARRAY ('Wheat', 'Eggs', 'Dairy', 'Nuts'),
+    1200,
+    30,
+    '/2dimage/birthdaycake.jpg',
+    '/3dmodels/birthdaycake/scene.gltf'
+  ),
+  (
+    6,
+    'パーティーケーキ',
+    'Party Cake',
+    'フルーツとクリームの豪華なパーティーケーキ。',
+    'Luxurious party cake with fruits and cream.',
+    JSON_ARRAY (
+      '小麦粉',
+      '砂糖',
+      'バター',
+      '卵',
+      'フルーツミックス',
+      '生クリーム',
+      'ベーキングパウダー',
+      'バニラエッセンス'
+    ),
+    JSON_ARRAY (
+      'Flour',
+      'Sugar',
+      'Butter',
+      'Eggs',
+      'Mixed Fruits',
+      'Heavy Cream',
+      'Baking Powder',
+      'Vanilla Extract'
+    ),
+    JSON_ARRAY ('小麦', '卵', '乳', 'ナッツ'),
+    JSON_ARRAY ('Wheat', 'Eggs', 'Dairy', 'Nuts'),
+    800,
+    25,
+    '/2dimage/partycake.jpg',
+    '/3dmodels/partycake/scene.gltf'
+  ),
+  (
+    7,
+    'チョコレートクッキー',
+    'Chocolate Cookie',
+    '濃厚なチョコレートクッキー。',
+    'Rich chocolate cookie.',
+    JSON_ARRAY (
+      '小麦粉',
+      '砂糖',
+      'バター',
+      '卵',
+      'ココアパウダー',
+      'チョコレートチップ',
+      'ベーキングソーダ',
+      '塩',
+      'バニラエッセンス'
+    ),
+    JSON_ARRAY (
+      'Flour',
+      'Sugar',
+      'Butter',
+      'Eggs',
+      'Cocoa Powder',
+      'Chocolate Chips',
+      'Baking Soda',
+      'Salt',
+      'Vanilla Extract'
+    ),
+    JSON_ARRAY ('小麦', '卵', '乳'),
+    JSON_ARRAY ('Wheat', 'Eggs', 'Dairy'),
+    600,
+    40,
+    '/2dimage/chococookie.jpg',
+    '/3dmodels/chococookie/scene.gltf'
+  )
+  ;
 
 -- =====================================================
 -- End of init.sql
