@@ -3,7 +3,7 @@
  * Handles PostgreSQL connection pool and query execution
  */
 
-import { Pool, PoolClient, QueryResult } from 'pg';
+import { Pool, PoolClient } from 'pg';
 
 // Database configuration from environment variables
 const dbConfig = {
@@ -91,7 +91,7 @@ export async function beginTransaction(): Promise<PoolClient> {
 export async function testConnection(): Promise<boolean> {
   try {
     const connection = getPool();
-    await connection.execute('SELECT 1');
+    await connection.query('SELECT 1');
     console.log('✅ Database connection successful');
     return true;
   } catch (error) {
@@ -99,6 +99,8 @@ export async function testConnection(): Promise<boolean> {
     return false;
   }
 }
+
+// ...existing code...
 
 /**
  * Close all connections in the pool
