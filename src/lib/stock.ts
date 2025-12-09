@@ -62,7 +62,7 @@ export async function updateStock(cartItems: CartStockItem[]): Promise<boolean> 
     // Update quantity for each product in database
     for (const cartItem of cartItems) {
       await query(
-        'UPDATE products SET quantity = GREATEST(0, quantity - ?) WHERE id = ?',
+        'UPDATE products SET quantity = GREATEST(0, quantity - $1) WHERE id = $2',
         [cartItem.quantity, cartItem.id]
       );
     }
@@ -82,7 +82,7 @@ export async function rollbackStock(cartItems: CartStockItem[]): Promise<boolean
     // Restore quantity for each product in database
     for (const cartItem of cartItems) {
       await query(
-        'UPDATE products SET quantity = quantity + ? WHERE id = ?',
+        'UPDATE products SET quantity = quantity + $1 WHERE id = $2',
         [cartItem.quantity, cartItem.id]
       );
     }

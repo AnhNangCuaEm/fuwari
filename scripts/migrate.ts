@@ -6,32 +6,28 @@
 
 import fs from 'fs';
 import path from 'path';
-import mysql from 'mysql2/promise';
+import { Client } from 'pg';
 
 const dbConfig = {
   host: 'localhost',
-  port: parseInt(process.env.DATABASE_PORT || '3306'),
+  port: parseInt(process.env.DATABASE_PORT || '5432'),
   user: process.env.DATABASE_USER || 'fuwari_user',
   password: process.env.DATABASE_PASSWORD || 'fuwari_password',
   database: process.env.DATABASE_NAME || 'fuwari_db',
-  charset: 'utf8mb4',
 };
 
 async function runMigrations() {
   console.log('🔄 Running migrations...\n');
   
-  let connection: mysql.Connection | null = null;
+  let client: Client | null = null;
   
   try {
-    connection = await mysql.createConnection(dbConfig);
+    client = new Client(dbConfig);
+    await client.connect();
     
-    // Set connection charset to UTF-8
-    await connection.query("SET NAMES 'utf8mb4'");
-    await connection.query("SET CHARACTER SET utf8mb4");
-    
-    await connection.execute(`
+    await client.query(`
       CREATE TABLE IF NOT EXISTS migrations (
-        id INT AUTO_INCREMENT PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL UNIQUE,
         executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
@@ -57,12 +53,12 @@ async function runMigrations() {
     
     for (const file of files) {
       // Check đã chạy chưa
-      const [rows] = await connection.execute(
-        'SELECT * FROM migrations WHERE name = ?',
+      const result = await client.query(
+        'SELECT * FROM migrations WHERE name = $1',
         [file]
       );
       
-      if ((rows as any[]).length > 0) {
+      if (result.rows.length > 0) {
         console.log(`⏭️  Skipped: ${file} (already executed)`);
         continue;
       }
@@ -77,11 +73,11 @@ async function runMigrations() {
       
       for (const statement of statements) {
         if (!statement.trim()) continue;
-        await connection.execute(statement);
+        await client.query(statement);
       }
       
-      await connection.execute(
-        'INSERT INTO migrations (name) VALUES (?)',
+      await client.query(
+        'INSERT INTO migrations (name) VALUES ($1)',
         [file]
       );
       
@@ -94,7 +90,7 @@ async function runMigrations() {
     console.error('❌ Migration failed:', error);
     process.exit(1);
   } finally {
-    if (connection) await connection.end();
+    if (client) await client.end();
   }
 }
 

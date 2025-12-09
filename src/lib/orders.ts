@@ -43,8 +43,8 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
 
   try {
     await query(
-      `INSERT INTO orders (id, customerId, customerEmail, items, subtotal, tax, shipping, total, status, stripePaymentIntentId, shippingAddress, deliveryDate, createdAt, updatedAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO orders (id, "customerId", "customerEmail", items, subtotal, tax, shipping, total, status, "stripePaymentIntentId", "shippingAddress", "deliveryDate", "createdAt", "updatedAt") 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), NOW())`,
       [
         order.id,
         order.customerId,
@@ -71,7 +71,7 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
 export async function getOrderById(orderId: string): Promise<Order | null> {
   try {
     const order = await queryOne<RowDataPacket & Order>(
-      'SELECT * FROM orders WHERE id = ?',
+      'SELECT * FROM orders WHERE id = $1',
       [orderId]
     );
     if (order) {
@@ -92,7 +92,7 @@ export async function getOrderById(orderId: string): Promise<Order | null> {
 export async function getOrdersByCustomer(customerId: string): Promise<Order[]> {
   try {
     const orders = await query<(RowDataPacket & Order)[]>(
-      'SELECT * FROM orders WHERE customerId = ? ORDER BY createdAt DESC',
+      'SELECT * FROM orders WHERE "customerId" = $1 ORDER BY "createdAt" DESC',
       [customerId]
     );
     return orders.map(order => ({
@@ -110,7 +110,7 @@ export async function getOrdersByCustomer(customerId: string): Promise<Order[]> 
 export async function getOrdersByEmail(customerEmail: string): Promise<Order[]> {
   try {
     const orders = await query<(RowDataPacket & Order)[]>(
-      'SELECT * FROM orders WHERE customerEmail = ? ORDER BY createdAt DESC',
+      'SELECT * FROM orders WHERE "customerEmail" = $1 ORDER BY "createdAt" DESC',
       [customerEmail]
     );
     return orders.map(order => ({
@@ -128,7 +128,7 @@ export async function getOrdersByEmail(customerEmail: string): Promise<Order[]> 
 export async function updateOrderStatus(orderId: string, status: Order['status']): Promise<Order | null> {
   try {
     await query(
-      'UPDATE orders SET status = ?, updatedAt = NOW() WHERE id = ?',
+      'UPDATE orders SET status = $1, "updatedAt" = NOW() WHERE id = $2',
       [status, orderId]
     );
     return await getOrderById(orderId);

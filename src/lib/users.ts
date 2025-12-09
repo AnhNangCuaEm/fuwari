@@ -18,7 +18,7 @@ export async function getUsers(): Promise<User[]> {
 export async function findUserByEmail(email: string): Promise<User | null> {
   try {
     const user = await queryOne<RowDataPacket & User>(
-      'SELECT * FROM users WHERE email = ?',
+      'SELECT * FROM users WHERE email = $1',
       [email]
     );
     return user;
@@ -31,7 +31,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
 export async function findUserById(id: string): Promise<User | null> {
   try {
     const user = await queryOne<RowDataPacket & User>(
-      'SELECT * FROM users WHERE id = ?',
+      'SELECT * FROM users WHERE id = $1',
       [id]
     );
     return user;
@@ -67,8 +67,8 @@ export async function createUser(userData: RegisterData): Promise<User> {
 
   try {
     await query(
-      `INSERT INTO users (id, email, name, password, provider, role, status, createdAt, updatedAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO users (id, email, name, password, provider, role, status, "createdAt", "updatedAt") 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())`,
       [
         newUser.id,
         newUser.email,
@@ -95,7 +95,7 @@ export async function createGoogleUser(profile: { email: string; name: string; p
       const now = new Date();
       const updatedAt = now.toISOString();
       await query(
-        'UPDATE users SET name = ?, image = ?, updatedAt = NOW() WHERE id = ?',
+        'UPDATE users SET name = $1, image = $2, "updatedAt" = NOW() WHERE id = $3',
         [profile.name, profile.picture, existingUser.id]
       );
       return { ...existingUser, name: profile.name, image: profile.picture, updatedAt };
@@ -121,8 +121,8 @@ export async function createGoogleUser(profile: { email: string; name: string; p
 
   try {
     await query(
-      `INSERT INTO users (id, email, name, provider, role, status, image, createdAt, updatedAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO users (id, email, name, provider, role, status, image, "createdAt", "updatedAt") 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())`,
       [
         newUser.id,
         newUser.email,
@@ -159,7 +159,7 @@ export async function verifyPassword(email: string, password: string): Promise<U
 export async function updateUserRole(userId: string, newRole: 'user' | 'admin'): Promise<User | null> {
   try {
     await query(
-      'UPDATE users SET role = ?, updatedAt = NOW() WHERE id = ?',
+      'UPDATE users SET role = $1, "updatedAt" = NOW() WHERE id = $2',
       [newRole, userId]
     );
     return await findUserById(userId);
@@ -172,7 +172,7 @@ export async function updateUserRole(userId: string, newRole: 'user' | 'admin'):
 export async function updateUserStatus(userId: string, newStatus: 'active' | 'banned'): Promise<User | null> {
   try {
     await query(
-      'UPDATE users SET status = ?, updatedAt = NOW() WHERE id = ?',
+      'UPDATE users SET status = $1, "updatedAt" = NOW() WHERE id = $2',
       [newStatus, userId]
     );
     return await findUserById(userId);
@@ -196,29 +196,30 @@ export async function updateUserProfile(
   try {
     const updates: string[] = [];
     const values: (string | number)[] = [];
+    let paramIndex = 1;
 
     if (profileData.name !== undefined) {
-      updates.push('name = ?');
+      updates.push(`name = $${paramIndex++}`);
       values.push(profileData.name);
     }
     if (profileData.phone !== undefined) {
-      updates.push('phone = ?');
+      updates.push(`phone = $${paramIndex++}`);
       values.push(profileData.phone);
     }
     if (profileData.address !== undefined) {
-      updates.push('address = ?');
+      updates.push(`address = $${paramIndex++}`);
       values.push(profileData.address);
     }
     if (profileData.postalCode !== undefined) {
-      updates.push('postalCode = ?');
+      updates.push(`"postalCode" = $${paramIndex++}`);
       values.push(profileData.postalCode);
     }
     if (profileData.city !== undefined) {
-      updates.push('city = ?');
+      updates.push(`city = $${paramIndex++}`);
       values.push(profileData.city);
     }
     if (profileData.image !== undefined) {
-      updates.push('image = ?');
+      updates.push(`image = $${paramIndex++}`);
       values.push(profileData.image);
     }
 
@@ -226,11 +227,11 @@ export async function updateUserProfile(
       return await findUserById(userId);
     }
 
-    updates.push('updatedAt = NOW()');
+    updates.push('"updatedAt" = NOW()');
     values.push(userId);
 
     await query(
-      `UPDATE users SET ${updates.join(', ')} WHERE id = ?`,
+      `UPDATE users SET ${updates.join(', ')} WHERE id = $${paramIndex}`,
       values
     );
 

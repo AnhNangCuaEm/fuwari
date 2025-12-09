@@ -6,34 +6,26 @@
 
 import fs from 'fs';
 import path from 'path';
-import mysql from 'mysql2/promise';
+import { Client } from 'pg';
 
 const dbConfig = {
   host: 'localhost',
-  port: parseInt(process.env.DATABASE_PORT || '3306'),
+  port: parseInt(process.env.DATABASE_PORT || '5432'),
   user: process.env.DATABASE_USER || 'fuwari_user',
   password: process.env.DATABASE_PASSWORD || 'fuwari_password',
   database: process.env.DATABASE_NAME || 'fuwari_db',
-  multipleStatements: true,
-  charset: 'utf8mb4',
 };
 
 async function initDatabase() {
   console.log('🚀 Initial Database Setup...\n');
   console.log('⚠️  WARNING: This will DROP all existing tables!\n');
   
-  let connection: mysql.Connection | null = null;
+  let client: Client | null = null;
   
   try {
-    connection = await mysql.createConnection({
-      ...dbConfig,
-      multipleStatements: true,
-    });
+    client = new Client(dbConfig);
+    await client.connect();
     console.log('✅ Connected!\n');
-    
-    // Set connection charset to UTF-8
-    await connection.query("SET NAMES 'utf8mb4'");
-    await connection.query("SET CHARACTER SET utf8mb4");
     
     const initSqlPath = path.join(process.cwd(), 'init.sql');
     let sql = fs.readFileSync(initSqlPath, 'utf-8'); 
@@ -41,9 +33,9 @@ async function initDatabase() {
     if (sql.charCodeAt(0) === 0xFEFF) {
       sql = sql.slice(1);
     }   
-    // Execute all SQL at once to maintain session variables like FOREIGN_KEY_CHECKS
+    // Execute all SQL at once
     try {
-      await connection.query(sql);
+      await client.query(sql);
       console.log('✅ Executed init.sql successfully');
       console.log('✅ Created tables: users, products, orders');
       console.log('✅ Inserted sample data');
@@ -61,7 +53,7 @@ async function initDatabase() {
     console.error('❌ Setup failed:', error);
     process.exit(1);
   } finally {
-    if (connection) await connection.end();
+    if (client) await client.end();
   }
 }
 

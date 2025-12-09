@@ -18,7 +18,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
 export const getProductById = async (id: number): Promise<Product | null> => {
     try {
         const product = await queryOne<RowDataPacket & Product>(
-            'SELECT * FROM products WHERE id = ?',
+            'SELECT * FROM products WHERE id = $1',
             [id]
         );
         return product;
@@ -32,7 +32,7 @@ export const getProductById = async (id: number): Promise<Product | null> => {
 export const searchProductsByName = async (searchTerm: string): Promise<Product[]> => {
     try {
         const products = await query<(RowDataPacket & Product)[]>(
-            'SELECT * FROM products WHERE name LIKE ? ORDER BY created_at DESC',
+            'SELECT * FROM products WHERE name LIKE $1 ORDER BY created_at DESC',
             [`%${searchTerm}%`]
         );
         return products;
@@ -52,27 +52,31 @@ export const searchProducts = async (
         let sql = 'SELECT * FROM products WHERE 1=1';
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const params: any[] = [];
+        let paramIndex = 1;
 
         // Text search
         if (searchTerm) {
             sql += ` AND (
-                name LIKE ? OR 
-                engName LIKE ? OR 
-                description LIKE ? OR 
-                engDescription LIKE ?
+                name LIKE $${paramIndex} OR 
+                "engName" LIKE $${paramIndex + 1} OR 
+                description LIKE $${paramIndex + 2} OR 
+                "engDescription" LIKE $${paramIndex + 3}
             )`;
             const searchPattern = `%${searchTerm}%`;
             params.push(searchPattern, searchPattern, searchPattern, searchPattern);
+            paramIndex += 4;
         }
 
         // Price range filter
         if (minPrice !== undefined) {
-            sql += ' AND price >= ?';
+            sql += ` AND price >= $${paramIndex}`;
             params.push(minPrice);
+            paramIndex++;
         }
         if (maxPrice !== undefined) {
-            sql += ' AND price <= ?';
+            sql += ` AND price <= $${paramIndex}`;
             params.push(maxPrice);
+            paramIndex++;
         }
 
         sql += ' ORDER BY created_at DESC';
@@ -89,7 +93,7 @@ export const searchProducts = async (
 export const getProductsByPriceRange = async (minPrice: number, maxPrice: number): Promise<Product[]> => {
     try {
         const products = await query<(RowDataPacket & Product)[]>(
-            'SELECT * FROM products WHERE price >= ? AND price <= ? ORDER BY created_at DESC',
+            'SELECT * FROM products WHERE price >= $1 AND price <= $2 ORDER BY created_at DESC',
             [minPrice, maxPrice]
         );
         return products;

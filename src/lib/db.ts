@@ -1,39 +1,33 @@
 /**
  * Database Connection Module
- * Handles MySQL connection pool and query execution
+ * Handles PostgreSQL connection pool and query execution
  */
 
-import mysql from 'mysql2/promise';
+import { Pool, PoolClient, QueryResult } from 'pg';
 
 // Database configuration from environment variables
 const dbConfig = {
   host: process.env.DATABASE_HOST || 'localhost',
-  port: parseInt(process.env.DATABASE_PORT || '3306'),
-  user: process.env.DATABASE_USER || 'root',
+  port: parseInt(process.env.DATABASE_PORT || '5432'),
+  user: process.env.DATABASE_USER || 'postgres',
   password: process.env.DATABASE_PASSWORD || '',
   database: process.env.DATABASE_NAME || 'fuwari_db',
-  charset: 'utf8mb4',
-  waitForConnections: true,
-  connectionLimit: 10,
-  maxIdle: 10, // Max idle connections for serverless
-  idleTimeout: 60000, // Close idle connections after 60s
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0,
-  connectTimeout: 10000, // 10s connection timeout
+  max: 10, // Max connections in pool
+  idleTimeoutMillis: 60000, // Close idle connections after 60s
+  connectionTimeoutMillis: 10000, // 10s connection timeout
 };
 
 // Create connection pool
-let pool: mysql.Pool;
+let pool: Pool;
 
 /**
  * Get database connection pool
  * Creates pool if it doesn't exist
  */
-export function getPool(): mysql.Pool {
+export function getPool(): Pool {
   if (!pool) {
-    pool = mysql.createPool(dbConfig);
-    console.log('✅ MySQL connection pool created');
+    pool = new Pool(dbConfig);
+    console.log('✅ PostgreSQL connection pool created');
   }
   return pool;
 }
@@ -52,8 +46,8 @@ export async function query<T = any>(
 ): Promise<T> {
   try {
     const connection = getPool();
-    const [results] = await connection.execute(sqlQuery, params);
-    return results as T;
+    const result = await connection.query(sqlQuery, params);
+    return result.rows as T;
   } catch (error) {
     console.error('❌ Database query error:', error);
     throw error;
@@ -85,10 +79,10 @@ export async function queryOne<T = any>(
  * Begin a transaction
  * @returns Connection with transaction
  */
-export async function beginTransaction(): Promise<mysql.PoolConnection> {
-  const connection = await getPool().getConnection();
-  await connection.beginTransaction();
-  return connection;
+export async function beginTransaction(): Promise<PoolClient> {
+  const client = await getPool().connect();
+  await client.query('BEGIN');
+  return client;
 }
 
 /**
@@ -120,18 +114,20 @@ export async function closePool(): Promise<void> {
 export { pool };
 
 /**
- * Convert ISO datetime string to MySQL datetime format (YYYY-MM-DD HH:MM:SS)
+ * Convert ISO datetime string to PostgreSQL datetime format (YYYY-MM-DD HH:MM:SS)
  * @param isoString ISO datetime string (e.g., '2025-10-05T03:56:10.069Z')
- * @returns MySQL datetime string (e.g., '2025-10-05 03:56:10')
+ * @returns PostgreSQL datetime string (e.g., '2025-10-05 03:56:10')
  */
-export function toMySQLDateTime(isoString: string | Date): string {
+export function toPostgresDateTime(isoString: string | Date): string {
   const date = typeof isoString === 'string' ? new Date(isoString) : isoString;
   return date.toISOString().slice(0, 19).replace('T', ' ');
 }
 
-// Helper type for MySQL row data packet
-export type RowDataPacket = mysql.RowDataPacket;
-export type ResultSetHeader = mysql.ResultSetHeader;
+// Helper type for PostgreSQL row data
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type RowDataPacket = Record<string, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ResultSetHeader = { rowCount: number; rows: any[] };
 
 // Default export
 const db = {
@@ -141,7 +137,7 @@ const db = {
   beginTransaction,
   testConnection,
   closePool,
-  toMySQLDateTime,
+  toPostgresDateTime,
 };
 
 export default db;

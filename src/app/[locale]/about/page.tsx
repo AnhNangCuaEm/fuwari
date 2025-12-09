@@ -104,7 +104,7 @@ export default function AboutPage() {
                     </div>
                     <div>
                         <p>{t('database')}</p>
-                        <p className="font-semibold">MySQL</p>
+                        <p className="font-semibold">PostgreSQL</p>
                     </div>
                     <div>
                         <p>{t('payment')}</p>

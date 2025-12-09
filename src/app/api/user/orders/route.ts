@@ -13,7 +13,7 @@ export async function GET() {
       )
     }
 
-    // Get orders from MySQL database by user ID
+    // Get orders from PostgreSQL database by user ID
     const userOrders = await getOrdersByCustomer(user.id);
 
     return NextResponse.json({
