@@ -1,7 +1,7 @@
 'use client'
 
 import { Link } from "@/i18n/navigation"
-import { Sling as Hamburger } from 'hamburger-react'
+import { Rotate as Hamburger } from 'hamburger-react'
 import { useState } from "react"
 import { useCurrentUser } from "@/lib/hooks/useAuth"
 import CartDrawer from "@/components/cart/CartDrawer"
@@ -27,19 +27,18 @@ export default function NavMenu() {
             <div className="flex items-center">
                 <button
                     onClick={() => setIsSearchModalOpen(true)}
-                    className="flex items-center font-bold gap-2 pl-3 pr-2 py-1 rounded-4xl bg-[#ffffff99] hover:bg-[#ffffffaa] transition-colors"
+                    className="flex items-center font-bold gap-2 p-2 rounded-4xl bg-[#F3EDE3] hover:bg-[#ffffffaa] transition-colors"
                 >
-                    <span className="hidden sm:inline">{t('common.search')}</span>
                     <div className="relative">
-                        <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
+                        <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
                     </div>
                 </button>
             </div>
 
             {/*Notifications - Always visible */}
             <div className="flex items-center">
-                <button>
-                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-600 hover:text-gray-800 hover:cursor-pointer transition-colors">
+                <button className="p-2 rounded-full bg-[#F3EDE3] hover:bg-[#ffffffaa] transition-colors">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-600 hover:text-gray-800 hover:cursor-pointer transition-colors">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -53,10 +52,10 @@ export default function NavMenu() {
             {/* Cart Button - Always visible */}
             <div className="flex items-center">
                 <button
-                    className="group relative"
+                    className="p-2 rounded-full bg-[#F3EDE3] hover:bg-[#ffffffaa] transition-colors group relative"
                     onClick={() => setIsCartOpen(true)}
                 >
-                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-800  group-hover:text-gray-900 hover:cursor-pointer transition-colors">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-800  group-hover:text-gray-900 hover:cursor-pointer transition-colors">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -68,7 +67,7 @@ export default function NavMenu() {
                     </svg>
                     {/* Cart Badge */}
                     {getTotalItems() > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                             {getTotalItems()}
                         </span>
                     )}
@@ -80,7 +79,8 @@ export default function NavMenu() {
                 <Hamburger
                     toggled={isOpen}
                     toggle={setIsOpen}
-                    size={24}
+                    size={28}
+                    rounded
                 />
             </div>
 
@@ -114,38 +114,11 @@ export default function NavMenu() {
                 </li>
                 <li className="border-b border-gray-200 last:border-b-0">
                     <Link
-                        href="/products"
-                        className="block px-4 py-3 hover:bg-gray-50 transition-colors"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        🛍️ {t('common.products')}
-                    </Link>
-                </li>
-                <li className="border-b border-gray-200 last:border-b-0">
-                    <Link
                         href="/orders"
                         className="block px-4 py-3 hover:bg-gray-50 transition-colors"
                         onClick={() => setIsOpen(false)}
                     >
                         📦 {t('common.orders')}
-                    </Link>
-                </li>
-                <li className="border-b border-gray-200 last:border-b-0">
-                    <Link
-                        href="/about"
-                        className="block px-4 py-3 hover:bg-gray-50 transition-colors"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        ℹ️ {t('common.about')}
-                    </Link>
-                </li>
-                <li className="border-b border-gray-200 last:border-b-0">
-                    <Link
-                        href="/contact"
-                        className="block px-4 py-3 hover:bg-gray-50 transition-colors"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        📞 {t('common.contact')}
                     </Link>
                 </li>
 
