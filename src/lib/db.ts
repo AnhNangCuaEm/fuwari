@@ -5,17 +5,25 @@
 
 import { Pool, PoolClient } from 'pg';
 
-// Database configuration from environment variables
-const dbConfig = {
-  host: process.env.DATABASE_HOST || 'localhost',
-  port: parseInt(process.env.DATABASE_PORT || '5432'),
-  user: process.env.DATABASE_USER || 'postgres',
-  password: process.env.DATABASE_PASSWORD || '',
-  database: process.env.DATABASE_NAME || 'fuwari_db',
-  max: 10, // Max connections in pool
-  idleTimeoutMillis: 60000, // Close idle connections after 60s
-  connectionTimeoutMillis: 10000, // 10s connection timeout
-};
+// Database configuration - use DATABASE_URL if available, otherwise use individual env vars
+const dbConfig = process.env.DATABASE_URL
+  ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.DATABASE_URL.includes('sslmode=require') ? { rejectUnauthorized: false } : false,
+      max: 10, // Max connections in pool
+      idleTimeoutMillis: 60000, // Close idle connections after 60s
+      connectionTimeoutMillis: 10000, // 10s connection timeout
+    }
+  : {
+      host: process.env.PGHOST || process.env.DATABASE_HOST || 'localhost',
+      port: parseInt(process.env.DATABASE_PORT || '5432'),
+      user: process.env.PGUSER || process.env.DATABASE_USER || 'postgres',
+      password: process.env.PGPASSWORD || process.env.DATABASE_PASSWORD || '',
+      database: process.env.PGDATABASE || process.env.DATABASE_NAME || 'fuwari_db',
+      max: 10, // Max connections in pool
+      idleTimeoutMillis: 60000, // Close idle connections after 60s
+      connectionTimeoutMillis: 10000, // 10s connection timeout
+    };
 
 // Create connection pool
 let pool: Pool;
