@@ -70,7 +70,7 @@ export default function AboutPage() {
 
             {/* Main content */}
             <div className="relative flex-1 flex flex-col">
-                <div className="flex flex-col max-w-[720px] gap-6 mx-auto justify-center py-12 px-4 sm:px-6 lg:px-8 flex-1">
+                <div className="flex flex-col max-w-[720px] gap-6 mx-auto justify-center pt-32 pb-16 px-4 sm:px-6 lg:px-8 flex-1">
                     <div>
                         <p>{t('pjName')}</p>
                         <h1 className="text-4xl font-bold">Fuwari</h1>

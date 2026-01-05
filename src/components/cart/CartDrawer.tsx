@@ -5,7 +5,8 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useCart } from '@/lib/hooks/useCart'
 import AlertModal from "@/components/ui/AlertModal";
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 interface CartDrawerProps {
     isOpen: boolean
     onClose: () => void
@@ -16,8 +17,11 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     const t = useTranslations();
     const [showRemoveAlert, setShowRemoveAlert] = useState(false);
     const [itemToRemove, setItemToRemove] = useState<number | null>(null);
+    const [mounted, setMounted] = useState(false);
 
-
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Handle remove confirmation
     const handleRemoveClick = (itemId: number) => {
@@ -32,19 +36,19 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         }
     };
 
-    return (
+    const drawerContent = (
         <>
             {/* Overlay */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 bg-[#03030354] z-40"
+                    className="fixed inset-0 bg-[#03030354] z-[60]"
                     onClick={onClose}
                 />
             )}
 
             {/* Drawer */}
             <div className={`
-                fixed top-0 right-0 h-full w-96 bg-almond-1 shadow-xl z-50 flex flex-col
+                fixed top-0 right-0 h-full w-96 bg-almond-1 shadow-xl z-[70] flex flex-col
                 transform transition-transform duration-300 ease-in-out
                 ${isOpen ? 'translate-x-0' : 'translate-x-full'}
             `}>
@@ -167,5 +171,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 />
             </div>
         </>
-    )
+    );
+
+    if (!mounted) return null;
+
+    return createPortal(drawerContent, document.body);
 }

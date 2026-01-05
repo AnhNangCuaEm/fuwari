@@ -4,6 +4,8 @@ import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface LanguageModalProps {
   isOpen: boolean;
@@ -20,6 +22,11 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLocaleChange = (newLocale: string) => {
     // Save current cart state before language switch
@@ -40,18 +47,18 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
     }, 10);
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+  const modalContent = (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-[#000000c2]"
+        className="fixed inset-0 bg-[#000000c2] z-[60]"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative bg-almond-1 rounded-xl shadow-xl p-6 w-70 max-w-sm mx-4">
+      <div className="relative bg-almond-1 rounded-xl shadow-xl p-6 w-70 max-w-sm mx-4 z-[70]">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold text-gray-900">
             {t('common.selectLanguage')}
@@ -88,4 +95,6 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

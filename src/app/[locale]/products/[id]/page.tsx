@@ -27,7 +27,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
-            <div className="container mx-auto px-4 py-8 flex-1">
+            <div className="container mx-auto px-4 pt-32 pb-16 flex-1">
                 {/* Breadcrumb */}
                 <nav className="mb-8">
                     <Link

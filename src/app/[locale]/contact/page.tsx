@@ -67,7 +67,7 @@ export default async function ContactPage() {
                 />
             </div>
             <Header />
-            <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 flex-1 z-10">
+            <div className="flex items-center justify-center pt-32 pb-16 px-4 sm:px-6 lg:px-8 flex-1 z-10">
                 <div className="max-w-4xl w-fit text-center">
                     <h1 className="text-4xl font-bold mb-6">{t('title')}</h1>
                     <p className="text-lg text-gray-600 mb-4">{t('subtitle')}</p>

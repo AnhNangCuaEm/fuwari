@@ -1,6 +1,7 @@
 'use client';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import FeaturedProducts from '@/components/products/FeaturedProducts';
 // import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
@@ -15,8 +16,8 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="container mx-auto px-4 py-16 flex-1">
-        <section className="relative w-full py-32 flex items-center justify-center text-center rounded-3xl corner overflow-hidden shadow-xl">
+      <div className="container mx-auto px-4 pt-32 pb-16 flex-1">
+        <section className="relative w-full py-32 flex items-center justify-center text-center rounded-4xl corner overflow-hidden shadow-xl">
           <Image
             src="/images/hero_img.png"
             alt="Hero Image"
@@ -39,6 +40,12 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Featured Products */}
+        <section className="mt-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">{t('home.featuredProducts')}</h2>
+          <p className="text-center text-gray-600 mb-12">{t('home.featuredProductsDesc')}</p>
+          <FeaturedProducts />
+        </section>
 
         <div className="flex flex-col items-center">
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">

@@ -102,3 +102,16 @@ export const getProductsByPriceRange = async (minPrice: number, maxPrice: number
         return [];
     }
 };
+
+// Get featured products (4 products with lowest stock)
+export const getFeaturedProducts = async (): Promise<Product[]> => {
+    try {
+        const products = await query<(RowDataPacket & Product)[]>(
+            'SELECT id, name, "engName", price, image, quantity FROM products WHERE quantity > 0 ORDER BY quantity ASC LIMIT 4'
+        );
+        return products;
+    } catch (error) {
+        console.error('Error fetching featured products:', error);
+        return [];
+    }
+};

@@ -11,7 +11,7 @@ export default function Header() {
     const isActive = (href: string) => pathname === href
 
     return (
-        <header className="flex items-center justify-between border-b-2 border-[#F2E9DF] py-4 px-6 md:px-8">
+        <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b-2 backdrop-blur-sm border-[#F2E9DF] py-4 px-6 md:px-8">
             <Link href="/" className="text-lg font-bold">
                 <Image
                     src="/logo.svg"

@@ -17,12 +17,17 @@
     "about": "概要",
     "language": "Language",
     "selectLanguage": "言語を選択",
-    "search": "検索"
+    "search": "検索",
+    "stock": "在庫",
+    "lowStock": "在庫少数"
   },
   "home": {
     "subtitle": "一口ごとに喜びを、あなたの一日を甘くする！",
     "welcomeMessage": "あなたは成功裏にログインしました。私たちのショップを探索してください！",
-    "loginPrompt": "ログインまたはサインアップしてください 🎉"
+    "loginPrompt": "ログインまたはサインアップしてください 🎉",
+    "featuredProducts": "おすすめ商品",
+    "featuredProductsDesc": "限定在庫の商品をチェック",
+    "noProducts": "利用可能な商品がありません"
   },
   "products": {
     "title": "商品一覧",

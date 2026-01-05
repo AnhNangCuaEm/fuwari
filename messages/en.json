@@ -17,12 +17,17 @@
     "about": "About",
     "language": "言語",
     "selectLanguage": "Select Language",
-    "search": "Search"
+    "search": "Search",
+    "stock": "Stock",
+    "lowStock": "Low Stock"
   },
   "home": {
     "subtitle": "Delight in Every Bite, Sweeten Your Day!",
     "welcomeMessage": "You have successfully logged in. Explore our shop!",
-    "loginPrompt": "Please login or sign up 🎉"
+    "loginPrompt": "Please login or sign up 🎉",
+    "featuredProducts": "Featured Products",
+    "featuredProductsDesc": "Check out our products with limited stock",
+    "noProducts": "No products available"
   },
   "products": {
     "title": "Products",

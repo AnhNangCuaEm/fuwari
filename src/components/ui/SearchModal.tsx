@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { Product } from '@/types/product';
 import Image from 'next/image';
@@ -19,6 +20,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     const [sortBy, setSortBy] = useState<SortOption>('relevance');
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     // Filter states
     const [minPrice, setMinPrice] = useState<string>('');
@@ -26,6 +28,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
     const [isIngredientDropdownOpen, setIsIngredientDropdownOpen] = useState(false);
     const ingredientDropdownRef = useRef<HTMLDivElement>(null);
+
+    // Mount state for portal
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -177,13 +184,13 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         { value: 'price-high', label: t('search.priceHighLow') }
     ];
 
-    if (!isOpen) return null;
+    if (!isOpen || !mounted) return null;
 
-    return (
+    const modalContent = (
         <>
             {/* Backdrop */}
             <div
-                className="fixed z-40"
+                className="fixed z-[60]"
                 style={{
                     top: 0,
                     right: 0,
@@ -200,7 +207,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
             {/* Modal Container */}
             <div 
-                className="fixed z-50 flex items-center justify-center pointer-events-none"
+                className="fixed z-[70] flex items-center justify-center pointer-events-none"
                 style={{
                     top: 0,
                     right: 0,
@@ -454,4 +461,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             </div>
         </>
     );
+
+    return createPortal(modalContent, document.body);
 }
