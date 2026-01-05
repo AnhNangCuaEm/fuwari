@@ -3,6 +3,7 @@
 import { Link } from "@/i18n/navigation"
 import { Rotate as Hamburger } from 'hamburger-react'
 import { useState } from "react"
+import Image from "next/image"
 import { useCurrentUser } from "@/lib/hooks/useAuth"
 import CartDrawer from "@/components/cart/CartDrawer"
 import LanguageModal from "@/components/ui/LanguageModal"
@@ -38,7 +39,7 @@ export default function NavMenu() {
             {/*Notifications - Always visible */}
             <div className="flex items-center">
                 <button className="p-2 rounded-full bg-[#F3EDE3] hover:bg-[#ffffffaa] transition-colors">
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-600 hover:text-gray-800 hover:cursor-pointer transition-colors">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hover:cursor-pointer transition-colors">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -55,7 +56,7 @@ export default function NavMenu() {
                     className="p-2 rounded-full bg-[#F3EDE3] hover:bg-[#ffffffaa] transition-colors group relative"
                     onClick={() => setIsCartOpen(true)}
                 >
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-800  group-hover:text-gray-900 hover:cursor-pointer transition-colors">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-900 hover:cursor-pointer transition-colors">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -86,7 +87,7 @@ export default function NavMenu() {
 
             {/* Menu - Toggle visibility */}
             <ul className={`
-                absolute top-12 right-0 w-56 bg-almond-1 shadow-lg rounded-xl overflow-hidden
+                absolute top-12 right-0 w-40 bg-almond-1 shadow-lg rounded-xl overflow-hidden
                 transition-all duration-300 ease-in-out z-50
                 ${isOpen
                     ? 'opacity-100 visible transform translate-y-0'
@@ -95,7 +96,7 @@ export default function NavMenu() {
             `}>
                 {/* User info in mobile menu */}
                 {isAuthenticated && user && (
-                    <li className="border-b border-gray-300 bg-gray-50">
+                    <li className="border-b border-gray-300 bg-almond-100">
                         <div className="px-4 py-3">
                             <p className="font-semibold text-gray-800 truncate">{user.name}</p>
                             <p className="text-sm text-gray-600 truncate">{user.email}</p>
@@ -103,25 +104,52 @@ export default function NavMenu() {
                     </li>
                 )}
 
-                <li className="border-b border-gray-200 last:border-b-0">
+                <li className="md:hidden border-b border-gray-200 last:border-b-0">
                     <Link
-                        href="/"
-                        className="block px-4 py-3 hover:bg-gray-50 transition-colors"
+                        href="/products"
+                        className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
                         onClick={() => setIsOpen(false)}
                     >
-                        🏠 Home
-                    </Link>
-                </li>
-                <li className="border-b border-gray-200 last:border-b-0">
-                    <Link
-                        href="/orders"
-                        className="block px-4 py-3 hover:bg-gray-50 transition-colors"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        📦 {t('common.orders')}
+                        <Image src="/icons/cake.svg" alt="Menu Icon" width={20} height={20} className="mr-3"/>
+                        {t('common.menu')}
                     </Link>
                 </li>
 
+                <li className="md:hidden border-b border-gray-200 last:border-b-0">
+                    <Link
+                        href="/shop"
+                        className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        <Image src="/icons/shop.svg" alt="Menu Icon" width={20} height={20} className="mr-3"/>
+                        {t('common.shop')}
+                    </Link>
+                </li>
+
+                <li className="md:hidden border-b border-gray-200 last:border-b-0">
+                    <Link
+                        href="/contact"
+                        className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        <Image src="/icons/information.svg" alt="Contact Icon" width={20} height={20} className="mr-3"/>
+                        {t('common.contact')}
+                    </Link>
+                </li>
+
+                {/* Only visible to logged-in users */}
+                {isAuthenticated && (
+                    <li className="border-b border-gray-200 last:border-b-0">
+                        <Link
+                            href="/orders"
+                            className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <Image src="/icons/orders.svg" alt="Orders Icon" width={20} height={20} className="mr-3"/>
+                            {t('common.orders')}
+                        </Link>
+                    </li>
+                )}
                 {/* Language Selector */}
                 <li className="border-b border-gray-200 last:border-b-0">
                     <button
@@ -129,9 +157,10 @@ export default function NavMenu() {
                             setIsLanguageModalOpen(true)
                             setIsOpen(false)
                         }}
-                        className="w-full text-left block px-4 py-3 hover:bg-gray-50 transition-colors "
+                        className="w-full text-left flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
                     >
-                        🌐 {t('common.language')}
+                        <Image src="/icons/language.svg" alt="Language Icon" width={19} height={19} className="mr-3"/>
+                        {t('common.language')}
                     </button>
                 </li>
 
@@ -141,10 +170,11 @@ export default function NavMenu() {
                         <li className="border-b border-gray-200 last:border-b-0">
                             <Link
                                 href="/mypage"
-                                className="block px-4 py-3 hover:bg-gray-50 transition-colors"
+                                className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
                                 onClick={() => setIsOpen(false)}
                             >
-                                👤 {t('common.myPage')}
+                                <Image src="/icons/profile.svg" alt="User Icon" width={20} height={20} className="mr-3"/>
+                                {t('common.myPage')}
                             </Link>
                         </li>
 
@@ -153,10 +183,11 @@ export default function NavMenu() {
                                 <li className="border-b border-gray-200 last:border-b-0">
                                     <Link
                                         href="/admin/dashboard"
-                                        className="block px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600 font-semibold"
+                                        className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600 font-semibold"
                                         onClick={() => setIsOpen(false)}
                                     >
-                                        ⚙️ {t('common.admin')} Dashboard
+                                        <Image src="/icons/dashboard.svg" alt="Admin Icon" width={22} height={22} className="mr-3"/>
+                                        {t('common.admin')}
                                     </Link>
                                 </li>
                             </>
@@ -167,10 +198,11 @@ export default function NavMenu() {
                         <li className="border-b border-gray-200 last:border-b-0">
                             <Link
                                 href="/auth/signin"
-                                className="block px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600"
+                                className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors text-almond-500 font-semibold"
                                 onClick={() => setIsOpen(false)}
                             >
-                                🔐 {t('common.signin')}
+                                <Image src="/icons/login.svg" alt="Sign In Icon" width={20} height={20} className="mr-3"/>
+                                {t('common.signin')}
                             </Link>
                         </li>
                     </>

@@ -56,6 +56,27 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         }
     }, [isOpen, products.length]);
 
+    // Prevent body scroll when modal is open (iOS Safari fix)
+    useEffect(() => {
+        if (isOpen) {
+            // Save current scroll position
+            const scrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
+            document.body.style.overflow = 'hidden';
+
+            return () => {
+                // Restore scroll position
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                document.body.style.overflow = '';
+                window.scrollTo(0, scrollY);
+            };
+        }
+    }, [isOpen]);
+
     // Extract unique ingredients from all products
     const availableIngredients = useMemo(() => {
         const ingredientSet = new Set<string>();
@@ -159,15 +180,37 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <>
             {/* Backdrop */}
             <div
-                className="absolute inset-0 bg-[rgba(0,0,0,0.3)]"
+                className="fixed z-40"
+                style={{
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                    WebkitBackfaceVisibility: 'hidden',
+                    backfaceVisibility: 'hidden',
+                    transform: 'translateZ(0)',
+                    willChange: 'auto'
+                }}
                 onClick={handleClose}
             />
 
-            {/* Modal */}
-            <div className="relative bg-almond-1 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+            {/* Modal Container */}
+            <div 
+                className="fixed z-50 flex items-center justify-center pointer-events-none"
+                style={{
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                    padding: '1rem'
+                }}
+            >
+                {/* Modal */}
+                <div className="relative bg-almond-1 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden pointer-events-auto">
                 {/* Search Controls */}
                 <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <div className="space-y-4">
@@ -407,7 +450,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         </div>
                     )}
                 </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

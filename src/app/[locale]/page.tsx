@@ -16,7 +16,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <div className="container mx-auto px-4 py-16 flex-1">
-        <section className="relative w-full py-32 flex items-center justify-center text-center rounded-3xl overflow-hidden shadow-xl">
+        <section className="relative w-full py-32 flex items-center justify-center text-center rounded-3xl corner overflow-hidden shadow-xl">
           <Image
             src="/images/hero_img.png"
             alt="Hero Image"
