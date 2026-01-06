@@ -67,7 +67,7 @@ export default function FeaturedProducts() {
           className="bg-white rounded-3xl corner shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
           onClick={() => router.push(`/products/${product.id}`)}
         >
-          <div className="relative w-full h-64 bg-gray-100">
+          <div className="relative w-full h-48 bg-gray-100">
             {product.image && (
               <Image
                 src={product.image}
@@ -87,7 +87,7 @@ export default function FeaturedProducts() {
               {locale === 'en' ? product.engName : product.name}
             </h3>
             <div className="flex justify-between items-center">
-              <span className="text-2xl font-bold text-[#fbcfd3]">
+              <span className="text-xl font-semibold text-cosmos-400">
                 ¥{product.price.toLocaleString()}
               </span>
               {/* <span className="text-sm text-gray-600">

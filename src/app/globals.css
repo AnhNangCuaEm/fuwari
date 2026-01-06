@@ -17,6 +17,18 @@
   --color-almond-10: #5f3c2f;
   --color-almond-11: #331e17;
   --color-almond-12: #14100b;
+
+  --color-cosmos-50: #fdf3f4;
+  --color-cosmos-100: #fbe5e7;
+  --color-cosmos-200: #fadadd;
+  --color-cosmos-300: #f3aeb4;
+  --color-cosmos-400: #ea7f89;
+  --color-cosmos-500: #dd5663;
+  --color-cosmos-600: #c93947;
+  --color-cosmos-700: #a92c38;
+  --color-cosmos-800: #8c2831;
+  --color-cosmos-900: #75272e;
+  --color-cosmos-950: #3f1014;
 }
 
 .corner {

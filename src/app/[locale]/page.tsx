@@ -6,6 +6,7 @@ import FeaturedProducts from '@/components/products/FeaturedProducts';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { Link } from '@/i18n/navigation';
 
 export default function Home() {
   // const { data: session, status } = useSession();
@@ -34,9 +35,11 @@ export default function Home() {
             <div className="text-white leading-8 md:leading-20 text-xl md:text-xl font-black" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
               <TextGenerateEffect words={words} />
             </div>
-            <button className="py-4 px-6 rounded-full text-black font-semibold bg-[#FADADD] transition-all duration-300 transform hover:scale-105">
+            <Link
+            href="/products"
+            className="py-4 px-6 rounded-full text-black font-semibold bg-cosmos-200 transition-all duration-300 hover:bg-cosmos-300 hover:scale-105">
               Shop Now
-            </button>
+            </Link>
           </div>
         </section>
 

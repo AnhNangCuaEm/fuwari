@@ -28,7 +28,7 @@ export default function NavMenu() {
             <div className="flex items-center">
                 <button
                     onClick={() => setIsSearchModalOpen(true)}
-                    className="flex items-center font-bold gap-2 p-2 rounded-4xl bg-[#F3EDE3] hover:bg-[#ffffffaa] transition-colors"
+                    className="flex items-center font-bold gap-2 p-2 rounded-4xl bg-cosmos-50 hover:bg-cosmos-100 transition-colors"
                 >
                     <div className="relative">
                         <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
@@ -38,7 +38,7 @@ export default function NavMenu() {
 
             {/*Notifications - Always visible */}
             <div className="flex items-center">
-                <button className="p-2 rounded-full bg-[#F3EDE3] hover:bg-[#ffffffaa] transition-colors">
+                <button className="p-2 rounded-full bg-cosmos-50 hover:bg-cosmos-100 transition-colors">
                     <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hover:cursor-pointer transition-colors">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -53,7 +53,7 @@ export default function NavMenu() {
             {/* Cart Button - Always visible */}
             <div className="flex items-center">
                 <button
-                    className="p-2 rounded-full bg-[#F3EDE3] hover:bg-[#ffffffaa] transition-colors group relative"
+                    className="p-2 rounded-full bg-cosmos-50 hover:bg-cosmos-100 transition-colors group relative"
                     onClick={() => setIsCartOpen(true)}
                 >
                     <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-900 hover:cursor-pointer transition-colors">
@@ -107,7 +107,7 @@ export default function NavMenu() {
                 <li className="md:hidden border-b border-gray-200 last:border-b-0">
                     <Link
                         href="/products"
-                        className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                        className="flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors"
                         onClick={() => setIsOpen(false)}
                     >
                         <Image src="/icons/cake.svg" alt="Menu Icon" width={20} height={20} className="mr-3"/>
@@ -118,7 +118,7 @@ export default function NavMenu() {
                 <li className="md:hidden border-b border-gray-200 last:border-b-0">
                     <Link
                         href="/shop"
-                        className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                        className="flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors"
                         onClick={() => setIsOpen(false)}
                     >
                         <Image src="/icons/shop.svg" alt="Menu Icon" width={20} height={20} className="mr-3"/>
@@ -129,7 +129,7 @@ export default function NavMenu() {
                 <li className="md:hidden border-b border-gray-200 last:border-b-0">
                     <Link
                         href="/contact"
-                        className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                        className="flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors"
                         onClick={() => setIsOpen(false)}
                     >
                         <Image src="/icons/information.svg" alt="Contact Icon" width={20} height={20} className="mr-3"/>
@@ -142,7 +142,7 @@ export default function NavMenu() {
                     <li className="border-b border-gray-200 last:border-b-0">
                         <Link
                             href="/orders"
-                            className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                            className="flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors"
                             onClick={() => setIsOpen(false)}
                         >
                             <Image src="/icons/orders.svg" alt="Orders Icon" width={20} height={20} className="mr-3"/>
@@ -157,7 +157,7 @@ export default function NavMenu() {
                             setIsLanguageModalOpen(true)
                             setIsOpen(false)
                         }}
-                        className="w-full text-left flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                        className="w-full text-left flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors"
                     >
                         <Image src="/icons/language.svg" alt="Language Icon" width={19} height={19} className="mr-3"/>
                         {t('common.language')}
@@ -170,7 +170,7 @@ export default function NavMenu() {
                         <li className="border-b border-gray-200 last:border-b-0">
                             <Link
                                 href="/mypage"
-                                className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                                className="flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors"
                                 onClick={() => setIsOpen(false)}
                             >
                                 <Image src="/icons/profile.svg" alt="User Icon" width={20} height={20} className="mr-3"/>
@@ -183,7 +183,7 @@ export default function NavMenu() {
                                 <li className="border-b border-gray-200 last:border-b-0">
                                     <Link
                                         href="/admin/dashboard"
-                                        className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors text-blue-600 font-semibold"
+                                        className="flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors text-blue-600 font-semibold"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         <Image src="/icons/dashboard.svg" alt="Admin Icon" width={22} height={22} className="mr-3"/>
@@ -198,7 +198,7 @@ export default function NavMenu() {
                         <li className="border-b border-gray-200 last:border-b-0">
                             <Link
                                 href="/auth/signin"
-                                className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors text-almond-500 font-semibold"
+                                className="flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors text-almond-500 font-semibold"
                                 onClick={() => setIsOpen(false)}
                             >
                                 <Image src="/icons/login.svg" alt="Sign In Icon" width={20} height={20} className="mr-3"/>
