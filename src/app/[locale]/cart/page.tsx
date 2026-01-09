@@ -356,7 +356,7 @@ export default function CartPage() {
                                                 }
                                             }}
                                             disabled={isCheckingStock || !selectedDeliveryDate}
-                                            className="w-full bg-almond-6 hover:bg-almond-5 text-white p-3 rounded-lg font-semibold transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                            className="w-full bg-almond-6 hover:bg-almond-5 text-white p-3 rounded-lg font-semibold transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed!"
                                         >
                                             {isCheckingStock ? t("cart.checkingStock") : t("cart.checkout")}
                                         </button>

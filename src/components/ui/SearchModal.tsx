@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Product } from '@/types/product';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SearchModalProps {
     isOpen: boolean;
@@ -184,40 +185,35 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         { value: 'price-high', label: t('search.priceHighLow') }
     ];
 
-    if (!isOpen || !mounted) return null;
+    if (!mounted) return null;
 
     const modalContent = (
-        <>
-            {/* Backdrop */}
-            <div
-                className="fixed z-[60]"
-                style={{
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    WebkitBackfaceVisibility: 'hidden',
-                    backfaceVisibility: 'hidden',
-                    transform: 'translateZ(0)',
-                    willChange: 'auto'
-                }}
-                onClick={handleClose}
-            />
+        <AnimatePresence>
+            {isOpen && (
+                <>
+                    {/* Animated Backdrop */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 z-[60] bg-black/30"
+                        onClick={handleClose}
+                    />
 
-            {/* Modal Container */}
-            <div 
-                className="fixed z-[70] flex items-center justify-center pointer-events-none"
-                style={{
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                    padding: '1rem'
-                }}
-            >
-                {/* Modal */}
-                <div className="relative bg-almond-1 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden pointer-events-auto">
+                    {/* Animated Modal Container */}
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        transition={{ 
+                            duration: 0.3, 
+                            ease: [0.16, 1, 0.3, 1] // easeOutExpo
+                        }}
+                        className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none"
+                    >
+                        {/* Modal */}
+                        <div className="relative bg-almond-1 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden pointer-events-auto">
                 {/* Search Controls */}
                 <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <div className="space-y-4">
@@ -458,8 +454,10 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     )}
                 </div>
                 </div>
-            </div>
-        </>
+            </motion.div>
+                </>
+            )}
+        </AnimatePresence>
     );
 
     return createPortal(modalContent, document.body);

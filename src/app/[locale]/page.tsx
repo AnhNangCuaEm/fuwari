@@ -50,6 +50,11 @@ export default function Home() {
           <FeaturedProducts />
         </section>
 
+        {/* Why choose Fuwari Sweets? */}
+        <section>
+          
+        </section>
+
         <div className="flex flex-col items-center">
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="bg-white rounded-lg shadow-md p-6 text-center">
