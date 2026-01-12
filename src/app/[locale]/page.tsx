@@ -134,7 +134,7 @@ export default function Home() {
               </div>
             </Link>
             {/* Small Item 3 - 2x1 (bottom, spans 2 columns) */}
-            <Link className="group relative overflow-hidden rounded-4xl md:col-span-2 h-[240px] md:h-full" href="/products/categories/original-sweets">
+            <Link className="group relative overflow-hidden rounded-4xl md:col-span-2 h-[240px] md:h-full" href="/products/categories/original">
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10"></div>
               <Image alt="Original sakura themed sweets" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Original sakura themed sweets" src="/images/categories_section/sweets.png" width={500} height={250} />
               <div className="absolute bottom-6 left-6 z-20">

@@ -55,6 +55,7 @@ CREATE TABLE products (
     "engIngredients" JSONB NOT NULL, -- Array of English ingredients
     allergens JSONB NOT NULL, -- Array of Japanese allergens
     "engAllergens" JSONB NOT NULL, -- Array of English allergens
+    "category" VARCHAR(50) NOT NULL, -- Product category
     price INT NOT NULL, -- Price in Japanese Yen (no decimals)
     quantity INT NOT NULL DEFAULT 0, -- Stock quantity
     image VARCHAR(500) NOT NULL, -- 2D image path
@@ -239,7 +240,7 @@ INSERT INTO orders (
 -- Sample products
 INSERT INTO products (
     id, name, "engName", description, "engDescription",
-    ingredients, "engIngredients", allergens, "engAllergens",
+    ingredients, "engIngredients", allergens, "engAllergens", "category",
     price, quantity, image, "modelPath"
 ) VALUES
 (
@@ -252,6 +253,7 @@ INSERT INTO products (
     '["Flour", "Sugar", "Butter", "Eggs", "Vanilla Extract", "Baking Powder", "Salt", "Milk"]'::jsonb,
     '["小麦", "卵", "乳"]'::jsonb,
     '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'cakes',
     300,
     50,
     '/2dimage/cupcake.webp',
@@ -267,6 +269,7 @@ INSERT INTO products (
     '["Chocolate", "Flour", "Sugar", "Butter", "Eggs", "Walnuts", "Cocoa Powder", "Vanilla Extract"]'::jsonb,
     '["小麦", "卵", "乳", "ナッツ"]'::jsonb,
     '["Wheat", "Eggs", "Dairy", "Nuts"]'::jsonb,
+    'cakes',
     250,
     30,
     '/2dimage/brownie.jpg',
@@ -282,6 +285,7 @@ INSERT INTO products (
     '["Flour", "Sugar", "Butter", "Eggs", "Chocolate Chips", "Baking Soda", "Salt", "Vanilla Extract"]'::jsonb,
     '["小麦", "卵", "乳"]'::jsonb,
     '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'cookies',
     200,
     40,
     '/2dimage/cookie.webp',
@@ -297,6 +301,7 @@ INSERT INTO products (
     '["Flour", "Sugar", "Butter", "Eggs", "Strawberries", "Heavy Cream", "Baking Powder", "Vanilla Extract"]'::jsonb,
     '["小麦", "卵", "乳"]'::jsonb,
     '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'cakes',
     450,
     20,
     '/2dimage/strawberrycake.jpg',
@@ -312,6 +317,7 @@ INSERT INTO products (
     '["Flour", "Sugar", "Butter", "Eggs", "Mixed Fruits", "Heavy Cream", "Baking Powder", "Vanilla Extract"]'::jsonb,
     '["小麦", "卵", "乳", "ナッツ"]'::jsonb,
     '["Wheat", "Eggs", "Dairy", "Nuts"]'::jsonb,
+    'original',
     1200,
     30,
     '/2dimage/birthdaycake.jpg',
@@ -327,6 +333,7 @@ INSERT INTO products (
     '["Flour", "Sugar", "Butter", "Eggs", "Mixed Fruits", "Heavy Cream", "Baking Powder", "Vanilla Extract"]'::jsonb,
     '["小麦", "卵", "乳", "ナッツ"]'::jsonb,
     '["Wheat", "Eggs", "Dairy", "Nuts"]'::jsonb,
+    'original',
     800,
     25,
     '/2dimage/partycake.jpg',
@@ -342,6 +349,7 @@ INSERT INTO products (
     '["Flour", "Sugar", "Butter", "Eggs", "Cocoa Powder", "Chocolate Chips", "Baking Soda", "Salt", "Vanilla Extract"]'::jsonb,
     '["小麦", "卵", "乳"]'::jsonb,
     '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'cookies',
     600,
     40,
     '/2dimage/chococookie.jpg',

@@ -115,3 +115,30 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
         return [];
     }
 };
+
+// Get products by category
+export const getProductsByCategory = async (category: string): Promise<Product[]> => {
+    try {
+        const products = await query<(RowDataPacket & Product)[]>(
+            'SELECT * FROM products WHERE category = $1 ORDER BY created_at DESC',
+            [category]
+        );
+        return products;
+    } catch (error) {
+        console.error('Error fetching products by category:', error);
+        return [];
+    }
+};
+
+// Get all unique categories
+export const getAllCategories = async (): Promise<string[]> => {
+    try {
+        const result = await query<(RowDataPacket & { category: string })[]>(
+            'SELECT DISTINCT category FROM products ORDER BY category ASC'
+        );
+        return result.map(row => row.category);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        return [];
+    }
+};

@@ -8,6 +8,7 @@ export interface Product {
     engIngredients: string[];
     allergens: string[];
     engAllergens: string[];
+    category: string;
     price: number;
     quantity: number;
     image: string;

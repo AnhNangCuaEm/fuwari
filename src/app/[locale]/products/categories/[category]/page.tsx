@@ -1,16 +1,51 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import { getAllProducts } from '@/lib/products';
+import { getProductsByCategory } from '@/lib/products';
 import { Product } from '@/types/product';
 import { getTranslations, getLocale } from 'next-intl/server';
 import AddToCartButton from '@/components/products/AddToCartButton';
 
-export default async function ProductsPage() {
-    const products = await getAllProducts();
+// Valid categories
+const VALID_CATEGORIES = ['cakes', 'cookies', 'macarons', 'original'] as const;
+type CategoryType = typeof VALID_CATEGORIES[number];
+
+// Generate static params for all categories
+export function generateStaticParams() {
+    return VALID_CATEGORIES.map((category) => ({
+        category: category,
+    }));
+}
+
+// Category display info
+const categoryInfo: Record<CategoryType, { titleEn: string; titleJa: string; image: string }> = {
+    cakes: { titleEn: 'Cakes', titleJa: 'ケーキ', image: '/images/categories_section/cakes.png' },
+    cookies: { titleEn: 'Cookies', titleJa: 'クッキー', image: '/images/categories_section/cookies.png' },
+    macarons: { titleEn: 'Macarons', titleJa: 'マカロン', image: '/images/categories_section/macaron.png' },
+    original: { titleEn: 'Original Sweets', titleJa: 'オリジナルスイーツ', image: '/images/categories_section/sweets.png' },
+};
+
+interface PageProps {
+    params: Promise<{ category: string }>;
+}
+
+export default async function CategoryPage({ params }: PageProps) {
+    const { category } = await params;
+    
+    // Validate category
+    if (!VALID_CATEGORIES.includes(category as CategoryType)) {
+        notFound();
+    }
+
+    const validCategory = category as CategoryType;
+    const products = await getProductsByCategory(validCategory);
     const t = await getTranslations();
     const locale = await getLocale();
+
+    const info = categoryInfo[validCategory];
+    const categoryTitle = locale === 'en' ? info.titleEn : info.titleJa;
 
     // Helper function to get localized text
     const getLocalizedText = (jaText: string, enText: string) => {
@@ -30,12 +65,33 @@ export default async function ProductsPage() {
                         {t('common.home')}
                     </Link>
                     <span className="text-gray-500 mr-2">/</span>
-                    <span className="text-gray-700">{t('products.title')}</span>
+                    <Link
+                        href="/products"
+                        className="text-almond-6 hover:text-almond-8 mr-2"
+                    >
+                        {t('products.title')}
+                    </Link>
+                    <span className="text-gray-500 mr-2">/</span>
+                    <span className="text-gray-700">{categoryTitle}</span>
                 </nav>
 
-                <h1 className="text-3xl font-bold text-center mb-8">
-                    {locale === 'en' ? 'Products' : '商品'}
-                </h1>
+                {/* Category Header */}
+                <div className="relative w-full h-48 md:h-64 rounded-3xl overflow-hidden mb-8">
+                    <Image
+                        src={info.image}
+                        alt={categoryTitle}
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <h1 className="text-4xl md:text-5xl font-bold text-white">
+                            {categoryTitle}
+                        </h1>
+                    </div>
+                </div>
+
+                {/* Products Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {products.map((product: Product) => (
                         <div
@@ -84,15 +140,25 @@ export default async function ProductsPage() {
                                         }}
                                     />
                                 </div>
-
                             </div>
                         </div>
                     ))}
                 </div>
 
+                {/* Empty State */}
                 {products.length === 0 && (
                     <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">商品はありません</p>
+                        <p className="text-gray-500 text-lg mb-4">
+                            {locale === 'en' 
+                                ? 'No products available in this category' 
+                                : 'このカテゴリーには商品がありません'}
+                        </p>
+                        <Link 
+                            href="/products" 
+                            className="text-almond-6 hover:text-almond-8 underline"
+                        >
+                            {locale === 'en' ? 'View all products' : 'すべての商品へ'}
+                        </Link>
                     </div>
                 )}
             </div>
