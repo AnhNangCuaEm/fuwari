@@ -27,7 +27,20 @@
     "loginPrompt": "ログインまたはサインアップしてください 🎉",
     "featuredProducts": "おすすめ商品",
     "featuredProductsDesc": "限定在庫の商品をチェック",
-    "noProducts": "利用可能な商品がありません"
+    "noProducts": "利用可能な商品がありません",
+    "ourPromise": "私たちの約束",
+    "whyChooseUs": {
+      "title": "Why Choose Us",
+      "description": "すべてのお菓子は、あなたの日常に小さな喜びを届けるため、心を込めて作られています。",
+      "handMadeTitle": "毎日手作り",
+      "handMadeDesc": "一つひとつ手作りすることで、最高の品質と細部へのこだわりを実現しています。",
+      "naturalTitle": "自然素材",
+      "naturalDesc": "地元産を中心に、可能な限りオーガニックを使用し、防腐剤は一切使用していません。",
+      "freshDeliveryTitle": "焼きたて直送",
+      "freshDeliveryDesc": "丁寧に梱包し、オーブンからあなたの元へ直接お届けします。",
+      "heartfeltTitle": "心を込めたものづくり",
+      "heartfeltDesc": "情熱と細やかな気配り、そしてたくさんの愛を込めて作っています。"
+    }
   },
   "products": {
     "title": "商品一覧",
@@ -55,7 +68,7 @@
     "cart": {
       "title": "カート",
       "addToCart": "カートに追加",
-      "checkoutButton": "チェックアウト", 
+      "checkoutButton": "チェックアウト",
       "viewCart": "カートを見る"
     },
     "stock": {

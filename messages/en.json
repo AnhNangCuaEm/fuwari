@@ -27,7 +27,20 @@
     "loginPrompt": "Please login or sign up 🎉",
     "featuredProducts": "Featured Products",
     "featuredProductsDesc": "Check out our products with limited stock",
-    "noProducts": "No products available"
+    "noProducts": "No products available",
+    "ourPromise": "Our Promise",
+    "whyChooseUs": {
+      "title": "Why Choose Us",
+      "description": "Every treat is a labor of love, designed to bring a moment of joy to your day.",
+      "handMadeTitle": "Handmade Daily",
+      "handMadeDesc": "Our treats are made by hand, ensuring the highest quality and attention to detail.",
+      "naturalTitle": "Natural Ingredients",
+      "naturalDesc": "Locally sourced, organic whenever possible, and strictly preservative-free.",
+      "freshDeliveryTitle": "Fresh Delivery",
+      "freshDeliveryDesc": "Carefully packaged and delivered straight from our oven to your doorstep.",
+      "heartfeltTitle": "Heartfelt Craft",
+      "heartfeltDesc": "Made with passion, attention to detail, and a whole lot of love."
+    }
   },
   "products": {
     "title": "Products",

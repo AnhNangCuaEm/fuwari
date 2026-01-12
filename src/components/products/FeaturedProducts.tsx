@@ -64,7 +64,7 @@ export default function FeaturedProducts() {
       {products.map((product) => (
         <div
           key={product.id}
-          className="bg-white rounded-3xl corner shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
+          className="bg-white rounded-3xl corner overflow-hidden hover:shadow-soft transition-shadow duration-300 cursor-pointer group"
           onClick={() => router.push(`/products/${product.id}`)}
         >
           <div className="relative w-full h-48 bg-gray-100">

@@ -29,14 +29,18 @@
   --color-cosmos-800: #8c2831;
   --color-cosmos-900: #75272e;
   --color-cosmos-950: #3f1014;
+
+  --shadow-soft: 0 10px 30px -10px rgba(244, 168, 156, 0.2);
 }
 
+/* Tailwind custom */
 .corner {
   corner-shape: squircle;
 }
+/* Tailwind custom */
 
 body {
-  font-family: Noto Sans JP, Helvetica, sans-serif;
+  font-family: Noto Serif, serif;
 }
 
 button:hover,

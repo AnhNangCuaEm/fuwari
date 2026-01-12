@@ -21,14 +21,14 @@ export default function Header() {
                     className='sm:w-36 w-28'
                 />
             </Link>
-            <ul className='hidden md:flex space-x-6 text-lg'>
-                <li className={`transition-colors ${isActive('/products') ? 'text-almond-5' : 'hover:text-almond-5'}`}>
+            <ul className='hidden md:flex space-x-6 text-cosmos-400 text-lg'>
+                <li className={`transition-colors ${isActive('/products') ? 'text-almond-6' : 'hover:text-almond-6'}`}>
                     <Link href="/products">Menu</Link>
                 </li>
-                <li className={`transition-colors ${isActive('/about') ? 'text-almond-5' : 'hover:text-almond-5'}`}>
+                <li className={`transition-colors ${isActive('/about') ? 'text-almond-6' : 'hover:text-almond-6'}`}>
                     <Link href="/about">Shop</Link>
                 </li>
-                <li className={`transition-colors ${isActive('/contact') ? 'text-almond-5' : 'hover:text-almond-5'}`}>
+                <li className={`transition-colors ${isActive('/contact') ? 'text-almond-6' : 'hover:text-almond-6'}`}>
                     <Link href="/contact">Contact</Link>
                 </li>
             </ul>
