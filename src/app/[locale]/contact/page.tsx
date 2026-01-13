@@ -2,7 +2,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ConditionalAuthContent } from "@/components/auth/AuthGuards";
 import { getCurrentUser } from "@/lib/auth-utils";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { getTranslations } from 'next-intl/server';
 import Image from "next/image";
 

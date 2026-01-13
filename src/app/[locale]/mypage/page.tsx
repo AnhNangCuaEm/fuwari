@@ -9,7 +9,7 @@ import Footer from '@/components/layout/Footer';
 import ImageCropModal from '@/components/ui/ImageCropModal';
 import { useTranslations } from 'next-intl';
 import { validateAllFields } from '@/lib/validation';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { signOut } from "next-auth/react"
 import AlertModal from "@/components/ui/AlertModal";
 

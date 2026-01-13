@@ -1,6 +1,6 @@
 
 import { requireAdmin } from "@/lib/auth-utils"
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 
 export default async function AdminDashboard() {
     const adminUser = await requireAdmin()

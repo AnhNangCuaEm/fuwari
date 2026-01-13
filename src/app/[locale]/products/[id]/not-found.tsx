@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import { useTranslations } from 'next-intl';

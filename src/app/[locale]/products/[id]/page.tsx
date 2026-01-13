@@ -1,6 +1,6 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import { getProductById } from '@/lib/products';
