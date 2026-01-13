@@ -41,6 +41,12 @@
       "freshDeliveryDesc": "Carefully packaged and delivered straight from our oven to your doorstep.",
       "heartfeltTitle": "Heartfelt Craft",
       "heartfeltDesc": "Made with passion, attention to detail, and a whole lot of love."
+    },
+    "story": {
+      "title": "The Art of Wagashi-inspired Baking",
+      "description": "At Mochi & Bloom, we believe that baking is a form of meditation. Our journey began in a small kitchen in Kyoto, where we learned the delicate art of balancing texture and taste.",
+      "description2": "We blend traditional Japanese ingredients like matcha, yuzu, and red bean with classic Western pastry techniques. The result? Treats that are not just desserts, but edible moments of calm.",
+      "readMore": "Read Our Full Story"
     }
   },
   "products": {

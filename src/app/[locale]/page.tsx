@@ -50,7 +50,7 @@ export default function Home() {
           <h3 className="text-3xl md:text-4xl font-bold text-center mb-4">{t('home.whyChooseUs.title')}</h3>
           <p className="text-center text-gray-600 mb-12">{t('home.whyChooseUs.description')}</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className='flex flex-col rounded-3xl p-8 gap-4 bg-[#fff5f5] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
+            <div className='flex flex-col rounded-3xl p-4 md:p-8 gap-2 md:gap-4 bg-[#fff5f5] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
               <Image
                 src="/icons/bakery.svg"
                 alt={t('home.whyChooseUs.handMadeTitle')}
@@ -61,7 +61,7 @@ export default function Home() {
               <h4 className="text-black text-lg font-bold text-left">{t('home.whyChooseUs.handMadeTitle')}</h4>
               <p className="text-left leading-relaxed">{t('home.whyChooseUs.handMadeDesc')}</p>
             </div>
-            <div className='flex flex-col rounded-3xl p-8 gap-4 bg-[#fefae9] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
+            <div className='flex flex-col rounded-3xl p-4 md:p-8 gap-2 md:gap-4 bg-[#fefae9] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
               <Image
                 src="/icons/eco.svg"
                 alt={t('home.whyChooseUs.naturalTitle')}
@@ -72,7 +72,7 @@ export default function Home() {
               <h4 className="text-black text-lg font-bold text-left">{t('home.whyChooseUs.naturalTitle')}</h4>
               <p className="text-left leading-relaxed">{t('home.whyChooseUs.naturalDesc')}</p>
             </div>
-            <div className='flex flex-col rounded-3xl p-8 gap-4 bg-[#F4FCF6] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
+            <div className='flex flex-col rounded-3xl p-4 md:p-8 gap-2 md:gap-4 bg-[#F4FCF6] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
               <Image
                 src="/icons/shipping.svg"
                 alt={t('home.whyChooseUs.freshDeliveryTitle')}
@@ -83,7 +83,7 @@ export default function Home() {
               <h4 className="text-black text-lg font-bold text-left">{t('home.whyChooseUs.freshDeliveryTitle')}</h4>
               <p className="text-left leading-relaxed">{t('home.whyChooseUs.freshDeliveryDesc')}</p>
             </div>
-            <div className='flex flex-col rounded-3xl p-8 gap-4 bg-[#fdf8ff] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
+            <div className='flex flex-col rounded-3xl p-4 md:p-8 gap-2 md:gap-4 bg-[#fdf8ff] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
               <Image
                 src="/icons/heart_outline.svg"
                 alt={t('home.whyChooseUs.heartfeltTitle')}
@@ -148,7 +148,7 @@ export default function Home() {
             </div>
             <Link
               href="/products"
-              className="hidden sm:flex items-center gap-1 text-sm font-bold text-gray-900 border-b border-gray-900 pb-0.5 hover:text-cosmos-400 hover:border-cosmos-400 transition-all"
+              className="flex items-center gap-1 text-sm font-bold text-gray-900 border-b border-gray-900 pb-0.5 hover:text-cosmos-400 hover:border-cosmos-400 transition-all"
             >
               {t('common.viewAll')} <span className="text-[16px]">→</span>
             </Link>
@@ -156,27 +156,42 @@ export default function Home() {
           <FeaturedProducts />
         </section>
 
-        <div className="flex flex-col items-center">
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-4xl mb-4">🧁</div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">{t('products.cupcake.title')}</h3>
-              <p className="text-gray-600">{t('products.cupcake.description')}</p>
-            </div>
+        {/* Story */}
+        <section className="mt-20">
+          <div className="relative w-full h-[400px] md:h-[500px] rounded-4xl overflow-hidden">
+            <Image
+              src="/images/story_thumb_img.png"
+              alt="Our Story Image"
+              width={1248}
+              height={500}
+              className="w-full h-full object-cover"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/50 to-black/70"></div>
 
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-4xl mb-4">🍰</div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">{t('products.creamCake.title')}</h3>
-              <p className="text-gray-600">{t('products.creamCake.description')}</p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <div className="text-4xl mb-4">🍪</div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">{t('products.cookie.title')}</h3>
-              <p className="text-gray-600">{t('products.cookie.description')}</p>
+            {/* Content overlay */}
+            <div className="absolute inset-0 flex items-center justify-end p-8 md:p-12">
+              <div className="w-full md:w-2/3 flex flex-col gap-4 md:gap-6 text-white">
+                <h2 className="text-3xl md:text-5xl font-serif font-bold">
+                  {t('home.story.title')}
+                </h2>
+                <p className="text-white/90 text-xl leading-relaxed">
+                  {t('home.story.description')}
+                </p>
+                <p className="hidden md:block text-white/80 text-lg leading-relaxed">
+                  {t('home.story.description2')}
+                </p>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2 text-cosmos-200 font-semibold hover:gap-3 hover:text-cosmos-300 transition-all mt-2 group"
+                >
+                  {t('home.story.readMore')}
+                  <span className="text-lg group-hover:translate-x-1 transition-transform">→</span>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
       <Footer />
     </div>
