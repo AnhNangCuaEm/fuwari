@@ -47,6 +47,25 @@
       "description": "At Mochi & Bloom, we believe that baking is a form of meditation. Our journey began in a small kitchen in Kyoto, where we learned the delicate art of balancing texture and taste.",
       "description2": "We blend traditional Japanese ingredients like matcha, yuzu, and red bean with classic Western pastry techniques. The result? Treats that are not just desserts, but edible moments of calm.",
       "readMore": "Read Our Full Story"
+    },
+    "process": {
+      "title": "From Our Hands to Yours",
+      "step1": {
+        "title": "Source",
+        "description": "Selecting only premium, locally-sourced ingredients."
+      },
+      "step2": {
+        "title": "Kneading",
+        "description": "Hand-kneaded with patience to ensure perfect texture."
+      },
+      "step3": {
+        "title": "Baking",
+        "description": "Baked in small batches for consistent quality."
+      },
+      "step4": {
+        "title": "Delivery",
+        "description": "Packaged with care and sent to your doorstep."
+      }
     }
   },
   "products": {

@@ -143,7 +143,7 @@ export default function Home() {
         <section className="mt-20">
           <div className="flex justify-between items-end mb-10">
             <div>
-              <h2 className="text-3xl font-serif font-bold text-gray-900">{t('home.featuredProducts')}</h2>
+              <h3 className="text-3xl font-serif font-bold text-gray-900">{t('home.featuredProducts')}</h3>
               <p className="text-gray-600 mt-2">{t('home.featuredProductsDesc')}</p>
             </div>
             <Link
@@ -172,9 +172,9 @@ export default function Home() {
             {/* Content overlay */}
             <div className="absolute inset-0 flex items-center justify-end p-8 md:p-12">
               <div className="w-full md:w-2/3 flex flex-col gap-4 md:gap-6 text-white">
-                <h2 className="text-3xl md:text-5xl font-serif font-bold">
+                <h3 className="text-3xl md:text-5xl font-serif font-bold">
                   {t('home.story.title')}
-                </h2>
+                </h3>
                 <p className="text-white/90 text-xl leading-relaxed">
                   {t('home.story.description')}
                 </p>
@@ -188,6 +188,56 @@ export default function Home() {
                   {t('home.story.readMore')}
                   <span className="text-lg group-hover:translate-x-1 transition-transform">→</span>
                 </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Process */}
+        <section className="mt-20">
+          <div className="flex flex-col items-center text-center mb-16">
+            <h2 className="text-3xl font-serif font-bold text-text-main mb-4">{t('home.process.title')}</h2>
+            <div className="h-1 w-32 bg-cosmos-300 rounded-full"></div>
+          </div>
+          <div className="relative">
+            {/* Connecting Line (Desktop) */}
+            <div className="hidden md:block absolute top-12 left-[10%] right-[10%] h-[2px] border-t-2 border-dashed border-gray-200 z-0"></div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+              {/* Step 1 */}
+              <div className="flex flex-col items-center text-center gap-4">
+                <div className="size-24 rounded-full bg-white border-4 border-cosmos-50 flex items-center justify-center shadow-sm relative">
+                  <Image src="/icons/farm.svg" alt="Step 1" width={48} height={48} />
+                  <div className="absolute -top-2 -right-2 bg-gray-600 text-white text-xs font-bold size-6 rounded-full flex items-center justify-center">1</div>
+                </div>
+                <h6 className="font-bold text-lg text-text-main">{t('home.process.step1.title')}</h6>
+                <p className="text-sm text-text-muted max-w-[200px]">{t('home.process.step1.description')}</p>
+              </div>
+              {/* Step 2 */}
+              <div className="flex flex-col items-center text-center gap-4">
+                <div className="size-24 rounded-full bg-white border-4 border-cosmos-50 flex items-center justify-center shadow-sm relative">
+                  <Image src="/icons/knead.svg" alt="Step 2" width={48} height={48} />
+                  <div className="absolute -top-2 -right-2 bg-gray-600 text-white text-xs font-bold size-6 rounded-full flex items-center justify-center">2</div>
+                </div>
+                <h6 className="font-bold text-lg text-text-main">{t('home.process.step2.title')}</h6>
+                <p className="text-sm text-text-muted max-w-[200px]">{t('home.process.step2.description')}</p>
+              </div>
+              {/* Step 3 */}
+              <div className="flex flex-col items-center text-center gap-4">
+                <div className="size-24 rounded-full bg-white border-4 border-cosmos-50 flex items-center justify-center shadow-sm relative">
+                  <Image src="/icons/oven.svg" alt="Step 3" width={48} height={48} />
+                  <div className="absolute -top-2 -right-2 bg-gray-600 text-white text-xs font-bold size-6 rounded-full flex items-center justify-center">3</div>
+                </div>
+                <h6 className="font-bold text-lg text-text-main">{t('home.process.step3.title')}</h6>
+                <p className="text-sm text-text-muted max-w-[200px]">{t('home.process.step3.description')}</p>
+              </div>
+              {/* Step 4 */}
+              <div className="flex flex-col items-center text-center gap-4">
+                <div className="size-24 rounded-full bg-white border-4 border-cosmos-50 flex items-center justify-center shadow-sm relative">
+                  <Image src="/icons/gift.svg" alt="Step 4" width={48} height={48} />
+                  <div className="absolute -top-2 -right-2 bg-gray-600 text-white text-xs font-bold size-6 rounded-full flex items-center justify-center">4</div>
+                </div>
+                <h6 className="font-bold text-lg text-text-main">{t('home.process.step4.title')}</h6>
+                <p className="text-sm text-text-muted max-w-[200px]">{t('home.process.step4.description')}</p>
               </div>
             </div>
           </div>
