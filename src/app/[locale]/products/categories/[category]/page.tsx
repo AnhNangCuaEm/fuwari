@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/layout/Footer';
@@ -12,12 +12,8 @@ import AddToCartButton from '@/components/products/AddToCartButton';
 const VALID_CATEGORIES = ['cakes', 'cookies', 'macarons', 'original'] as const;
 type CategoryType = typeof VALID_CATEGORIES[number];
 
-// Generate static params for all categories
-export function generateStaticParams() {
-    return VALID_CATEGORIES.map((category) => ({
-        category: category,
-    }));
-}
+// Use dynamic rendering since we fetch from database
+export const dynamic = 'force-dynamic';
 
 // Category display info
 const categoryInfo: Record<CategoryType, { titleEn: string; titleJa: string; image: string }> = {
