@@ -18,6 +18,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <div className="container mx-auto px-4 pt-32 pb-16 flex-1">
+        {/* Hero Section */}
         <section className="relative w-full py-32 flex items-center justify-center text-center rounded-4xl corner overflow-hidden shadow-xl">
           <Image
             src="/images/hero_img.png"
@@ -41,13 +42,6 @@ export default function Home() {
               Shop Now
             </Link>
           </div>
-        </section>
-
-        {/* Featured Products */}
-        <section className="mt-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">{t('home.featuredProducts')}</h2>
-          <p className="text-center text-gray-600 mb-12">{t('home.featuredProductsDesc')}</p>
-          <FeaturedProducts />
         </section>
 
         {/* Why choose Fuwari Sweets? */}
@@ -143,6 +137,23 @@ export default function Home() {
               </div>
             </Link>
           </div>
+        </section>
+
+        {/* Featured Products */}
+        <section className="mt-20">
+          <div className="flex justify-between items-end mb-10">
+            <div>
+              <h2 className="text-3xl font-serif font-bold text-gray-900">{t('home.featuredProducts')}</h2>
+              <p className="text-gray-600 mt-2">{t('home.featuredProductsDesc')}</p>
+            </div>
+            <Link
+              href="/products"
+              className="hidden sm:flex items-center gap-1 text-sm font-bold text-gray-900 border-b border-gray-900 pb-0.5 hover:text-cosmos-400 hover:border-cosmos-400 transition-all"
+            >
+              {t('common.viewAll')} <span className="text-[16px]">→</span>
+            </Link>
+          </div>
+          <FeaturedProducts />
         </section>
 
         <div className="flex flex-col items-center">
