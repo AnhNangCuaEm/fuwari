@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import { Suspense, useMemo, useRef, useEffect } from 'react';
 import { Box3, Vector3 } from 'three';
+import { EffectsWrapper } from './model-viewer-with-effects';
 
 interface ModelViewerProps {
     modelPath: string;
@@ -114,6 +115,10 @@ export function ModelViewer({ modelPath, className = "w-full h-96" }: ModelViewe
                     target={[0, 0, 0]}   // Camera always looks at center
                     makeDefault // Make this the default controls
                 />
+                <EffectsWrapper 
+                enabled={true}
+                radius={4}
+                backgroundColor="#1a1a1a"/>
             </Canvas>
         </div>
     );
