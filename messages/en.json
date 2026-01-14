@@ -67,6 +67,22 @@
         "title": "Delivery",
         "description": "Packaged with care and sent to your doorstep."
       }
+    },
+    "sweetWords": {
+      "title": "Sweet Words",
+      "verified": "Verified Customer",
+      "review1": {
+        "author": "Koizumi Akihiko",
+        "content": "The most delicate and flavorful pastries I've ever had. The packaging was beautiful too!"
+      },
+      "review2": {
+        "author": "Murakami Sachiko",
+        "content": "Absolutely obsessed with the Matcha Roll Cake. It's not too sweet, just perfect."
+      },
+      "review3": {
+        "author": "Elon Musk",
+        "content": "A wonderful gift for my family. Arrived fresh and tasted like it was just baked."
+      }
     }
   },
   "products": {

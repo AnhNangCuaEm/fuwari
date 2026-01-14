@@ -211,7 +211,7 @@ export default function Home() {
                   <div className="absolute -top-2 -right-2 bg-gray-600 text-white text-xs font-bold size-6 rounded-full flex items-center justify-center">1</div>
                 </div>
                 <h6 className="font-bold text-lg text-text-main">{t('home.process.step1.title')}</h6>
-                <p className="text-sm text-text-muted max-w-[200px]">{t('home.process.step1.description')}</p>
+                <p className="text-sm max-w-[200px]">{t('home.process.step1.description')}</p>
               </div>
               {/* Step 2 */}
               <div className="flex flex-col items-center text-center gap-4">
@@ -220,7 +220,7 @@ export default function Home() {
                   <div className="absolute -top-2 -right-2 bg-gray-600 text-white text-xs font-bold size-6 rounded-full flex items-center justify-center">2</div>
                 </div>
                 <h6 className="font-bold text-lg text-text-main">{t('home.process.step2.title')}</h6>
-                <p className="text-sm text-text-muted max-w-[200px]">{t('home.process.step2.description')}</p>
+                <p className="text-sm max-w-[200px]">{t('home.process.step2.description')}</p>
               </div>
               {/* Step 3 */}
               <div className="flex flex-col items-center text-center gap-4">
@@ -229,7 +229,7 @@ export default function Home() {
                   <div className="absolute -top-2 -right-2 bg-gray-600 text-white text-xs font-bold size-6 rounded-full flex items-center justify-center">3</div>
                 </div>
                 <h6 className="font-bold text-lg text-text-main">{t('home.process.step3.title')}</h6>
-                <p className="text-sm text-text-muted max-w-[200px]">{t('home.process.step3.description')}</p>
+                <p className="text-sm max-w-[200px]">{t('home.process.step3.description')}</p>
               </div>
               {/* Step 4 */}
               <div className="flex flex-col items-center text-center gap-4">
@@ -238,7 +238,7 @@ export default function Home() {
                   <div className="absolute -top-2 -right-2 bg-gray-600 text-white text-xs font-bold size-6 rounded-full flex items-center justify-center">4</div>
                 </div>
                 <h6 className="font-bold text-lg text-text-main">{t('home.process.step4.title')}</h6>
-                <p className="text-sm text-text-muted max-w-[200px]">{t('home.process.step4.description')}</p>
+                <p className="text-sm max-w-[200px]">{t('home.process.step4.description')}</p>
               </div>
             </div>
           </div>
@@ -246,6 +246,70 @@ export default function Home() {
 
         {/* Favorited Products */}
         <FavoriteProducts />
+
+        {/* Testimonials */}
+        <section className="px-4 md:px-10 lg:px-40 py-20 bg-white">
+          <h2 className="text-3xl font-serif font-bold text-gray-900 text-center mb-12">Sweet Words</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Review 1 */}
+            <div className="flex flex-col gap-4 text-center p-6">
+              <div className="flex justify-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Image
+                    key={i}
+                    src="/icons/star.svg"
+                    alt="star"
+                    width={20}
+                    height={20}
+                  />
+                ))}
+              </div>
+              <p className="text-gray-900 italic font-medium leading-relaxed">&ldquo;{t('home.sweetWords.review1.content')}&rdquo;</p>
+              <div className="mt-2">
+                <p className="font-bold text-sm">{t('home.sweetWords.review1.author')}</p>
+                <p className="text-xs">{t('home.sweetWords.verified')}</p>
+              </div>
+            </div>
+            {/* Review 2 */}
+            <div className="flex flex-col gap-4 text-center p-6 border-l-0 md:border-l border-r-0 md:border-r border-gray-100">
+              <div className="flex justify-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Image
+                    key={i}
+                    src="/icons/star.svg"
+                    alt="star"
+                    width={20}
+                    height={20}
+                  />
+                ))}
+              </div>
+              <p className="text-text-main italic font-medium leading-relaxed">&ldquo;{t('home.sweetWords.review2.content')}&rdquo;</p>
+              <div className="mt-2">
+                <p className="font-bold text-sm">{t('home.sweetWords.review2.author')}</p>
+                <p className="text-xs">{t('home.sweetWords.verified')}</p>
+              </div>
+            </div>
+            {/* Review 3 */}
+            <div className="flex flex-col gap-4 text-center p-6">
+              <div className="flex justify-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Image
+                    key={i}
+                    src="/icons/star.svg"
+                    alt="star"
+                    width={20}
+                    height={20}
+                  />
+                ))}
+              </div>
+              <p className="text-text-main italic font-medium leading-relaxed">&ldquo;{t('home.sweetWords.review3.content')}&rdquo;</p>
+              <div className="mt-2">
+                <p className="font-bold text-sm">{t('home.sweetWords.review3.author')}</p>
+                <p className="text-xs">{t('home.sweetWords.verified')}</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
       <Footer />
     </div>

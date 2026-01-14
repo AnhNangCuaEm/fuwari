@@ -144,7 +144,7 @@ export default function FavoriteProducts() {
                 <h4 className="font-bold text-text-main group-hover:text-cosmos-400 transition-colors line-clamp-1">
                   {locale === 'en' ? product.engName : product.name}
                 </h4>
-                <p className="text-sm text-text-muted">
+                <p className="text-sm">
                   {product.quantity > 0 ? t('shopping.stock.inStock') : t('shopping.stock.outOfStock')}
                 </p>
               </div>
