@@ -19,6 +19,7 @@ export default function Header() {
                     width={150}
                     height={100}
                     className='sm:w-36 w-28'
+                    priority
                 />
             </Link>
             <ul className='hidden md:flex space-x-6 text-cosmos-400 text-lg'>

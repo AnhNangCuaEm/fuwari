@@ -83,6 +83,16 @@
         "author": "Elon Musk",
         "content": "A wonderful gift for my family. Arrived fresh and tasted like it was just baked."
       }
+    },
+    "news": {
+      "title": "Join the Sweet Circle",
+      "description": "Subscribe to receive updates on seasonal specials, new creations, and exclusive offers.",
+      "input": {
+        "placeholder": "Enter your email address",
+        "button": "Subscribe",
+        "subscribed": "Subscribed!"
+      },
+      "promise": "We respect your privacy. Unsubscribe at any time."
     }
   },
   "products": {
