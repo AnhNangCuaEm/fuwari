@@ -116,6 +116,19 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
     }
 };
 
+// Get favorited products ( 6 products with highest stock )
+export const getFavoriteProducts = async (): Promise<Product[]> => {
+    try {
+        const products = await query<(RowDataPacket & Product)[]>(
+            'SELECT id, name, "engName", price, image, quantity FROM products WHERE quantity > 0 ORDER BY quantity DESC LIMIT 6'
+        );
+        return products;
+    } catch (error) {
+        console.error('Error fetching favorite products:', error);
+        return [];
+    }
+};
+
 // Get products by category
 export const getProductsByCategory = async (category: string): Promise<Product[]> => {
     try {

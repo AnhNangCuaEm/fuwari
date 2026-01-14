@@ -2,6 +2,7 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import FeaturedProducts from '@/components/products/FeaturedProducts';
+import FavoriteProducts from '@/components/products/FavoriteProducts';
 // import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
@@ -47,7 +48,7 @@ export default function Home() {
         {/* Why choose Fuwari Sweets? */}
         <section className="mt-20">
           <p className="text-center text-cosmos-300 mb-4">{t('home.ourPromise')}</p>
-          <h3 className="text-3xl md:text-4xl font-bold text-center mb-4">{t('home.whyChooseUs.title')}</h3>
+          <h3 className="text-2xl md:text-4xl font-bold text-center mb-4">{t('home.whyChooseUs.title')}</h3>
           <p className="text-center text-gray-600 mb-12">{t('home.whyChooseUs.description')}</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className='flex flex-col rounded-3xl p-4 md:p-8 gap-2 md:gap-4 bg-[#fff5f5] hover:shadow-soft transition-all duration-300 transform hover:-translate-y-1'>
@@ -143,7 +144,7 @@ export default function Home() {
         <section className="mt-20">
           <div className="flex justify-between items-end mb-10">
             <div>
-              <h3 className="text-3xl font-serif font-bold text-gray-900">{t('home.featuredProducts')}</h3>
+              <h3 className="text-2xl font-serif font-bold text-gray-900">{t('home.featuredProducts')}</h3>
               <p className="text-gray-600 mt-2">{t('home.featuredProductsDesc')}</p>
             </div>
             <Link
@@ -172,7 +173,7 @@ export default function Home() {
             {/* Content overlay */}
             <div className="absolute inset-0 flex items-center justify-end p-8 md:p-12">
               <div className="w-full md:w-2/3 flex flex-col gap-4 md:gap-6 text-white">
-                <h3 className="text-3xl md:text-5xl font-serif font-bold">
+                <h3 className="text-2xl md:text-4xl font-serif font-bold">
                   {t('home.story.title')}
                 </h3>
                 <p className="text-white/90 text-xl leading-relaxed">
@@ -196,7 +197,7 @@ export default function Home() {
         {/* Process */}
         <section className="mt-20">
           <div className="flex flex-col items-center text-center mb-16">
-            <h2 className="text-3xl font-serif font-bold text-text-main mb-4">{t('home.process.title')}</h2>
+            <h2 className="text-2xl font-serif font-bold text-text-main mb-4">{t('home.process.title')}</h2>
             <div className="h-1 w-32 bg-cosmos-300 rounded-full"></div>
           </div>
           <div className="relative">
@@ -242,6 +243,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Favorited Products */}
+        <FavoriteProducts />
       </div>
       <Footer />
     </div>
