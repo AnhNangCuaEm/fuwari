@@ -346,14 +346,14 @@ export default function Mypage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-semibold">
+                    <div className="w-full h-full bg-gradient-to-br from-cosmos-300 to-cosmos-400 flex items-center justify-center text-white text-2xl font-semibold">
                       {profile.name.charAt(0).toUpperCase() || 'U'}
                     </div>
                   )}
                 </div>
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors"
+                  className="absolute bottom-0 right-0 bg-almond-6 hover:bg-almond-5 text-white p-2 rounded-full shadow-lg transition-colors"
                   type="button"
                   aria-label="Upload avatar"
                 >
@@ -387,8 +387,9 @@ export default function Mypage() {
                   type="text"
                   id="name"
                   value={profile.name}
+                  autoComplete='name'
                   onChange={(e) => handleInputChange('name', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.name ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all ${errors.name ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder={t('fullNamePlaceholder')}
                 />
@@ -405,8 +406,9 @@ export default function Mypage() {
                   type="email"
                   id="email"
                   value={profile.email}
+                  autoComplete='email'
                   disabled
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed form-input border-gray-300"
+                  className="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed border-gray-300"
                   placeholder={t('emailPlaceholder')}
                 />
                 {errors.email && (
@@ -423,8 +425,9 @@ export default function Mypage() {
                   type="tel"
                   id="phone"
                   value={profile.phone}
+                  autoComplete='tel'
                   onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all ${errors.phone ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder={t('phonePlaceholder')}
                 />
@@ -442,8 +445,9 @@ export default function Mypage() {
                   type="text"
                   id="postalCode"
                   value={profile.postalCode}
+                  autoComplete='postal-code'
                   onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder={t('postalCodePlaceholder')}
                 />
@@ -461,8 +465,9 @@ export default function Mypage() {
                   type="text"
                   id="city"
                   value={profile.city}
+                  autoComplete='address-level2'
                   onChange={(e) => handleInputChange('city', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.city ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all ${errors.city ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder={t('cityPlaceholder')}
                 />
@@ -480,8 +485,9 @@ export default function Mypage() {
                   type="text"
                   id="address"
                   value={profile.address}
+                  autoComplete='address-line1'
                   onChange={(e) => handleInputChange('address', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors form-input ${errors.address ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all ${errors.address ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder={t('addressPlaceholder')}
                 />
@@ -519,14 +525,14 @@ export default function Mypage() {
                 <button
                   onClick={handleReset}
                   disabled={!hasChanges() || isSaving}
-                  className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed reset-button"
+                  className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed! reset-button"
                 >
                   {t('reset')}
                 </button>
                 <button
                   onClick={handleSave}
                   disabled={!hasChanges() || isSaving}
-                  className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 bg-almond-6 text-white rounded-lg hover:bg-almond-5 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 save-button"
+                  className="text-xs sm:text-base px-3 py-2 sm:px-4 sm:py-3 bg-almond-6 text-white rounded-lg hover:bg-almond-5 focus:ring-2 focus:ring-almond-5 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed! flex items-center space-x-2 save-button"
                 >
                   {isSaving && (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-almond-5 loading-spinner"></div>
