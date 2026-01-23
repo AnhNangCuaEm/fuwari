@@ -165,7 +165,7 @@ export default function Home() {
         {/* Featured Products - Full Width White Background */}
         <section className="py-20 md:py-28 bg-white">
           <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-10 md:mb-12">
+            <div className="flex flex-row justify-between items-end gap-4 mb-10 md:mb-12">
               <div>
                 <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900">{t('home.featuredProducts')}</h2>
                 <p className="text-gray-600 mt-2">{t('home.featuredProductsDesc')}</p>

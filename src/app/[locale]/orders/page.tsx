@@ -221,7 +221,7 @@ export default function OrdersPage() {
                                         <div className="mb-2 sm:mb-0">
                                             <div className="flex items-center space-x-2">
                                                 <h3 className="text-lg font-semibold text-gray-900">
-                                                    {t('orders.orderNumber')}: <span className='text-almond-5'>#{order.id.slice(-8).toUpperCase()}</span>
+                                                    {t('orders.orderNumber')}: <span className='text-cosmos-400'>#{order.id.slice(-8).toUpperCase()}</span>
                                                 </h3>
                                                 <button
                                                     onClick={() => handleCopyOrderId(order.id)}

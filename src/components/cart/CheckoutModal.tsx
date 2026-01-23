@@ -264,12 +264,12 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
           />
 
           {/* Animated Modal Container */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ 
-              duration: 0.3, 
+            transition={{
+              duration: 0.3,
               ease: [0.16, 1, 0.3, 1] // easeOutExpo
             }}
             className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none"
@@ -340,7 +340,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
                           type="text"
                           value={customerInfo.fullName}
                           onChange={(e) => handleInputChange('fullName', e.target.value)}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D6B884] focus:border-transparent"
+                          className="w-full p-3 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all"
                           required
                           disabled={loading}
                         />
@@ -354,7 +354,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
                           type="email"
                           value={customerInfo.email}
                           onChange={(e) => handleInputChange('email', e.target.value)}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D6B884] focus:border-transparent"
+                          className="w-full p-3 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all"
                           required
                           disabled={loading}
                         />
@@ -370,7 +370,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
                           type="tel"
                           value={customerInfo.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D6B884] focus:border-transparent"
+                          className="w-full p-3 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all"
                           disabled={loading}
                         />
                       </div>
@@ -383,7 +383,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
                           type="text"
                           value={customerInfo.postalCode}
                           onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D6B884] focus:border-transparent"
+                          className="w-full p-3 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all"
                           disabled={loading}
                         />
                       </div>
@@ -397,7 +397,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
                         type="text"
                         value={customerInfo.city}
                         onChange={(e) => handleInputChange('city', e.target.value)}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-almond-6 focus:border-transparent"
+                        className="w-full p-3 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all"
                         required
                         disabled={loading}
                       />
@@ -411,7 +411,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
                         type="text"
                         value={customerInfo.address}
                         onChange={(e) => handleInputChange('address', e.target.value)}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-almond-6 focus:border-transparent"
+                        className="w-full p-3 rounded-lg border border-gray-300 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all"
                         required
                         disabled={loading}
                       />
@@ -431,7 +431,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
 
                   {/* Test Cards Info */}
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="font-medium text-blue-800 mb-2">🧪 Test Cards (Development Mode):</p>
+                    <p className="font-medium text-blue-800 mb-2"> 💳 Test Cards (Development Mode):</p>
                     <div className="text-sm text-blue-700 space-y-1">
                       <p><span className="font-mono">4242424242424242</span> - ✅ Successful payment</p>
                       <p><span className="font-mono">4000000000000002</span> - ❌ Declined card</p>

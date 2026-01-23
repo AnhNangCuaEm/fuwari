@@ -64,7 +64,7 @@ export default async function ProductsPage() {
                                     {getLocalizedText(product.description, product.engDescription)}
                                 </p>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-lg font-bold text-green-600">
+                                    <span className="text-lg font-bold text-cosmos-400">
                                         {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} &yen;
                                     </span>
                                     <span className={`text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>

@@ -129,7 +129,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                     <div className="text-center py-8">
                         <Link
                             href="/products"
-                            className="inline-block bg-blue-100 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-200 transition-colors duration-300"
+                            className="inline-block bg-cosmos-100 text-cosmos-600 px-6 py-3 rounded-lg hover:bg-cosmos-200 transition-colors duration-300"
                         >
                             すべての製品を見る
                         </Link>
@@ -151,7 +151,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                 <div className="border-t border-gray-200 pt-6">
                     <div className="flex items-center justify-between mb-6">
                         <span className="text-xl text-gray-500">{locale === 'en' ? 'Price:' : '価格:'}</span>
-                        <span className="text-2xl font-bold text-green-600">
+                        <span className="text-2xl font-bold text-cosmos-400">
                             {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} &yen;
                         </span>
                     </div>
@@ -161,7 +161,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                             onClick={handleAddToCart}
                             disabled={product.quantity === 0}
                             className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${product.quantity > 0
-                                ? 'bg-almond-6 hover:bg-almond-5 text-white'
+                                ? 'bg-almond-6/80 hover:bg-almond-5/80 text-white'
                                 : 'hidden'
                                 }`}
                         >
@@ -175,7 +175,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                             }}
                             disabled={product.quantity === 0}
                             className={`w-full py-3 px-6 rounded-lg transition-colors duration-300 font-semibold ${product.quantity > 0
-                                    ? 'bg-green-600 text-white hover:bg-green-700'
+                                    ? 'bg-cosmos-500/80 text-white hover:bg-cosmos-400/80'
                                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 }`}
                         >
@@ -207,7 +207,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                             {(locale === 'en' && product.engIngredients ? product.engIngredients : product.ingredients)?.map((ingredient, index) => (
                                 <span
                                     key={index}
-                                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                                    className="px-3 py-1 bg-cosmos-400 text-white rounded-full text-sm"
                                 >
                                     {ingredient}
                                 </span>
