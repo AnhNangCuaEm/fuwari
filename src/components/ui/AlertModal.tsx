@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Image from 'next/image'
 
 interface AlertModalProps {
     isOpen: boolean
@@ -75,10 +76,10 @@ export default function AlertModal({
                 <div className="p-6">
                     <div className="flex items-center mb-4">
                         <div className={`mr-3 ${getIconColor()}`}>
-                            {type === 'error' && '⚠️'}
-                            {type === 'warning' && '⚠️'}
-                            {type === 'success' && '✅'}
-                            {type === 'info' && 'ℹ️'}
+                            {type === 'error' && <Image src="/icons/error.svg" alt="Error" width={24} height={24} />}
+                            {type === 'warning' && <Image src="/icons/warning.svg" alt="Warning" width={24} height={24} />}
+                            {type === 'success' && <Image src="/icons/success.svg" alt="Success" width={24} height={24} />}
+                            {type === 'info' && <Image src="/icons/info.svg" alt="Info" width={24} height={24} />}
                         </div>
                         <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
                     </div>

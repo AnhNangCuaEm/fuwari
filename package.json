@@ -8,15 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "db:init": "tsx scripts/init-database.ts",
-    "db:reset": "docker-compose down -v && docker-compose up -d postgres && timeout /t 10 && npm run db:init && npm run migrate",
     "migrate": "tsx scripts/migrate.ts",
-    "migrate:create": "node --input-type=module scripts/create-migration.js",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f"
+    "migrate:create": "node --input-type=module scripts/create-migration.js"
   },
   "dependencies": {
     "@auth/core": "^0.40.0",
+    "@emailjs/browser": "^4.4.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@stripe/react-stripe-js": "^4.0.2",
@@ -32,7 +29,7 @@
     "hamburger-react": "^2.5.2",
     "lucide-react": "^0.556.0",
     "motion": "^12.23.25",
-    "next": "15.3.6",
+    "next": "^15.5.9",
     "next-auth": "^5.0.0-beta.29",
     "next-intl": "^4.3.5",
     "pg": "^8.13.1",

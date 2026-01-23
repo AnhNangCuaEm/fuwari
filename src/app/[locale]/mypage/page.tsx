@@ -323,14 +323,14 @@ export default function Mypage() {
 
         <div className="bg-white rounded-lg shadow-lg p-8">
 
-          {message && (
-            <div className={`mb-6 p-4 rounded-lg ${message.type === 'success'
-              ? 'bg-green-50 border border-green-200 text-green-800 message-success'
-              : 'bg-red-50 border border-red-200 text-red-800 message-error'
-              }`}>
-              {message.text}
-            </div>
-          )}
+          <AlertModal
+            isOpen={!!message}
+            onClose={() => setMessage(null)}
+            title={message?.type === 'success' ? t('success') || 'Success' : t('error') || 'Error'}
+            message={message?.text || ''}
+            type={message?.type === 'success' ? 'success' : 'error'}
+            confirmText={tCommon('ok') || 'OK'}
+          />
 
           <div className="space-y-8">
             {/* Avatar Section */}
