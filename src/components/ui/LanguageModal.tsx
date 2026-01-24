@@ -6,6 +6,7 @@ import { routing } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface LanguageModalProps {
   isOpen: boolean;
@@ -50,50 +51,69 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
   if (!isOpen || !mounted) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center">
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-[#000000c2] z-[60]"
-        onClick={onClose}
-      />
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[70] flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 z-[60] bg-black/30"
+          onClick={onClose}
+        />
 
-      {/* Modal */}
-      <div className="relative bg-almond-1 rounded-xl shadow-xl p-6 w-70 max-w-sm mx-4 z-[70]">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-semibold text-gray-900">
-            {t('common.selectLanguage')}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
-
-        <div className="space-y-2">
-          {routing.locales.map((lng) => (
+        {/* Modal */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          transition={{
+            duration: 0.3,
+            ease: [0.16, 1, 0.3, 1] // easeOutExpo
+          }}
+          className="relative bg-almond-1 rounded-xl shadow-xl p-6 w-70 max-w-sm mx-4 z-[70]">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold text-gray-900">
+              {t('common.selectLanguage')}
+            </h3>
             <button
-              key={lng}
-              onClick={() => handleLocaleChange(lng)}
-              className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${locale === lng
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            {routing.locales.map((lng) => (
+              <button
+                key={lng}
+                onClick={() => handleLocaleChange(lng)}
+                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${locale === lng
                   ? 'bg-almond-5 text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-medium">{languageNames[lng]}</span>
-                {locale === lng && (
-                  <span className="text-sm">✓</span>
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
+                  }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">{languageNames[lng]}</span>
+                  {locale === lng && (
+                    <span className="text-sm">✓</span>
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 
   return createPortal(modalContent, document.body);

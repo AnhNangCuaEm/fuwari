@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface AlertModalProps {
     isOpen: boolean
@@ -30,12 +31,12 @@ export default function AlertModal({
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onClose()
         }
-        
+
         if (isOpen) {
             document.addEventListener('keydown', handleEscape)
             document.body.style.overflow = 'hidden'
         }
-        
+
         return () => {
             document.removeEventListener('keydown', handleEscape)
             document.body.style.overflow = 'unset'
@@ -71,42 +72,57 @@ export default function AlertModal({
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.3)]">
-            <div className={`bg-white rounded-lg shadow-xl max-w-md w-full mx-4 border-l-4 ${getTypeStyles()}`}>
-                <div className="p-6">
-                    <div className="flex items-center mb-4">
-                        <div className={`mr-3 ${getIconColor()}`}>
-                            {type === 'error' && <Image src="/icons/error.svg" alt="Error" width={24} height={24} />}
-                            {type === 'warning' && <Image src="/icons/warning.svg" alt="Warning" width={24} height={24} />}
-                            {type === 'success' && <Image src="/icons/success.svg" alt="Success" width={24} height={24} />}
-                            {type === 'info' && <Image src="/icons/info.svg" alt="Info" width={24} height={24} />}
+        <AnimatePresence>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.3)]">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                    transition={{
+                        duration: 0.3,
+                        ease: [0.16, 1, 0.3, 1] // easeOutExpo
+                    }}
+                    className={`bg-white rounded-lg shadow-xl max-w-md w-full mx-4 border-l-4 ${getTypeStyles()}`}>
+                    <div className="p-6">
+                        <div className="flex items-center mb-4">
+                            <div className={`mr-3 ${getIconColor()}`}>
+                                {type === 'error' && <Image src="/icons/error.svg" alt="Error" width={24} height={24} />}
+                                {type === 'warning' && <Image src="/icons/warning.svg" alt="Warning" width={24} height={24} />}
+                                {type === 'success' && <Image src="/icons/success.svg" alt="Success" width={24} height={24} />}
+                                {type === 'info' && <Image src="/icons/info.svg" alt="Info" width={24} height={24} />}
+                            </div>
+                            <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-                    </div>
-                    
-                    <p className="text-gray-700 mb-6">{message}</p>
-                    
-                    <div className="flex justify-end space-x-3">
-                        {showCancel && (
+
+                        <p className="text-gray-700 mb-6">{message}</p>
+
+                        <div className="flex justify-end space-x-3">
+                            {showCancel && (
+                                <button
+                                    onClick={onClose}
+                                    className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors "
+                                >
+                                    {cancelText}
+                                </button>
+                            )}
                             <button
-                                onClick={onClose}
-                                className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors "
+                                onClick={() => {
+                                    onConfirm?.()
+                                    onClose()
+                                }}
+                                className="px-4 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 transition-colors"
                             >
-                                {cancelText}
+                                {confirmText}
                             </button>
-                        )}
-                        <button
-                            onClick={() => {
-                                onConfirm?.()
-                                onClose()
-                            }}
-                            className="px-4 py-2 bg-almond-6 text-white rounded-lg hover:bg-almond-5 transition-colors"
-                        >
-                            {confirmText}
-                        </button>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </motion.div>
+            </motion.div>
+        </AnimatePresence>
     )
 }

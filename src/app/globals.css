@@ -48,6 +48,11 @@ a:hover {
   cursor: pointer;
 }
 
+/* Carousel scrollbar */
+.carousel {
+  scrollbar-width: none;
+}
+
 @keyframes carousel-scroll {
   0% {
     transform: translateX(0);

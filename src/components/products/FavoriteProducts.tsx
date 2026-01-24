@@ -74,7 +74,7 @@ export default function FavoriteProducts() {
             </button>
           </div>
         </div>
-        <div className="flex gap-6 overflow-x-auto no-scrollbar pb-8 -mx-4 px-4 md:px-0 md:mx-0 snap-x">
+        <div className="flex gap-6 overflow-x-auto carousel pb-8 -mx-4 px-4 md:px-0 md:mx-0 snap-x">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="min-w-[280px] md:min-w-[300px] snap-center bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col gap-3 animate-pulse">
               <div className="aspect-square rounded-xl bg-gray-200"></div>
@@ -117,7 +117,7 @@ export default function FavoriteProducts() {
       </div>
       <div 
         ref={scrollContainerRef}
-        className="flex gap-6 overflow-x-auto no-scrollbar pb-8 -mx-4 px-4 md:px-0 md:mx-0 snap-x"
+        className="flex gap-6 overflow-x-auto carousel pb-8 -mx-4 px-4 md:px-0 md:mx-0 snap-x"
       >
         {products.map((product) => (
           <div 
