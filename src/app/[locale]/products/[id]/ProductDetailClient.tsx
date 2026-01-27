@@ -152,7 +152,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                     <div className="flex items-center justify-between mb-6">
                         <span className="text-xl text-gray-500">{locale === 'en' ? 'Price:' : '価格:'}</span>
                         <span className="text-2xl font-bold text-cosmos-400">
-                            {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} &yen;
+                            &yen; {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                         </span>
                     </div>
 
@@ -175,8 +175,8 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                             }}
                             disabled={product.quantity === 0}
                             className={`w-full py-3 px-6 rounded-lg transition-colors duration-300 font-semibold ${product.quantity > 0
-                                    ? 'bg-cosmos-500/80 text-white hover:bg-cosmos-400/80'
-                                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                ? 'bg-cosmos-500/80 text-white hover:bg-cosmos-400/80'
+                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 }`}
                         >
                             {product.quantity > 0 ? t('shopping.buyNow') : t('shopping.soldOut')}

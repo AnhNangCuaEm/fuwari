@@ -265,7 +265,7 @@ export default function OrdersPage() {
                                             <span className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
                                                 {getStatusText(order.status)}
                                             </span>
-                                            <p className="text-lg font-bold text-gray-900 mt-1">¥{order.total.toLocaleString()}</p>
+                                            <p className="text-lg font-bold text-gray-900 mt-1">&yen; {order.total.toLocaleString()}</p>
                                         </div>
                                     </div>
 
@@ -290,13 +290,13 @@ export default function OrdersPage() {
                                                             {t('orders.quantity')}: {item.quantity}
                                                         </span>
                                                         <span className="text-sm font-medium text-gray-900">
-                                                            ¥{item.price.toLocaleString()}
+                                                            &yen; {item.price.toLocaleString()}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
                                                     <p className="text-sm font-medium text-gray-900">
-                                                        ¥{(item.price * item.quantity).toLocaleString()}
+                                                        &yen; {(item.price * item.quantity).toLocaleString()}
                                                     </p>
                                                 </div>
                                             </div>
@@ -321,19 +321,19 @@ export default function OrdersPage() {
                                                 <div className="w-64 space-y-1 text-sm">
                                                     <div className="flex justify-between">
                                                         <span className="text-gray-600">{t('orders.subtotal')}:</span>
-                                                        <span>¥{order.subtotal.toLocaleString()}</span>
+                                                        <span>&yen; {order.subtotal.toLocaleString()}</span>
                                                     </div>
                                                     <div className="flex justify-between">
                                                         <span className="text-gray-600">{t('orders.tax')}:</span>
-                                                        <span>¥{order.tax.toLocaleString()}</span>
+                                                        <span>&yen; {order.tax.toLocaleString()}</span>
                                                     </div>
                                                     <div className="flex justify-between">
                                                         <span className="text-gray-600">{t('orders.shipping')}:</span>
-                                                        <span>{order.shipping === 0 ? t('orders.free') : `¥${order.shipping.toLocaleString()}`}</span>
+                                                        <span>{order.shipping === 0 ? t('orders.free') : `&yen; ${order.shipping.toLocaleString()}`}</span>
                                                     </div>
                                                     <div className="flex justify-between font-semibold text-base pt-1 border-t">
                                                         <span>{t('orders.total')}:</span>
-                                                        <span>¥{order.total.toLocaleString()}</span>
+                                                        <span>&yen; {order.total.toLocaleString()}</span>
                                                     </div>
                                                 </div>
                                             </div>

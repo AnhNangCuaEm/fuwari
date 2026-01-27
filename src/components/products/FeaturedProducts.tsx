@@ -116,7 +116,7 @@ export default function FeaturedProducts() {
               {locale === 'en' ? product.engName : product.name}
             </h3>
             <p className="text-gray-600 mt-1 font-medium">
-              ¥{product.price.toLocaleString()}
+              &yen; {product.price.toLocaleString()}
             </p>
           </div>
         </div>

@@ -65,7 +65,7 @@ export default async function ProductsPage() {
                                 </p>
                                 <div className="flex justify-between items-center">
                                     <span className="text-lg font-bold text-cosmos-400">
-                                        {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} &yen;
+                                        &yen; {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                                     </span>
                                     <span className={`text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
                                         {product.quantity > 0
@@ -73,7 +73,7 @@ export default async function ProductsPage() {
                                             : (locale === 'en' ? 'Sold Out' : '売り切れ')
                                         }
                                     </span>
-                                    <AddToCartButton 
+                                    <AddToCartButton
                                         product={{
                                             id: product.id,
                                             name: getLocalizedText(product.name, product.engName),

@@ -29,7 +29,7 @@ interface PageProps {
 
 export default async function CategoryPage({ params }: PageProps) {
     const { category } = await params;
-    
+
     // Validate category
     if (!VALID_CATEGORIES.includes(category as CategoryType)) {
         notFound();
@@ -117,7 +117,7 @@ export default async function CategoryPage({ params }: PageProps) {
                                 </p>
                                 <div className="flex justify-between items-center">
                                     <span className="text-lg font-bold text-green-600">
-                                        {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')} &yen;
+                                        &yen; {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                                     </span>
                                     <span className={`text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
                                         {product.quantity > 0
@@ -125,7 +125,7 @@ export default async function CategoryPage({ params }: PageProps) {
                                             : (locale === 'en' ? 'Sold Out' : '売り切れ')
                                         }
                                     </span>
-                                    <AddToCartButton 
+                                    <AddToCartButton
                                         product={{
                                             id: product.id,
                                             name: getLocalizedText(product.name, product.engName),
@@ -145,12 +145,12 @@ export default async function CategoryPage({ params }: PageProps) {
                 {products.length === 0 && (
                     <div className="text-center py-12">
                         <p className="text-gray-500 text-lg mb-4">
-                            {locale === 'en' 
-                                ? 'No products available in this category' 
+                            {locale === 'en'
+                                ? 'No products available in this category'
                                 : 'このカテゴリーには商品がありません'}
                         </p>
-                        <Link 
-                            href="/products" 
+                        <Link
+                            href="/products"
                             className="text-almond-6 hover:text-almond-8 underline"
                         >
                             {locale === 'en' ? 'View all products' : 'すべての商品へ'}
