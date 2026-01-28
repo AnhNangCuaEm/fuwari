@@ -1,0 +1,435 @@
+{
+  "asset": {
+    "generator": "glTF-Transform v4.2.1",
+    "version": "2.0"
+  },
+  "accessors": [
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 51682,
+      "bufferView": 0,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 51682,
+      "max": [
+        0.11024177074432373,
+        0.042383234947919846,
+        0.11140306293964386
+      ],
+      "min": [
+        -0.11185963451862335,
+        -0.036480922251939774,
+        -0.11055833101272583
+      ],
+      "bufferView": 0,
+      "byteOffset": 12
+    },
+    {
+      "type": "VEC4",
+      "componentType": 5126,
+      "count": 51682,
+      "bufferView": 0,
+      "byteOffset": 24
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 51682,
+      "bufferView": 0,
+      "byteOffset": 40
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 51682,
+      "bufferView": 0,
+      "byteOffset": 48
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 307200,
+      "bufferView": 1,
+      "byteOffset": 0
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 39936,
+      "bufferView": 1,
+      "byteOffset": 1228800
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 78840,
+      "bufferView": 1,
+      "byteOffset": 1388544
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 6656,
+      "bufferView": 2,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 6656,
+      "max": [
+        0.11176697164773941,
+        0.047010019421577454,
+        0.11516840755939484
+      ],
+      "min": [
+        -0.11378133296966553,
+        -0.0017695198766887188,
+        -0.11333997547626495
+      ],
+      "bufferView": 2,
+      "byteOffset": 12
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 6656,
+      "bufferView": 2,
+      "byteOffset": 24
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 29760,
+      "bufferView": 3,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 29760,
+      "max": [
+        1.311780571937561,
+        0.9623523354530334,
+        0.20709772408008575
+      ],
+      "min": [
+        -0.24368037283420563,
+        -0.6388128399848938,
+        -0.14804676175117493
+      ],
+      "bufferView": 3,
+      "byteOffset": 12
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 29760,
+      "bufferView": 3,
+      "byteOffset": 24
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 29760,
+      "bufferView": 3,
+      "byteOffset": 32
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 2894192,
+      "byteStride": 56,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 2894192,
+      "byteLength": 1703904,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 4598096,
+      "byteLength": 212992,
+      "byteStride": 32,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 4811088,
+      "byteLength": 1190400,
+      "byteStride": 40,
+      "target": 34962
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "sampler": 0
+    },
+    {
+      "source": 1,
+      "sampler": 0
+    },
+    {
+      "source": 2,
+      "sampler": 0
+    }
+  ],
+  "images": [
+    {
+      "mimeType": "image/png",
+      "uri": "baseColor_1.png"
+    },
+    {
+      "mimeType": "image/png",
+      "uri": "normal_1.png"
+    },
+    {
+      "mimeType": "image/png",
+      "uri": "baseColor_2.png"
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "buffer.bin",
+      "byteLength": 6001488
+    }
+  ],
+  "materials": [
+    {
+      "name": "donut",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "roughnessFactor": 0.3728511978245381,
+        "metallicFactor": 0,
+        "baseColorTexture": {
+          "index": 0
+        }
+      },
+      "normalTexture": {
+        "index": 1,
+        "scale": 0.2156184934220224
+      }
+    },
+    {
+      "name": "icing",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.7999999999999999,
+          0.29405499999999973,
+          0.48243800000000003,
+          1
+        ],
+        "roughnessFactor": 0.5049266695226513,
+        "metallicFactor": 0
+      }
+    },
+    {
+      "name": "sprinkles_bake",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "roughnessFactor": 0.561530443107557,
+        "metallicFactor": 0,
+        "baseColorTexture": {
+          "index": 2
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 0,
+            "POSITION": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "mode": 4,
+          "material": 0,
+          "indices": 5
+        }
+      ]
+    },
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 8,
+            "POSITION": 9,
+            "TEXCOORD_0": 10
+          },
+          "mode": 4,
+          "material": 1,
+          "indices": 6
+        }
+      ]
+    },
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 11,
+            "POSITION": 12,
+            "TEXCOORD_0": 13,
+            "TEXCOORD_1": 14
+          },
+          "mode": 4,
+          "material": 2,
+          "indices": 7
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "Sketchfab_Scene",
+      "children": [
+        1
+      ]
+    },
+    {
+      "name": "Sketchfab_model",
+      "extras": {
+        "name": "Sketchfab_model"
+      },
+      "rotation": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "children": [
+        2
+      ]
+    },
+    {
+      "name": "root",
+      "extras": {
+        "name": "root"
+      },
+      "children": [
+        3
+      ]
+    },
+    {
+      "name": "GLTF_SceneRootNode",
+      "extras": {
+        "name": "GLTF_SceneRootNode"
+      },
+      "rotation": [
+        0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "children": [
+        4,
+        6,
+        8
+      ]
+    },
+    {
+      "name": "Donut_2",
+      "extras": {
+        "name": "Donut_2"
+      },
+      "translation": [
+        0,
+        0.03700000047683716,
+        0
+      ],
+      "children": [
+        5
+      ]
+    },
+    {
+      "name": "Object_4",
+      "extras": {
+        "name": "Object_4"
+      },
+      "mesh": 0
+    },
+    {
+      "name": "Icing_3",
+      "extras": {
+        "name": "Icing_3"
+      },
+      "translation": [
+        0,
+        0.03700000047683716,
+        0
+      ],
+      "children": [
+        7
+      ]
+    },
+    {
+      "name": "Object_6",
+      "extras": {
+        "name": "Object_6"
+      },
+      "mesh": 1
+    },
+    {
+      "name": "Sprinkles_4",
+      "extras": {
+        "name": "Sprinkles_4"
+      },
+      "translation": [
+        0.07597053050994873,
+        0.08219672739505768,
+        0.008609998971223831
+      ],
+      "rotation": [
+        0.071933603283819,
+        -0.6587300163873385,
+        0.7484736883260581,
+        0.02621946056900832
+      ],
+      "scale": [
+        0.1406155377626419,
+        0.1406155377626419,
+        0.14061550796031952
+      ],
+      "children": [
+        9
+      ]
+    },
+    {
+      "name": "Object_8",
+      "extras": {
+        "name": "Object_8"
+      },
+      "mesh": 2
+    }
+  ],
+  "scenes": [
+    {
+      "name": "AuxScene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0
+}

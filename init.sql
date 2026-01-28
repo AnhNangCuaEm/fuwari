@@ -354,6 +354,38 @@ INSERT INTO products (
     40,
     '/2dimage/chococookie.jpg',
     '/3dmodels/chococookie/scene.gltf'
+),
+(
+    8,
+    'パンケーキ',
+    'Pancake',
+    'ふわふわのパンケーキ。',
+    'Fluffy pancake.',
+    '["小麦粉", "砂糖", "バター", "卵", "牛乳", "ベーキングパウダー", "塩", "バニラエッセンス"]'::jsonb,
+    '["Flour", "Sugar", "Butter", "Eggs", "Milk", "Baking Powder", "Salt", "Vanilla Extract"]'::jsonb,
+    '["小麦", "卵", "乳"]'::jsonb,
+    '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'original',
+    300,
+    20,
+    '/2dimage/pancake.png',
+    '/3dmodels/pancake/scene.gltf'
+),
+(
+    9,
+    'ドーナツ',
+    'Donut',
+    '甘いドーナツ。',
+    'Sweet glazed donut.',
+    '["小麦粉", "砂糖", "バター", "卵", "牛乳", "ベーキングパウダー", "塩", "バニラエッセンス", "グレーズ"]'::jsonb,
+    '["Flour", "Sugar", "Butter", "Eggs", "Milk", "Baking Powder", "Salt", "Vanilla Extract", "Glaze"]'::jsonb,
+    '["小麦", "卵", "乳"]'::jsonb,
+    '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'cakes',
+    350,
+    25,
+    '/2dimage/donut.png',
+    '/3dmodels/donut/scene.gltf'
 );
 
 -- Reset sequence for products table
