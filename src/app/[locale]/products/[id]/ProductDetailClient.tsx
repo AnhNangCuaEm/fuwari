@@ -7,6 +7,7 @@ import { ModelViewer } from '@/components/ui/ModelViewer';
 import { Product } from '@/types/product';
 import { useCart } from '@/lib/hooks/useCart';
 import { useTranslations } from 'next-intl';
+import ShareButton from '@/components/ui/ShareButton';
 
 interface ProductDetailClientProps {
     product: Product;
@@ -140,9 +141,16 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
             {/* Right Column - Product Info */}
             <div className="space-y-6">
                 <div>
-                    <h1 className="text-3xl font-bold mb-4">
-                        {getLocalizedText(product.name, product.engName)}
-                    </h1>
+                    <div className="flex items-start justify-between gap-4">
+                        <h1 className="text-3xl font-bold mb-4">
+                            {getLocalizedText(product.name, product.engName)}
+                        </h1>
+                        <ShareButton
+                            title={getLocalizedText(product.name, product.engName)}
+                            text={`${getLocalizedText(product.name, product.engName)} - ${getLocalizedText(product.description, product.engDescription)}`}
+                            url={typeof window !== 'undefined' ? window.location.href : `/${locale}/products/${product.id}`}
+                        />
+                    </div>
                     <p className="text-gray-600 text-lg leading-relaxed">
                         {getLocalizedText(product.description, product.engDescription)}
                     </p>

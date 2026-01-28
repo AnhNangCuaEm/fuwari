@@ -118,6 +118,14 @@
     "goProducts": "Go Back to Products",
     "goHome": "Go Back Home"
   },
+  "share": {
+    "shareButton": "Share",
+    "nativeShare": "Share...",
+    "shareX": "Share on X",
+    "shareLine": "Share on LINE",
+    "copyLink": "Copy Link",
+    "copied": "Copied!"
+  },
   "shopping": {
     "cart": {
       "title": "Cart",

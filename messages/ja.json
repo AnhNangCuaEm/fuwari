@@ -118,6 +118,14 @@
     "goProducts": "商品一覧に戻る",
     "goHome": "ホームに戻る"
   },
+  "share": {
+    "shareButton": "シェア",
+    "nativeShare": "シェア...",
+    "shareX": "Xでシェア",
+    "shareLine": "LINEでシェア",
+    "copyLink": "リンクをコピー",
+    "copied": "コピーしました！"
+  },
   "shopping": {
     "cart": {
       "title": "カート",
