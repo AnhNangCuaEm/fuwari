@@ -30,12 +30,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white overflow-x-hidden">
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* Hero Section */}
-        <section className="pt-24 md:pt-32 px-4 md:px-6 lg:px-8">
+        <section className="pt-24 md:pt-32 px-4 md:px-6 lg:px-8 overflow-x-hidden">
           <div className="max-w-7xl mx-auto">
             <div className="relative w-full py-32 md:py-40 flex items-center justify-center text-center rounded-3xl md:rounded-4xl overflow-hidden shadow-xl">
               <Image
