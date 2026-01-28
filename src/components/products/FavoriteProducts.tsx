@@ -148,7 +148,7 @@ export default function FavoriteProducts() {
                   {product.quantity > 0 ? t('shopping.stock.inStock') : t('shopping.stock.outOfStock')}
                 </p>
               </div>
-              <span className="text-cosmos-400 font-bold">&yen; {product.price.toLocaleString()}</span>
+              <span className="text-cosmos-400 font-bold">&yen;{product.price.toLocaleString()}</span>
             </div>
           </div>
         ))}

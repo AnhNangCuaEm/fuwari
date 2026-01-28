@@ -152,7 +152,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                     <div className="flex items-center justify-between mb-6">
                         <span className="text-xl text-gray-500">{locale === 'en' ? 'Price:' : '価格:'}</span>
                         <span className="text-2xl font-bold text-cosmos-400">
-                            &yen; {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
+                            &yen;{product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                         </span>
                     </div>
 

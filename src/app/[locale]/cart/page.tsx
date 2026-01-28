@@ -264,7 +264,7 @@ export default function CartPage() {
 
                                                         <div className="flex items-center space-x-4">
                                                             <span className="text-lg font-bold text-green-600">
-                                                                &yen; {item.price}
+                                                                &yen;{item.price}
                                                             </span>
                                                             <button
                                                                 onClick={() => handleRemoveClick(item.id)}
@@ -300,17 +300,17 @@ export default function CartPage() {
 
                                     <div className="flex justify-between">
                                         <span>{t("cart.subtotal")}</span>
-                                        <span>&yen; {getSubtotal()}</span>
+                                        <span>&yen;{getSubtotal()}</span>
                                     </div>
 
                                     <div className="flex justify-between">
                                         <span>{t("cart.tax")}</span>
-                                        <span>&yen; {getTax()}</span>
+                                        <span>&yen;{getTax()}</span>
                                     </div>
 
                                     <div className="flex justify-between">
                                         <span>{t("cart.shipping")}</span>
-                                        <span>{getShipping() === 0 ? t("cart.free") : `&yen; ${getShipping()}`}</span>
+                                        <span>{getShipping() === 0 ? t("cart.free") : `¥${getShipping()}`}</span>
                                     </div>
 
                                     {getSubtotal() >= 2000 && (
@@ -323,7 +323,7 @@ export default function CartPage() {
 
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>{t("cart.total")}</span>
-                                        <span className="text-green-600">&yen; {getTotal()}</span>
+                                        <span className="text-green-600">&yen;{getTotal()}</span>
                                     </div>
 
                                     {/* Delivery Date Picker */}

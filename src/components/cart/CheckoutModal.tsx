@@ -297,19 +297,19 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span>{t('payment.items')} ({cartItems.length}):</span>
-                      <span>&yen; {totals.subtotal}</span>
+                      <span>&yen;{totals.subtotal}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>{t('payment.tax')}:</span>
-                      <span>&yen; {totals.tax}</span>
+                      <span>&yen;{totals.tax}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>{t('payment.shipping')}:</span>
-                      <span>{totals.shipping === 0 ? t('payment.free') : `&yen; ${totals.shipping}`}</span>
+                      <span>{totals.shipping === 0 ? t('payment.free') : `¥${totals.shipping}`}</span>
                     </div>
                     <div className="border-t pt-2 flex justify-between font-bold text-lg">
                       <span>{t('payment.total')}:</span>
-                      <span className="text-green-600">&yen; {totals.total}</span>
+                      <span className="text-green-600">&yen;{totals.total}</span>
                     </div>
                     {/* Delivery Date Display */}
                     <div className="border-t pt-2 mt-2">
@@ -468,7 +468,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
                           {t('payment.processing')}
                         </span>
                       ) : (
-                        `${t('payment.placeOrder')} &yen; ${totals.total}`
+                        `${t('payment.placeOrder')} ¥${totals.total}`
                       )}
                     </button>
                   </div>

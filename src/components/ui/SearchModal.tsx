@@ -278,7 +278,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                         className="w-24 px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-almond-5 focus:border-transparent"
                                         min="0"
                                     />
-                                    <span className="text-gray-500 text-sm">¥</span>
+                                    <span className="text-gray-500 text-sm">&yen;</span>
                                 </div>
                             </div>
 
@@ -438,7 +438,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                         </p>
                                         <div className="flex justify-between items-center">
                                             <span className="text-lg font-bold text-green-600">
-                                                &yen; {product.price.toLocaleString()}
+                                                &yen;{product.price.toLocaleString()}
                                             </span>
                                             <span className={`text-xs px-2 py-1 rounded ${product.quantity > 0
                                                 ? 'bg-green-100/80 text-green-800'

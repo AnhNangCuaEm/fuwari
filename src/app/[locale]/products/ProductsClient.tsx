@@ -87,7 +87,7 @@ export default function ProductsClient() {
                             </p>
                             <div className="flex justify-between items-center">
                                 <span className="text-lg font-bold text-green-600">
-                                    &yen; {product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
+                                    &yen;{product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                                 </span>
                                 <span className={`text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
                                     {product.quantity > 0
