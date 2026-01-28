@@ -148,7 +148,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                         <ShareButton
                             title={getLocalizedText(product.name, product.engName)}
                             text={`${getLocalizedText(product.name, product.engName)} - ${getLocalizedText(product.description, product.engDescription)}`}
-                            url={typeof window !== 'undefined' ? window.location.href : `/${locale}/products/${product.id}`}
+                            url={`/${locale}/products/${product.id}`}
                         />
                     </div>
                     <p className="text-gray-600 text-lg leading-relaxed">

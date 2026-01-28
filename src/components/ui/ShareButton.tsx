@@ -17,6 +17,11 @@ export default function ShareButton({ title, text, url, className = '' }: ShareB
     const dropdownRef = useRef<HTMLDivElement>(null);
     const t = useTranslations('share');
 
+    // Get full URL with domain
+    const fullUrl = typeof window !== 'undefined' 
+        ? (url.startsWith('http') ? url : `${window.location.origin}${url}`)
+        : url;
+
     // Close dropdown when clicking outside
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -37,7 +42,7 @@ export default function ShareButton({ title, text, url, className = '' }: ShareB
             await navigator.share({
                 title,
                 text,
-                url,
+                url: fullUrl,
             });
             setIsOpen(false);
         } catch (error) {
@@ -49,7 +54,7 @@ export default function ShareButton({ title, text, url, className = '' }: ShareB
     // Share to X (Twitter)
     const handleXShare = () => {
         const tweetText = encodeURIComponent(`${text}\n`);
-        const tweetUrl = encodeURIComponent(url);
+        const tweetUrl = encodeURIComponent(fullUrl);
         window.open(
             `https://twitter.com/intent/tweet?text=${tweetText}&url=${tweetUrl}`,
             '_blank',
@@ -61,7 +66,7 @@ export default function ShareButton({ title, text, url, className = '' }: ShareB
     // Share to LINE
     const handleLineShare = () => {
         window.open(
-            `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+            `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(text)}`,
             '_blank',
             'width=550,height=420'
         );
@@ -71,7 +76,7 @@ export default function ShareButton({ title, text, url, className = '' }: ShareB
     // Copy link
     const handleCopyLink = async () => {
         try {
-            await navigator.clipboard.writeText(url);
+            await navigator.clipboard.writeText(fullUrl);
             setShowCopied(true);
             setTimeout(() => setShowCopied(false), 2000);
         } catch (error) {
