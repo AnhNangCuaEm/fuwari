@@ -1,0 +1,11 @@
+Model Information:
+* title:	Fruit Cake Draft
+* source:	https://sketchfab.com/3d-models/fruit-cake-draft-f0a6f98137364c0ca5b95880d8c32b0d
+* author:	Rixael (https://sketchfab.com/rixael)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Fruit Cake Draft" (https://sketchfab.com/3d-models/fruit-cake-draft-f0a6f98137364c0ca5b95880d8c32b0d) by Rixael (https://sketchfab.com/rixael) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

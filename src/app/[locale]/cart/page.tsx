@@ -224,7 +224,7 @@ export default function CartPage() {
                                     <h2 className="text-xl font-semibold">{t("cart.cartItems")} ({cartItems.length})</h2>
                                 </div>
 
-                                <div className="max-h-120 overflow-y-auto divide-y divide-black border-b">
+                                <div className="max-h-120 sm:max-h-180 overflow-y-auto divide-y divide-black border-b">
                                     {cartItems.map((item) => {
                                         const localizedInfo = getLocalizedProductInfo(item);
                                         return (

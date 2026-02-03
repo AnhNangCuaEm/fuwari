@@ -1,0 +1,502 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1210,
+      "max": [
+        0.050332650542259216,
+        0.02615974470973015,
+        0.04858459532260895
+      ],
+      "min": [
+        -0.05002650246024132,
+        -0.026540357619524002,
+        -0.04989050701260567
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 14520,
+      "componentType": 5126,
+      "count": 1210,
+      "max": [
+        0.9999212026596069,
+        0.9999997615814209,
+        0.9999982118606567
+      ],
+      "min": [
+        -0.9999810457229614,
+        -1.0,
+        -0.9999978542327881
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1210,
+      "max": [
+        0.9381904602050781,
+        0.9999999403953552,
+        0.9238532185554504,
+        1.0
+      ],
+      "min": [
+        -0.9999999403953552,
+        -0.8240445256233215,
+        -0.999940812587738,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1210,
+      "max": [
+        0.9860273599624634,
+        0.970384418964386
+      ],
+      "min": [
+        0.005569636821746826,
+        0.04057833552360535
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 9680,
+      "componentType": 5126,
+      "count": 1210,
+      "max": [
+        0.9860273599624634,
+        0.970384418964386
+      ],
+      "min": [
+        0.005569636821746826,
+        0.04057833552360535
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 19360,
+      "componentType": 5126,
+      "count": 1210,
+      "max": [
+        0.9860273599624634,
+        0.970384418964386
+      ],
+      "min": [
+        0.005569636821746826,
+        0.04057833552360535
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 29040,
+      "componentType": 5126,
+      "count": 1210,
+      "max": [
+        0.9860273599624634,
+        0.970384418964386
+      ],
+      "min": [
+        0.005569636821746826,
+        0.04057833552360535
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 6336,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 29040,
+      "componentType": 5126,
+      "count": 29752,
+      "max": [
+        0.044226258993148804,
+        0.0012750619789585471,
+        0.04674150049686432
+      ],
+      "min": [
+        -0.056765951216220856,
+        -0.0028928581159561872,
+        -0.05185701325535774
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 386064,
+      "componentType": 5126,
+      "count": 29752,
+      "max": [
+        0.9999760389328003,
+        0.999815821647644,
+        0.9997279644012451
+      ],
+      "min": [
+        -0.9997857809066772,
+        -0.9999494552612305,
+        -0.9998626708984375
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "byteOffset": 19360,
+      "componentType": 5126,
+      "count": 29752,
+      "max": [
+        0.8962876200675964,
+        0.9999949932098389,
+        0.733336865901947,
+        1.0
+      ],
+      "min": [
+        -0.9580037593841553,
+        -0.9999883770942688,
+        -0.9999963045120239,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 38720,
+      "componentType": 5126,
+      "count": 29752,
+      "max": [
+        0.9619343876838684,
+        0.9592967629432678
+      ],
+      "min": [
+        0.5382052659988403,
+        0.5281590223312378
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 276736,
+      "componentType": 5126,
+      "count": 29752,
+      "max": [
+        0.9619343876838684,
+        0.9592967629432678
+      ],
+      "min": [
+        0.5382052659988403,
+        0.5281590223312378
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 514752,
+      "componentType": 5126,
+      "count": 29752,
+      "max": [
+        0.9619343876838684,
+        0.9592967629432678
+      ],
+      "min": [
+        0.5382052659988403,
+        0.5281590223312378
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 752768,
+      "componentType": 5126,
+      "count": 29752,
+      "max": [
+        0.9619343876838684,
+        0.9592967629432678
+      ],
+      "min": [
+        0.5382052659988403,
+        0.5281590223312378
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 25344,
+      "componentType": 5125,
+      "count": 90372,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "yanix (https://sketchfab.com/yanix)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/honey-cake-6000c9c630f848e8b516408e6eab610b",
+      "title": "Honey Cake"
+    },
+    "generator": "Sketchfab-12.64.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 386832,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 990784,
+      "byteOffset": 386832,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 743088,
+      "byteOffset": 1377616,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 495392,
+      "byteOffset": 2120704,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 2616096,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/honey_cake_mat_baseColor.png"
+    },
+    {
+      "uri": "textures/honey_cake_mat_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/honey_cake_mat_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "honey_cake_mat",
+      "normalTexture": {
+        "index": 2,
+        "scale": 0.6705290966686731
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "TEXCOORD_2": 5,
+            "TEXCOORD_3": 6
+          },
+          "indices": 7,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 9,
+            "POSITION": 8,
+            "TANGENT": 10,
+            "TEXCOORD_0": 11,
+            "TEXCOORD_1": 12,
+            "TEXCOORD_2": 13,
+            "TEXCOORD_3": 14
+          },
+          "indices": 15,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "root"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "GLTF_SceneRootNode"
+    },
+    {
+      "children": [
+        4,
+        5
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        6.373762153089046e-05,
+        0.026598356664180756,
+        0.0024540519807487726,
+        1.0
+      ],
+      "name": "honey_cake_object_4"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_4"
+    },
+    {
+      "children": [
+        6
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.006456732749938965,
+        0.025784730911254883,
+        0.0019910146947950125,
+        1.0
+      ],
+      "name": "honey_cake_crumbs_object_3"
+    },
+    {
+      "mesh": 1,
+      "name": "Object_6"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

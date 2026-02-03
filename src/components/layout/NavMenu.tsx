@@ -117,7 +117,7 @@ export default function NavMenu() {
 
                 <li className="md:hidden border-b border-gray-200 last:border-b-0">
                     <Link
-                        href="/shop"
+                        href="/about"
                         className="flex items-center px-4 py-3 hover:bg-cosmos-200 transition-colors"
                         onClick={() => setIsOpen(false)}
                     >
