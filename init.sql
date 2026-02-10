@@ -256,7 +256,7 @@ INSERT INTO products (
     'cakes',
     300,
     50,
-    '/2dimage/cupcake.webp',
+    '/2dimage/cupcake.jpg',
     '/3dmodels/cupcake/scene.gltf'
 ),
 (
@@ -288,7 +288,7 @@ INSERT INTO products (
     'cookies',
     200,
     40,
-    '/2dimage/cookie.webp',
+    '/2dimage/cookie.jpg',
     '/3dmodels/cookie/scene.gltf'
 ),
 (
