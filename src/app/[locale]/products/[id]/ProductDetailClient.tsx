@@ -168,7 +168,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                         <button
                             onClick={handleAddToCart}
                             disabled={product.quantity === 0}
-                            className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${product.quantity > 0
+                            className={`w-full flex-1 py-2 px-4 rounded-lg font-medium transition-all active:scale-95 ${product.quantity > 0
                                 ? 'bg-almond-6/80 hover:bg-almond-5/80 text-white'
                                 : 'hidden'
                                 }`}
@@ -182,7 +182,7 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
                                 window.location.href = `/${locale}/cart`;
                             }}
                             disabled={product.quantity === 0}
-                            className={`w-full py-3 px-6 rounded-lg transition-colors duration-300 font-semibold ${product.quantity > 0
+                            className={`w-full py-3 px-6 rounded-lg transition-all active:scale-95 font-semibold ${product.quantity > 0
                                 ? 'bg-cosmos-500/80 text-white hover:bg-cosmos-400/80'
                                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 }`}
