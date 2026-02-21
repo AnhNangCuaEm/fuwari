@@ -482,6 +482,54 @@ INSERT INTO products (
     18,
     '/2dimage/rollcake.png',
     '/3dmodels/rollcake/scene.gltf'
+),
+(
+    16,
+    'マカロン',
+    'Macarons',
+    'ふわふわのマカロン。',
+    'Fluffy macarons.',
+    '["アーモンドプードル", "砂糖", "卵白", "バター", "生クリーム", "バニラエッセンス"]'::jsonb,
+    '["Almond Flour", "Sugar", "Egg Whites", "Butter", "Heavy Cream", "Vanilla Extract"]'::jsonb,
+    '["小麦", "卵", "乳"]'::jsonb,
+    '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'macarons',
+    550,
+    22,
+    '/2dimage/macaron.jpg',
+    '/3dmodels/macaron/scene.gltf'
+),
+(
+    17,
+    'ブルーベリーパンナコッタ',
+    'Blue Berry Panna Cotta',
+    'ふわふわのブルーベリーパンナコッタ。',
+    'Fluffy blueberry panna cotta.',
+    '["アーモンドプードル", "砂糖", "卵白", "バター", "生クリーム", "バニラエッセンス"]'::jsonb,
+    '["Almond Flour", "Sugar", "Egg Whites", "Butter", "Heavy Cream", "Vanilla Extract"]'::jsonb,
+    '["小麦", "卵", "乳"]'::jsonb,
+    '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'cakes',
+    650,
+    6,
+    '/2dimage/pannacotta.jpg',
+    '/3dmodels/pannacotta/scene.gltf'
+),
+(
+    18,
+    'ストロベリープディング',
+    'Strawberry Pudding',
+    'ふわふわのストロベリープディング。',
+    'Fluffy strawberry pudding。',
+    '["苺", "砂糖", "卵白", "バター", "生クリーム", "ゼラチン"]'::jsonb,
+    '["Strawberries", "Sugar", "Egg Whites", "Butter", "Heavy Cream", "Gelatin"]'::jsonb,
+    '["小麦", "卵", "乳"]'::jsonb,
+    '["Wheat", "Eggs", "Dairy"]'::jsonb,
+    'cakes',
+    550,
+    10,
+    '/2dimage/pudding.jpg',
+    '/3dmodels/pudding/scene.gltf'
 );
 
 -- Reset sequence for products table

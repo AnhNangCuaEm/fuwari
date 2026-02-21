@@ -1,0 +1,11 @@
+Model Information:
+* title:	Strawberry pudding
+* source:	https://sketchfab.com/3d-models/strawberry-pudding-f4cf2f5f209240a0bcc0a7b0bfcc7b35
+* author:	BenJin1015 (https://sketchfab.com/BenJin1)
+
+Model License:
+* license type:	CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions can not be distributed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Strawberry pudding" (https://sketchfab.com/3d-models/strawberry-pudding-f4cf2f5f209240a0bcc0a7b0bfcc7b35) by BenJin1015 (https://sketchfab.com/BenJin1) licensed under CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)

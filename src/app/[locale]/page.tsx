@@ -335,6 +335,7 @@ export default function Home() {
               <form className="flex flex-col sm:flex-row gap-3 mt-4" onSubmit={handleSubmit}>
                 <input
                   name='email'
+                  autoComplete='email'
                   className="flex-1 py-3 px-5 rounded-full border border-gray-200 focus:border-cosmos-300 focus:ring-2 focus:ring-cosmos-200 outline-none bg-white text-gray-900 placeholder:text-gray-400 transition-all"
                   placeholder={t('home.news.input.placeholder')}
                   type="email"
