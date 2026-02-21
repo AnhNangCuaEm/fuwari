@@ -6,7 +6,7 @@ import { query, queryOne, RowDataPacket } from './db';
 export async function getUsers(): Promise<User[]> {
   try {
     const users = await query<(RowDataPacket & User)[]>(
-      'SELECT * FROM users ORDER BY createdAt DESC'
+      'SELECT * FROM users ORDER BY "createdAt" DESC'
     );
     return users;
   } catch (error) {
