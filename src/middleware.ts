@@ -8,42 +8,64 @@ const intlMiddleware = createIntlMiddleware({
   locales: ['ja', 'en'],
   defaultLocale: 'ja',
   localePrefix: 'as-needed',
-  localeDetection: false // Disable automatic locale detection to prevent unwanted redirects
+  localeDetection: false
 });
 
 export const config = {
   matcher: [
-    // Match all pathnames except for
-    // - API routes
-    // - Static files
-    // - Image files
     '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*|3dmodels).*)',
   ]
 }
 
+/**
+ * Check maintenance mode.
+ * 1. First reads the cookie (fast, no DB hit).
+ * 2. If cookie is absent, falls back to the internal API (queries DB once,
+ *    then the response sets the cookie for all future requests).
+ */
+async function checkMaintenance(request: NextRequest): Promise<{ active: boolean; cookieValue: string | null }> {
+  const cookie = request.cookies.get('fuwari-maintenance')
+
+  // Cookie already set — trust it directly (no DB round-trip)
+  if (cookie !== undefined) {
+    return { active: cookie.value === 'true', cookieValue: cookie.value }
+  }
+
+  // Cookie missing — query the DB via internal API and get the authoritative value
+  try {
+    const url = new URL('/api/internal/maintenance', request.url)
+    const res = await fetch(url.toString(), { next: { revalidate: 0 } })
+    if (res.ok) {
+      const data = await res.json()
+      return { active: !!data.active, cookieValue: null } // null = need to set cookie
+    }
+  } catch {
+    // DB unreachable → fail open (don't block users)
+  }
+
+  return { active: false, cookieValue: null }
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  
-  // Handle internationalization first
+
   const response = intlMiddleware(request);
-  
-  // Get token - secureCookie should match auth.ts cookie configuration
+
   const isProduction = process.env.NODE_ENV === "production";
-  const cookieName = isProduction 
+  const cookieName = isProduction
     ? '__Secure-next-auth.session-token'
     : 'next-auth.session-token';
-  
-  const token = await getToken({ 
-    req: request, 
+
+  const token = await getToken({
+    req: request,
     secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
     secureCookie: isProduction,
     cookieName: cookieName,
   })
-  
-  // Helper function to check if path matches protected routes
+
   const isProtectedPath = (path: string, routes: string[]) => {
     return routes.some(route => {
-      return path === route || 
+      return path === route ||
              path.startsWith(`${route}/`) ||
              path === `/ja${route}` ||
              path.startsWith(`/ja${route}/`) ||
@@ -51,7 +73,7 @@ export async function middleware(request: NextRequest) {
              path.startsWith(`/en${route}/`);
     });
   };
-  
+
   // Protect admin routes
   if (isProtectedPath(pathname, ['/admin'])) {
     if (!token) {
@@ -63,7 +85,47 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(`/${locale === 'ja' ? '' : locale + '/'}unauthorized`, request.url))
     }
   }
-  
+
+  // ── Maintenance Mode ────────────────────────────────────────────────────────
+  const isMaintenancePage = isProtectedPath(pathname, ['/maintenance'])
+  const isAdmin = token?.role === 'admin'
+
+  // Admins and the maintenance page itself always bypass
+  if (!isAdmin && !isMaintenancePage) {
+    const { active, cookieValue } = await checkMaintenance(request)
+
+    if (active) {
+      const locale = pathname.startsWith('/en') ? 'en' : 'ja';
+      const redirectRes = NextResponse.redirect(
+        new URL(`/${locale === 'ja' ? '' : locale + '/'}maintenance`, request.url)
+      )
+      // Stamp the cookie onto the redirect response so future requests skip the DB fetch
+      if (cookieValue === null) {
+        redirectRes.cookies.set('fuwari-maintenance', 'true', {
+          path: '/',
+          httpOnly: true,
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 365,
+          secure: isProduction,
+        })
+      }
+      return redirectRes
+    }
+
+    // If cookie was missing but DB says false, set the cookie to 'false' so
+    // we skip the DB fetch on every subsequent request.
+    if (cookieValue === null) {
+      response.cookies.set('fuwari-maintenance', 'false', {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 365,
+        secure: isProduction,
+      })
+    }
+  }
+  // ───────────────────────────────────────────────────────────────────────────
+
   // Protect mypage routes
   if (isProtectedPath(pathname, ['/mypage'])) {
     if (!token) {
@@ -71,7 +133,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(`/${locale === 'ja' ? '' : locale + '/'}auth/signin`, request.url))
     }
   }
-  
+
   // Protect admin API routes
   if (pathname.startsWith('/api/admin')) {
     if (!token || token.role !== 'admin') {
@@ -81,7 +143,7 @@ export async function middleware(request: NextRequest) {
       )
     }
   }
-  
+
   // Protect user API routes
   if (pathname.startsWith('/api/user')) {
     if (!token) {
@@ -91,6 +153,6 @@ export async function middleware(request: NextRequest) {
       )
     }
   }
-  
+
   return response;
 }

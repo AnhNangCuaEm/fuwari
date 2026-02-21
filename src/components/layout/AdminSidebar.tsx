@@ -105,7 +105,7 @@ export default function AdminSidebar() {
     }
 
     return (
-        <div className={`bg-gray-900 text-white h-screen transition-all duration-300 ease-in-out ${isExpanded ? 'w-64' : 'w-20'
+        <div className={`bg-gray-900 text-white h-full shrink-0 transition-all duration-300 ease-in-out ${isExpanded ? 'w-64' : 'w-20'
             } flex flex-col`}>
             {/* Header */}
             <div className="p-4 border-b border-gray-700">
