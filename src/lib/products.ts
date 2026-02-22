@@ -155,3 +155,44 @@ export const getAllCategories = async (): Promise<string[]> => {
         return [];
     }
 };
+
+// Update product
+export const updateProduct = async (
+    id: number,
+    data: Partial<Omit<Product, 'id' | 'created_at' | 'updated_at'>>
+): Promise<Product | null> => {
+    try {
+        const fields = Object.keys(data) as (keyof typeof data)[];
+        if (fields.length === 0) return getProductById(id);
+
+        const setClauses = fields.map((field, idx) => {
+            const col = ['engName', 'engDescription', 'engIngredients', 'engAllergens', 'modelPath'].includes(field)
+                ? `"${field}"`
+                : field;
+            return `${col} = $${idx + 1}`;
+        });
+        const values = fields.map(f => {
+            const v = data[f];
+            return Array.isArray(v) ? JSON.stringify(v) : v;
+        });
+        values.push(id);
+
+        const sql = `UPDATE products SET ${setClauses.join(', ')} WHERE id = $${values.length} RETURNING *`;
+        const updated = await queryOne<RowDataPacket & Product>(sql, values);
+        return updated;
+    } catch (error) {
+        console.error('Error updating product:', error);
+        return null;
+    }
+};
+
+// Delete product
+export const deleteProduct = async (id: number): Promise<boolean> => {
+    try {
+        await query('DELETE FROM products WHERE id = $1', [id]);
+        return true;
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        return false;
+    }
+};
