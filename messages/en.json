@@ -316,7 +316,11 @@
     "submit": "Send Message",
     "submitting": "Sending...",
     "successMessage": "Thank you! Your message has been sent successfully. We'll get back to you soon.",
-    "errorMessage": "Sorry, something went wrong. Please try again later or contact us directly at support@fuwari.com"
+    "errorMessage": "Sorry, something went wrong. Please try again later or contact us directly at support@fuwari.com",
+    "yourPreviousMessages": "Your Previous Messages",
+    "replied": "Replied",
+    "pending": "Pending",
+    "replyFromTeam": "Reply from Fuwari Team"
   },
   "orders": {
     "title": "Order History",

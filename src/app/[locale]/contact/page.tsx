@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { getCurrentUser } from "@/lib/auth-utils";
+import { getContactMessagesByEmail } from "@/lib/contacts";
 import { getTranslations } from 'next-intl/server';
 import Image from "next/image";
 import ContactForm from "@/components/forms/ContactForm";
@@ -8,6 +9,11 @@ import ContactForm from "@/components/forms/ContactForm";
 export default async function ContactPage() {
     const currentUser = await getCurrentUser();
     const t = await getTranslations('contact');
+
+    // Load previous messages for logged-in users
+    const previousMessages = currentUser?.email
+        ? await getContactMessagesByEmail(currentUser.email)
+        : [];
 
     const decorativeImages = [
         '/carouselimg/115.png',
@@ -80,8 +86,8 @@ export default async function ContactPage() {
                         )}
                     </div>
 
-                    {/* Contact Form - same for everyone */}
-                    <ContactForm currentUser={currentUser} />
+                    {/* Contact Form */}
+                    <ContactForm currentUser={currentUser} previousMessages={previousMessages} />
                 </div>
             </div>
             

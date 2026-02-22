@@ -316,7 +316,11 @@
     "submit": "送信する",
     "submitting": "送信中...",
     "successMessage": "お問い合わせいただきありがとうございます！メッセージを正常に送信しました。折り返しご連絡いたします。",
-    "errorMessage": "申し訳ございません。エラーが発生しました。後ほど再度お試しいただくか、support@fuwari.com まで直接ご連絡ください。"
+    "errorMessage": "申し訳ございません。エラーが発生しました。後ほど再度お試しいただくか、support@fuwari.com まで直接ご連絡ください。",
+    "yourPreviousMessages": "過去のお問い合わせ",
+    "replied": "返信済み",
+    "pending": "未返信",
+    "replyFromTeam": "Fuwari チームからの返信"
   },
   "orders": {
     "title": "注文履歴",
