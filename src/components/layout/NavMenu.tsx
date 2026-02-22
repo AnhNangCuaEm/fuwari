@@ -435,7 +435,7 @@ export default function NavMenu() {
                                         ? window.innerWidth - bellRef.current.getBoundingClientRect().right
                                         : 16,
                                 }}
-                                className="z-50 w-[320px] max-h-[70vh] flex flex-col bg-white/95 backdrop-blur-xl border border-cosmos-100/80 rounded-2xl shadow-[0_20px_60px_-15px_rgba(201,57,71,0.15),0_8px_24px_-8px_rgba(0,0,0,0.08)] overflow-hidden"
+                                className="z-50 w-fit max-h-[70vh] flex flex-col bg-white/95 backdrop-blur-xl border border-cosmos-100/80 rounded-2xl shadow-[0_20px_60px_-15px_rgba(201,57,71,0.15),0_8px_24px_-8px_rgba(0,0,0,0.08)] overflow-hidden"
                             >
                                 {/* Header */}
                                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-cosmos-100/60">
