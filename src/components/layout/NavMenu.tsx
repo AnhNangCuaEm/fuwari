@@ -8,7 +8,10 @@ import { useCurrentUser } from "@/lib/hooks/useAuth"
 import CartDrawer from "@/components/cart/CartDrawer"
 import LanguageModal from "@/components/ui/LanguageModal"
 import SearchModal from "@/components/ui/SearchModal"
+import NotificationModal from "@/components/ui/NotificationModal"
+import { useNotifications } from "@/lib/hooks/useNotifications"
 import { useCart } from "@/lib/hooks/useCart"
+import type { NotificationWithStatus } from "@/lib/notifications"
 import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createPortal } from 'react-dom'
@@ -107,8 +110,13 @@ export default function NavMenu() {
     const [isCartOpen, setIsCartOpen] = useState(false)
     const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false)
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+    const [selectedNotif, setSelectedNotif] = useState<NotificationWithStatus | null>(null)
+    const bellRef = useRef<HTMLDivElement>(null)
+    const notifDropdownRef = useRef<HTMLDivElement>(null)
     const { user, isAuthenticated, isLoading } = useCurrentUser()
     const { getTotalItems } = useCart()
+    const { notifications, unreadCount, fetchNotifications, markAllAsRead } = useNotifications()
     const t = useTranslations()
     const [mounted, setMounted] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
@@ -135,11 +143,32 @@ export default function NavMenu() {
     // Close menu on Escape
     useEffect(() => {
         function handleEsc(e: KeyboardEvent) {
-            if (e.key === 'Escape') setIsOpen(false)
+            if (e.key === 'Escape') {
+                setIsOpen(false)
+                setIsNotificationOpen(false)
+            }
         }
         document.addEventListener('keydown', handleEsc)
         return () => document.removeEventListener('keydown', handleEsc)
     }, [])
+
+    // Close notification dropdown on click outside
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            if (
+                notifDropdownRef.current &&
+                !notifDropdownRef.current.contains(e.target as Node) &&
+                bellRef.current &&
+                !bellRef.current.contains(e.target as Node)
+            ) {
+                setIsNotificationOpen(false)
+            }
+        }
+        if (isNotificationOpen) {
+            document.addEventListener('mousedown', handleClickOutside)
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [isNotificationOpen])
 
     // Lock body scroll on mobile overlay
     useEffect(() => {
@@ -170,9 +199,16 @@ export default function NavMenu() {
                 <SearchIcon />
             </NavButton>
 
-            <NavButton label="Notifications">
-                <BellIcon />
-            </NavButton>
+            <div ref={bellRef} className="inline-flex">
+                <NavButton label="Notifications" onClick={() => {
+                    setIsNotificationOpen(prev => {
+                        if (!prev) fetchNotifications()
+                        return !prev
+                    })
+                }} badge={unreadCount > 0 ? unreadCount : undefined}>
+                    <BellIcon />
+                </NavButton>
+            </div>
 
             <NavButton label={t('common.cart')} onClick={() => setIsCartOpen(true)} badge={getTotalItems()}>
                 <CartIcon />
@@ -360,6 +396,118 @@ export default function NavMenu() {
             <SearchModal
                 isOpen={isSearchModalOpen}
                 onClose={() => setIsSearchModalOpen(false)}
+            />
+
+            {/* Notification Dropdown — portal ra document.body, AnimatePresence bên trong portal */}
+            {mounted && createPortal(
+                <>
+                    {/* Backdrop mobile */}
+                    <AnimatePresence>
+                        {isNotificationOpen && (
+                            <motion.div
+                                key="notif-backdrop"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-40 md:hidden"
+                                onClick={() => setIsNotificationOpen(false)}
+                            />
+                        )}
+                    </AnimatePresence>
+
+                    {/* Dropdown panel */}
+                    <AnimatePresence>
+                        {isNotificationOpen && (
+                            <motion.div
+                                key="notif-dropdown"
+                                ref={notifDropdownRef}
+                                initial={{ opacity: 0, scale: 0.95, y: -8 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95, y: -8 }}
+                                transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+                                style={{
+                                    position: 'fixed',
+                                    top: bellRef.current
+                                        ? bellRef.current.getBoundingClientRect().bottom + 10
+                                        : 60,
+                                    right: bellRef.current
+                                        ? window.innerWidth - bellRef.current.getBoundingClientRect().right
+                                        : 16,
+                                }}
+                                className="z-50 w-[320px] max-h-[70vh] flex flex-col bg-white/95 backdrop-blur-xl border border-cosmos-100/80 rounded-2xl shadow-[0_20px_60px_-15px_rgba(201,57,71,0.15),0_8px_24px_-8px_rgba(0,0,0,0.08)] overflow-hidden"
+                            >
+                                {/* Header */}
+                                <div className="flex items-center justify-between px-5 py-3.5 border-b border-cosmos-100/60">
+                                    <div className="flex items-center gap-2">
+                                        <BellIcon/>
+                                        <span className="font-bold text-sm text-almond-10">Notifications</span>
+                                        {notifications.length > 0 && (
+                                            <span className="text-[10px] bg-cosmos-100 text-cosmos-600 px-1.5 py-0.5 rounded-full font-semibold">
+                                                {notifications.length}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <button
+                                        onClick={() => setIsNotificationOpen(false)}
+                                        className="p-1 rounded-full hover:bg-cosmos-50 text-almond-6 hover:text-cosmos-500 transition-colors"
+                                    >
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                            <path d="M18 6L6 18M6 6l12 12"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                {/* List */}
+                                <ul className="flex-1 overflow-y-auto overflow-x-hidden py-1 px-2 space-y-0.5">
+                                    {notifications.length === 0 ? (
+                                        <li className="flex flex-col items-center justify-center py-10 text-almond-5">
+                                            <BellIcon/>
+                                            <span className="text-xs">No notifications</span>
+                                        </li>
+                                    ) : (
+                                        notifications.map((notif, i) => (
+                                            <motion.li
+                                                key={notif.id}
+                                                initial={{ opacity: 0, x: 12 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: i * 0.03 }}
+                                            >
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedNotif(notif)
+                                                        setIsNotificationOpen(false)
+                                                        if (!notif.is_read) markAllAsRead()
+                                                    }}
+                                                    className="w-full text-left flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-cosmos-50/80 hover:text-cosmos-600 active:bg-cosmos-100 transition-all duration-200 group"
+                                                >
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex items-center gap-1.5">
+                                                            <p className={`text-sm font-semibold truncate ${notif.is_read ? 'text-almond-6' : 'text-almond-9'}`}>
+                                                                {notif.title}
+                                                            </p>
+                                                            {!notif.is_read && (
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-cosmos-400 shrink-0" />
+                                                            )}
+                                                        </div>
+                                                        <p className="text-xs text-almond-5 truncate mt-0.5">{notif.body}</p>
+                                                    </div>
+                                                </button>
+                                            </motion.li>
+                                        ))
+                                    )}
+                                </ul>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </>,
+                document.body
+            )}
+
+            {/* Notification Detail Modal (portal) */}
+            <NotificationModal
+                notification={selectedNotif}
+                onClose={() => setSelectedNotif(null)}
             />
         </nav>
     )

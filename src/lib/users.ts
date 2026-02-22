@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { User, RegisterData } from '@/types/user';
 import { query, queryOne, RowDataPacket } from './db';
+import { sendMandatoryNotificationsToNewUser } from './notifications';
 
 export async function getUsers(): Promise<User[]> {
   try {
@@ -79,6 +80,10 @@ export async function createUser(userData: RegisterData): Promise<User> {
         newUser.status,
       ]
     );
+    // Send mandatory notifications to new user
+    await sendMandatoryNotificationsToNewUser(newUser.id).catch(err =>
+      console.error('Failed to send mandatory notifications:', err)
+    );
     return newUser;
   } catch (error) {
     console.error('Error creating user:', error);
@@ -132,6 +137,10 @@ export async function createGoogleUser(profile: { email: string; name: string; p
         newUser.status,
         newUser.image,
       ]
+    );
+    // Send mandatory notifications to new Google user
+    await sendMandatoryNotificationsToNewUser(newUser.id).catch(err =>
+      console.error('Failed to send mandatory notifications:', err)
     );
     return newUser;
   } catch (error) {

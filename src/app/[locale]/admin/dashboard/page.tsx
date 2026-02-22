@@ -179,7 +179,7 @@ export default async function AdminDashboard() {
                             </svg>
                         </div>
                     </div>
-                    <Link href="/admin/content" className="inline-block text-xs text-orange-600 hover:underline mt-3">Manage products →</Link>
+                    <Link href="/admin/products" className="inline-block text-xs text-orange-600 hover:underline mt-3">Manage products →</Link>
                 </div>
             </div>
 
@@ -363,7 +363,7 @@ export default async function AdminDashboard() {
                             </div>
                             <span className="text-sm font-medium">User Management</span>
                         </Link>
-                        <Link href="/admin/content" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-700 transition-colors group">
+                        <Link href="/admin/products" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-700 transition-colors group">
                             <div className="p-1.5 bg-blue-100 group-hover:bg-blue-200 rounded-md transition-colors">
                                 <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
