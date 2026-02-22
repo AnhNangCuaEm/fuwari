@@ -84,8 +84,8 @@ export default function AdminSidebar() {
             icon: MailIcon,
         },
         {
-            name: "Content Management",
-            href: "/admin/content",
+            name: "Product",
+            href: "/admin/products",
             icon: DocumentTextIcon,
         },
         {
