@@ -186,6 +186,24 @@ export const updateProduct = async (
     }
 };
 
+// Get related products by similar price (exclude current product)
+export const getRelatedProducts = async (productId: number, price: number, limit = 3): Promise<Product[]> => {
+    try {
+        const products = await query<(RowDataPacket & Product)[]>(
+            `SELECT id, name, "engName", price, image, quantity, "modelPath"
+             FROM products
+             WHERE id != $1
+             ORDER BY ABS(price - $2) ASC
+             LIMIT $3`,
+            [productId, price, limit]
+        );
+        return products;
+    } catch (error) {
+        console.error('Error fetching related products:', error);
+        return [];
+    }
+};
+
 // Delete product
 export const deleteProduct = async (id: number): Promise<boolean> => {
     try {

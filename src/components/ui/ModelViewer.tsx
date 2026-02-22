@@ -75,7 +75,7 @@ export function ModelViewer({ modelPath, className = "w-full h-96" }: ModelViewe
                 }}
             >
                 {/* Ambient light for overall illumination */}
-                <ambientLight intensity={0.4} />
+                <ambientLight intensity={0.8} />
 
                 {/* Main light from above */}
                 <directionalLight
@@ -87,13 +87,13 @@ export function ModelViewer({ modelPath, className = "w-full h-96" }: ModelViewe
                 {/* Fill light from the left */}
                 <directionalLight 
                     position={[-5, 2, 5]} 
-                    intensity={0.3}
+                    intensity={0.8}
                 />
                 
                 {/* Back light */}
                 <directionalLight 
                     position={[0, -5, -5]} 
-                    intensity={0.2}
+                    intensity={0.5}
                 />
                 
                 <Suspense fallback={<LoadingSpinner />}>

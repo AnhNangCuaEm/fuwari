@@ -12,9 +12,10 @@ import ShareButton from '@/components/ui/ShareButton';
 interface ProductDetailClientProps {
     product: Product;
     locale: string;
+    relatedProducts?: Product[];
 }
 
-export default function ProductDetailClient({ product, locale }: ProductDetailClientProps) {
+export default function ProductDetailClient({ product, locale, relatedProducts = [] }: ProductDetailClientProps) {
     const [showModel, setShowModel] = useState(true);
     const { addToCart } = useCart();
     const t = useTranslations();
@@ -126,15 +127,47 @@ export default function ProductDetailClient({ product, locale }: ProductDetailCl
 
                 {/* Related Products Section - Hidden on mobile, shown on desktop */}
                 <div className="hidden lg:block border-t border-gray-200 pt-8">
-                    <h2 className="text-2xl font-bold mb-6">関連商品</h2>
-                    <div className="text-center py-8">
-                        <Link
-                            href="/products"
-                            className="inline-block bg-cosmos-100 text-cosmos-600 px-6 py-3 rounded-lg hover:bg-cosmos-200 transition-colors duration-300"
-                        >
-                            すべての製品を見る
-                        </Link>
-                    </div>
+                    <h2 className="text-2xl font-bold mb-6">
+                        {locale === 'en' ? 'Related Products' : '関連商品'}
+                    </h2>
+                    {relatedProducts.length > 0 ? (
+                        <div className="grid grid-cols-3 gap-4">
+                            {relatedProducts.map((related) => (
+                                <Link
+                                    key={related.id}
+                                    href={`/products/${related.id}`}
+                                    className="group block bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300"
+                                >
+                                    <div className="aspect-square overflow-hidden bg-gray-50">
+                                        <Image
+                                            src={related.image}
+                                            alt={locale === 'en' ? related.engName : related.name}
+                                            width={200}
+                                            height={200}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        />
+                                    </div>
+                                    <div className="p-3">
+                                        <p className="text-sm font-medium text-gray-800 line-clamp-2 mb-1">
+                                            {locale === 'en' ? related.engName : related.name}
+                                        </p>
+                                        <p className="text-sm font-bold text-cosmos-400">
+                                            &yen;{related.price.toLocaleString()}
+                                        </p>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-8">
+                            <Link
+                                href="/products"
+                                className="inline-block bg-cosmos-100 text-cosmos-600 px-6 py-3 rounded-lg hover:bg-cosmos-200 transition-colors duration-300"
+                            >
+                                {locale === 'en' ? 'View all products' : 'すべての製品を見る'}
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
 
