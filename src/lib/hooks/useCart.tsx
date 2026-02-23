@@ -82,11 +82,30 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
         fetch('/api/user/cart')
             .then(res => (res.ok ? res.json() : { items: [] }))
-            .then(({ items: dbItems }: { items: { product_id: number; quantity: number }[] }) => {
+            .then(async ({ items: dbItems }: { items: { product_id: number; quantity: number }[] }) => {
+                // Determine which product IDs are missing from localStorage
                 setCartItems(prev => {
-                    // dbItems only carry product_id + quantity; convert to CartItem stubs
-                    // Local items already have full metadata — preserve them
-                    const remoteAsCartItems: CartItem[] = dbItems
+                    const missingIds = dbItems
+                        .filter(d => !prev.some(p => p.id === d.product_id))
+                        .map(d => d.product_id)
+
+                    if (missingIds.length === 0) {
+                        // All items already have full metadata locally — just merge quantities
+                        const merged: CartItem[] = prev.map(localItem => {
+                            const remote = dbItems.find(d => d.product_id === localItem.id)
+                            if (remote && remote.quantity !== localItem.quantity) {
+                                return { ...localItem, quantity: Math.max(localItem.quantity, remote.quantity) }
+                            }
+                            return localItem
+                        })
+                        syncCartToDB(merged)
+                        return merged
+                    }
+
+                    // There are remote-only items — we need to fetch their product info.
+                    // Return merged cart with stubs for now; a follow-up effect will
+                    // hydrate the stubs once the product fetch completes.
+                    const remoteStubs: CartItem[] = dbItems
                         .filter(d => !prev.some(p => p.id === d.product_id))
                         .map(d => ({
                             id: d.product_id,
@@ -97,21 +116,51 @@ export function CartProvider({ children }: { children: ReactNode }) {
                             quantity: d.quantity,
                         }))
 
-                    // Add remote-only quantities to existing local items
                     const merged: CartItem[] = prev.map(localItem => {
                         const remote = dbItems.find(d => d.product_id === localItem.id)
                         if (remote && remote.quantity !== localItem.quantity) {
-                            // Keep the higher quantity (user may have added on another device)
                             return { ...localItem, quantity: Math.max(localItem.quantity, remote.quantity) }
                         }
                         return localItem
                     })
 
-                    const finalCart = [...merged, ...remoteAsCartItems]
+                    const cartWithStubs = [...merged, ...remoteStubs]
 
-                    // Persist the merged result back to DB
-                    syncCartToDB(finalCart)
-                    return finalCart
+                    // Fetch full product info for the missing items and hydrate the stubs.
+                    // We do NOT return cartWithStubs yet — instead we wait for the product
+                    // fetch to complete so we never persist empty stubs to localStorage.
+                    fetch('/api/products')
+                        .then(r => (r.ok ? r.json() : []))
+                        .then((allProducts: { id: number; name: string; engName: string; description: string; engDescription: string; price: number; image: string }[]) => {
+                            const productMap = new Map(allProducts.map(p => [p.id, p]))
+                            // Replace stubs with fully-hydrated items in one atomic update
+                            const hydratedCart = cartWithStubs.map(item => {
+                                if (item.name !== '' && item.price !== 0) return item // already has metadata
+                                const product = productMap.get(item.id)
+                                if (!product) return item // unknown product id — leave as-is
+                                return {
+                                    ...item,
+                                    name: product.name,
+                                    description: product.description,
+                                    price: product.price,
+                                    image: product.image,
+                                }
+                            })
+                            // De-duplicate by id just in case (safety net)
+                            const seen = new Set<number>()
+                            const deduped = hydratedCart.filter(item => {
+                                if (seen.has(item.id)) return false
+                                seen.add(item.id)
+                                return true
+                            })
+                            setCartItems(deduped)
+                            syncCartToDB(deduped)
+                        })
+                        .catch(err => console.error('Failed to hydrate cart item metadata:', err))
+
+                    // Return merged+stubs so UI can show the items (quantity visible)
+                    // while the name/price/image are being fetched.
+                    return cartWithStubs
                 })
             })
             .catch(err => console.error('Failed to fetch DB cart:', err))
