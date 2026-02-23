@@ -66,24 +66,24 @@ export default function FavoriteProducts() {
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-2xl font-serif font-bold text-gray-900">{t('home.favoriteProducts')}</h2>
           <div className="flex gap-2">
-            <button className="size-10 rounded-full border border-gray-300 flex items-center justify-center opacity-50">
+            <button className="size-10 rounded-full border border-almond-3 flex items-center justify-center opacity-50">
               <span>←</span>
             </button>
-            <button className="size-10 rounded-full border border-gray-300 flex items-center justify-center opacity-50">
+            <button className="size-10 rounded-full border border-almond-3 flex items-center justify-center opacity-50">
               <span>→</span>
             </button>
           </div>
         </div>
         <div className="flex gap-6 overflow-x-auto carousel pb-8 -mx-4 px-4 md:px-0 md:mx-0 snap-x">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="min-w-[280px] md:min-w-[300px] snap-center bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col gap-3 animate-pulse">
-              <div className="aspect-square rounded-xl bg-gray-200"></div>
+            <div key={i} className="min-w-[280px] md:min-w-[300px] snap-center bg-white rounded-2xl p-4 border border-almond-3 shadow-sm flex flex-col gap-3 animate-pulse">
+              <div className="aspect-square rounded-xl bg-almond-2"></div>
               <div className="flex justify-between items-start">
                 <div className="flex-1">
-                  <div className="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-5 bg-almond-2 rounded w-3/4 mb-2"></div>
+                  <div className="h-4 bg-almond-2 rounded w-1/2"></div>
                 </div>
-                <div className="h-5 bg-gray-200 rounded w-16"></div>
+                <div className="h-5 bg-almond-2 rounded w-16"></div>
               </div>
             </div>
           ))}
@@ -103,13 +103,13 @@ export default function FavoriteProducts() {
         <div className="flex gap-2">
           <button 
             onClick={scrollLeft}
-            className="size-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-white hover:shadow-sm transition"
+            className="size-10 rounded-full border border-almond-4 flex items-center justify-center hover:bg-almond-1 hover:shadow-sm transition text-almond-8"
           >
               <span>←</span>
           </button>
           <button 
             onClick={scrollRight}
-            className="size-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-white hover:shadow-sm transition"
+            className="size-10 rounded-full border border-almond-4 flex items-center justify-center hover:bg-almond-1 hover:shadow-sm transition text-almond-8"
           >
             <span>→</span>
           </button>
@@ -122,10 +122,10 @@ export default function FavoriteProducts() {
         {products.map((product) => (
           <div 
             key={product.id} 
-            className="min-w-[280px] md:min-w-[300px] snap-center bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col gap-3 cursor-pointer group"
+            className="min-w-[280px] md:min-w-[300px] snap-center bg-white rounded-2xl p-4 border border-almond-3 shadow-sm flex flex-col gap-3 cursor-pointer group"
             onClick={() => router.push(`/products/${product.id}`)}
           >
-            <div className="aspect-square rounded-xl bg-gray-100 overflow-hidden relative">
+            <div className="aspect-square rounded-xl bg-almond-1 overflow-hidden relative">
               {product.image ? (
                 <Image
                   src={product.image}
@@ -134,8 +134,8 @@ export default function FavoriteProducts() {
                   className="object-cover group-hover:scale-110 transition duration-500"
                 />
               ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-400">No Image</span>
+                <div className="w-full h-full bg-almond-2 flex items-center justify-center">
+                  <span className="text-almond-5">No Image</span>
                 </div>
               )}
             </div>

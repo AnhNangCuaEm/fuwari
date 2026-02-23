@@ -313,12 +313,12 @@ export default function Mypage() {
         <nav className="mb-8">
           <Link
             href="/"
-            className="text-[#CC8409] hover:text-[#D6B884] mr-2"
+            className="text-almond-6 hover:text-almond-8 mr-2"
           >
             {t('home')}
           </Link>
-          <span className="text-gray-500 mr-2">/</span>
-          <span className="text-gray-700">{t('title')}</span>
+          <span className="text-almond-5 mr-2">/</span>
+          <span className="text-almond-8">{t('title')}</span>
         </nav>
 
         <div className="bg-white rounded-lg shadow-lg p-8">

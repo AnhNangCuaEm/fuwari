@@ -48,9 +48,9 @@ export default function FeaturedProducts() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="animate-pulse">
-            <div className="bg-gray-200 rounded-2xl aspect-[4/5] mb-4"></div>
-            <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div className="h-5 bg-gray-200 rounded w-1/2"></div>
+            <div className="bg-almond-2 rounded-2xl aspect-[4/5] mb-4"></div>
+            <div className="h-6 bg-almond-2 rounded w-3/4 mb-2"></div>
+            <div className="h-5 bg-almond-2 rounded w-1/2"></div>
           </div>
         ))}
       </div>
@@ -95,7 +95,7 @@ export default function FeaturedProducts() {
               />
             )}
             {product.quantity < 10 && (
-              <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+              <div className="absolute top-3 left-3 bg-cosmos-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
                 {t('common.lowStock')}
               </div>
             )}

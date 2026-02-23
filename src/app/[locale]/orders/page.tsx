@@ -106,7 +106,7 @@ export default function OrdersPage() {
             case 'paid':
                 return 'bg-green-100 text-green-800';
             case 'pending':
-                return 'bg-yellow-100 text-yellow-800';
+                return 'bg-almond-2 text-almond-9';
             case 'processing':
                 return 'bg-blue-100 text-blue-800';
             case 'shipped':
@@ -114,9 +114,9 @@ export default function OrdersPage() {
             case 'delivered':
                 return 'bg-teal-100 text-teal-800';
             case 'cancelled':
-                return 'bg-red-100 text-red-800';
+                return 'bg-cosmos-100 text-cosmos-800';
             default:
-                return 'bg-gray-100 text-gray-800';
+                return 'bg-almond-2 text-almond-8';
         }
     };
 
@@ -163,27 +163,27 @@ export default function OrdersPage() {
                 <nav className="mb-8">
                     <Link
                         href="/"
-                        className="text-[#CC8409] hover:text-[#D6B884] mr-2"
+                        className="text-almond-6 hover:text-almond-8 mr-2"
                     >
                         {t('common.home')}
                     </Link>
-                    <span className="text-gray-500 mr-2">/</span>
+                    <span className="text-almond-5 mr-2">/</span>
                     <Link
                         href="/mypage"
-                        className="text-[#CC8409] hover:text-[#D6B884] mr-2"
+                        className="text-almond-6 hover:text-almond-8 mr-2"
                     >
                         {t('mypage.title')}
                     </Link>
-                    <span className="text-gray-500 mr-2">/</span>
-                    <span className="text-gray-700">{t('orders.title')}</span>
+                    <span className="text-almond-5 mr-2">/</span>
+                    <span className="text-almond-8">{t('orders.title')}</span>
                 </nav>
 
                 <div className="bg-almond-1 rounded-lg shadow-lg p-8">
                     <div className="flex justify-between mb-8 flex-col gap-4 sm:flex-row sm:items-center">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('orders.title')}</h1>
-                            <p className="text-gray-600">{t('orders.subtitle')}</p>
-                            <p className="text-gray-600">{t('orders.subtitle2')}</p>
+                            <h1 className="text-3xl font-bold text-almond-11 mb-2">{t('orders.title')}</h1>
+                            <p className="text-almond-7">{t('orders.subtitle')}</p>
+                            <p className="text-almond-7">{t('orders.subtitle2')}</p>
                         </div>
                         <Link
                             href="/contact"
@@ -203,8 +203,8 @@ export default function OrdersPage() {
                     {orders.length === 0 ? (
                         <div className="text-center py-12">
                             <div className="text-6xl mb-4">📦</div>
-                            <h2 className="text-2xl font-semibold text-gray-700 mb-2">{t('orders.noOrders')}</h2>
-                            <p className="text-gray-500 mb-6">{t('orders.noOrdersDesc')}</p>
+                            <h2 className="text-2xl font-semibold text-almond-8 mb-2">{t('orders.noOrders')}</h2>
+                            <p className="text-almond-6 mb-6">{t('orders.noOrdersDesc')}</p>
                             <Link
                                 href="/products"
                                 className="bg-almond-5 hover:bg-almond-6 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
@@ -273,7 +273,7 @@ export default function OrdersPage() {
                                     <div className="space-y-3">
                                         {order.items.map((item, index) => (
                                             <div key={index} className="flex items-center space-x-4">
-                                                <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                                                <div className="w-16 h-16 rounded-lg overflow-hidden bg-almond-1 flex-shrink-0">
                                                     <Image
                                                         src={item.image}
                                                         alt={item.name}
@@ -283,19 +283,19 @@ export default function OrdersPage() {
                                                     />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h4 className="text-sm font-semibold text-gray-900 truncate">{item.name}</h4>
-                                                    <p className="text-sm text-gray-500 truncate">{item.description}</p>
+                                                    <h4 className="text-sm font-semibold text-almond-11 truncate">{item.name}</h4>
+                                                    <p className="text-sm text-almond-6 truncate">{item.description}</p>
                                                     <div className="flex items-center space-x-4 mt-1">
-                                                        <span className="text-sm text-gray-600">
+                                                        <span className="text-sm text-almond-7">
                                                             {t('orders.quantity')}: {item.quantity}
                                                         </span>
-                                                        <span className="text-sm font-medium text-gray-900">
+                                                        <span className="text-sm font-medium text-almond-9">
                                                             &yen;{item.price.toLocaleString()}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="text-sm font-medium text-gray-900">
+                                                    <p className="text-sm font-medium text-almond-9">
                                                         &yen;{(item.price * item.quantity).toLocaleString()}
                                                     </p>
                                                 </div>
@@ -306,8 +306,8 @@ export default function OrdersPage() {
                                     <div className='flex justify-between flex-col mt-4 pt-4 border-t border-gray-200 gap-4 md:flex-row md:items-center'>
                                         {/* Shipping Info */}
                                         <div>
-                                            <h4 className="text-sm font-medium text-gray-900 mb-2">{t('orders.shippingAddress')}</h4>
-                                            <div className="text-sm text-gray-600">
+                                            <h4 className="text-sm font-medium text-almond-10 mb-2">{t('orders.shippingAddress')}</h4>
+                                            <div className="text-sm text-almond-7">
                                                 <p>{order.shippingAddress.fullName}</p>
                                                 <p>{order.shippingAddress.address}</p>
                                                 <p>{order.shippingAddress.city}, {order.shippingAddress.postalCode}</p>
@@ -320,20 +320,20 @@ export default function OrdersPage() {
                                             <div className="flex justify-end">
                                                 <div className="w-64 space-y-1 text-sm">
                                                     <div className="flex justify-between">
-                                                        <span className="text-gray-600">{t('orders.subtotal')}:</span>
-                                                        <span>&yen;{order.subtotal.toLocaleString()}</span>
+                                                        <span className="text-almond-7">{t('orders.subtotal')}:</span>
+                                                        <span className="text-almond-9">&yen;{order.subtotal.toLocaleString()}</span>
                                                     </div>
                                                     <div className="flex justify-between">
-                                                        <span className="text-gray-600">{t('orders.tax')}:</span>
-                                                        <span>&yen;{order.tax.toLocaleString()}</span>
+                                                        <span className="text-almond-7">{t('orders.tax')}:</span>
+                                                        <span className="text-almond-9">&yen;{order.tax.toLocaleString()}</span>
                                                     </div>
                                                     <div className="flex justify-between">
-                                                        <span className="text-gray-600">{t('orders.shipping')}:</span>
-                                                        <span>{order.shipping === 0 ? t('orders.free') : `&yen;${order.shipping.toLocaleString()}`}</span>
+                                                        <span className="text-almond-7">{t('orders.shipping')}:</span>
+                                                        <span className="text-almond-9">{order.shipping === 0 ? t('orders.free') : `&yen;${order.shipping.toLocaleString()}`}</span>
                                                     </div>
-                                                    <div className="flex justify-between font-semibold text-base pt-1 border-t">
-                                                        <span>{t('orders.total')}:</span>
-                                                        <span>&yen;{order.total.toLocaleString()}</span>
+                                                    <div className="flex justify-between font-semibold text-base pt-1 border-t border-almond-3">
+                                                        <span className="text-almond-10">{t('orders.total')}:</span>
+                                                        <span className="text-cosmos-500">&yen;{order.total.toLocaleString()}</span>
                                                     </div>
                                                 </div>
                                             </div>

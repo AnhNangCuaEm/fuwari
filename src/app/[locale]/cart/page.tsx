@@ -201,13 +201,13 @@ export default function CartPage() {
             <Header />
 
             <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
-                <h1 className="text-3xl text-center font-bold text-gray-900 mb-8">{t("cart.title")}</h1>
+                <h1 className="text-3xl text-center font-bold text-almond-11 mb-8">{t("cart.title")}</h1>
 
                 {cartItems.length === 0 ? (
                     <div className="text-center py-16">
                         <div className="text-6xl mb-4">🛒</div>
-                        <h2 className="text-2xl font-semibold text-gray-600 mb-2">{t("cart.emptyMessage")}</h2>
-                        <p className="text-gray-500 mb-6">{t("cart.continueShopping")}</p>
+                        <h2 className="text-2xl font-semibold text-almond-8 mb-2">{t("cart.emptyMessage")}</h2>
+                        <p className="text-almond-6 mb-6">{t("cart.continueShopping")}</p>
                         <Link
                             href="/products"
                             className="inline-block bg-almond-6 hover:bg-almond-8 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
@@ -224,7 +224,7 @@ export default function CartPage() {
                                     <h2 className="text-xl font-semibold">{t("cart.cartItems")} ({cartItems.length})</h2>
                                 </div>
 
-                                <div className="max-h-120 sm:max-h-180 overflow-y-auto divide-y divide-black border-b">
+                                <div className="max-h-120 sm:max-h-180 overflow-y-auto divide-y divide-almond-3 border-b">
                                     {cartItems.map((item) => {
                                         const localizedInfo = getLocalizedProductInfo(item);
                                         return (
@@ -242,33 +242,33 @@ export default function CartPage() {
                                                 </div>
 
                                                 <div className="flex-1">
-                                                    <h3 className="text-lg font-semibold text-gray-900">{localizedInfo.name}</h3>
-                                                    <p className="text-gray-600 text-sm mt-1">{localizedInfo.description}</p>
+                                                    <h3 className="text-lg font-semibold text-almond-11">{localizedInfo.name}</h3>
+                                                    <p className="text-almond-7 text-sm mt-1">{localizedInfo.description}</p>
                                                     <div className="flex items-center justify-between mt-4">
                                                         <div className="flex items-center space-x-3">
                                                             <button
                                                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                                                 disabled={item.quantity === 1}
-                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center disabled:bg-gray-50 disabled:text-gray-400"
+                                                                className="w-8 h-8 rounded-full bg-almond-2 hover:bg-almond-3 flex items-center justify-center disabled:bg-almond-1 disabled:text-almond-4"
                                                             >
                                                                 -
                                                             </button>
                                                             <span className="font-medium">{item.quantity}</span>
                                                             <button
                                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
+                                                                className="w-8 h-8 rounded-full bg-almond-2 hover:bg-almond-3 flex items-center justify-center"
                                                             >
                                                                 +
                                                             </button>
                                                         </div>
 
                                                         <div className="flex items-center space-x-4">
-                                                            <span className="text-lg font-bold text-green-600">
+                                                            <span className="text-lg font-bold text-cosmos-500">
                                                                 &yen;{item.price}
                                                             </span>
                                                             <button
                                                                 onClick={() => handleRemoveClick(item.id)}
-                                                                className="text-red-500 hover:text-red-700 text-sm font-medium"
+                                                                className="text-cosmos-600 hover:text-cosmos-800 text-sm font-medium"
                                                             >
                                                                 {t("cart.remove")}
                                                             </button>
@@ -287,43 +287,43 @@ export default function CartPage() {
 
                         {/* Right Column - Order Summary */}
                         <div className="lg:col-span-1">
-                            <div className="bg-[#FAF3E0] shadow-sm sticky top-8">
-                                <div className="p-6 border-b">
-                                    <h2 className="text-xl font-semibold">{t("cart.orderDetails")}</h2>
+                            <div className="bg-almond-1 shadow-sm sticky top-8">
+                                <div className="p-6 border-b border-almond-3">
+                                    <h2 className="text-xl font-semibold text-almond-11">{t("cart.orderDetails")}</h2>
                                 </div>
 
                                 <div className="p-6 space-y-4">
                                     <div className="flex justify-between">
-                                        <span>{t("cart.totalItems")}</span>
-                                        <span>{getItems()}</span>
+                                        <span className="text-almond-8">{t("cart.totalItems")}</span>
+                                        <span className="text-almond-10">{getItems()}</span>
                                     </div>
 
                                     <div className="flex justify-between">
-                                        <span>{t("cart.subtotal")}</span>
-                                        <span>&yen;{getSubtotal()}</span>
+                                        <span className="text-almond-8">{t("cart.subtotal")}</span>
+                                        <span className="text-almond-10">&yen;{getSubtotal()}</span>
                                     </div>
 
                                     <div className="flex justify-between">
-                                        <span>{t("cart.tax")}</span>
-                                        <span>&yen;{getTax()}</span>
+                                        <span className="text-almond-8">{t("cart.tax")}</span>
+                                        <span className="text-almond-10">&yen;{getTax()}</span>
                                     </div>
 
                                     <div className="flex justify-between">
-                                        <span>{t("cart.shipping")}</span>
-                                        <span>{getShipping() === 0 ? t("cart.free") : `¥${getShipping()}`}</span>
+                                        <span className="text-almond-8">{t("cart.shipping")}</span>
+                                        <span className="text-almond-10">{getShipping() === 0 ? t("cart.free") : `¥${getShipping()}`}</span>
                                     </div>
 
                                     {getSubtotal() >= 2000 && (
-                                        <div className="text-sm text-green-600">
+                                        <div className="text-sm text-cosmos-600">
                                             {t("cart.freeDeliverMsg")}
                                         </div>
                                     )}
 
-                                    <hr className="my-4" />
+                                    <hr className="my-4 border-almond-3" />
 
                                     <div className="flex justify-between text-lg font-bold">
-                                        <span>{t("cart.total")}</span>
-                                        <span className="text-green-600">&yen;{getTotal()}</span>
+                                        <span className="text-almond-10">{t("cart.total")}</span>
+                                        <span className="text-cosmos-500">&yen;{getTotal()}</span>
                                     </div>
 
                                     {/* Delivery Date Picker */}
@@ -364,7 +364,7 @@ export default function CartPage() {
 
                                     <Link
                                         href="/products"
-                                        className="block w-full text-center border border-gray-300 hover:border-gray-500 p-3 rounded-lg font-semibold transition-colors"
+                                        className="block w-full text-center border border-almond-4 text-almond-8 hover:border-almond-6 hover:text-almond-10 p-3 rounded-lg font-semibold transition-colors"
                                     >
                                         {t("cart.continueShopping")}
                                     </Link>

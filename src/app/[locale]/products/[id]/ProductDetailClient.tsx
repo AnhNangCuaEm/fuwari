@@ -87,7 +87,7 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                         {product.modelPath ? (
                             <button
                                 onClick={toggleView}
-                                className="inline-flex items-center justify-center gap-2 p-2 rounded-lg shadow-sm bg-white border hover:bg-gray-50 transition-colors duration-300"
+                                className="inline-flex items-center justify-center gap-2 p-2 rounded-lg shadow-sm bg-white border border-almond-3 hover:bg-almond-1 transition-colors duration-300"
                                 title={showModel ? "画像を表示" : "3Dモデルに切り替え"}
                             >
                                 {showModel ? (
@@ -99,7 +99,7 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                                             height={32}
                                             className="rounded opacity-70"
                                         />
-                                        <span className="text-sm font-medium text-gray-600">画像</span>
+                                        <span className="text-sm font-medium text-almond-7">画像</span>
                                     </>
                                 ) : (
                                     <>
@@ -109,7 +109,7 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                                             width={20}
                                             height={20}
                                         />
-                                        <span className="text-sm font-medium text-gray-600">3D Model</span>
+                                        <span className="text-sm font-medium text-almond-7">3D Model</span>
                                     </>
                                 )}
                             </button>
@@ -136,9 +136,9 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                                 <Link
                                     key={related.id}
                                     href={`/products/${related.id}`}
-                                    className="group block bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300"
+                                    className="group block bg-white rounded-lg shadow-sm border border-almond-3 overflow-hidden hover:shadow-md transition-shadow duration-300"
                                 >
-                                    <div className="aspect-square overflow-hidden bg-gray-50">
+                                    <div className="aspect-square overflow-hidden bg-almond-1">
                                         <Image
                                             src={related.image}
                                             alt={locale === 'en' ? related.engName : related.name}
@@ -148,10 +148,10 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                                         />
                                     </div>
                                     <div className="p-3">
-                                        <p className="text-sm font-medium text-gray-800 line-clamp-2 mb-1">
+                                        <p className="text-sm font-medium text-almond-10 line-clamp-2 mb-1">
                                             {locale === 'en' ? related.engName : related.name}
                                         </p>
-                                        <p className="text-sm font-bold text-cosmos-400">
+                                        <p className="text-sm font-bold text-cosmos-500">
                                             &yen;{related.price.toLocaleString()}
                                         </p>
                                     </div>
@@ -162,7 +162,7 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                         <div className="text-center py-8">
                             <Link
                                 href="/products"
-                                className="inline-block bg-cosmos-100 text-cosmos-600 px-6 py-3 rounded-lg hover:bg-cosmos-200 transition-colors duration-300"
+                                className="inline-block bg-almond-2 text-almond-8 px-6 py-3 rounded-lg hover:bg-almond-3 transition-colors duration-300"
                             >
                                 {locale === 'en' ? 'View all products' : 'すべての製品を見る'}
                             </Link>
@@ -184,15 +184,15 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                             url={`/${locale}/products/${product.id}`}
                         />
                     </div>
-                    <p className="text-gray-600 text-lg leading-relaxed">
+                    <p className="text-almond-7 text-lg leading-relaxed">
                         {getLocalizedText(product.description, product.engDescription)}
                     </p>
                 </div>
 
-                <div className="border-t border-gray-200 pt-6">
+                <div className="border-t border-almond-3 pt-6">
                     <div className="flex items-center justify-between mb-6">
-                        <span className="text-xl text-gray-500">{locale === 'en' ? 'Price:' : '価格:'}</span>
-                        <span className="text-2xl font-bold text-cosmos-400">
+                        <span className="text-xl text-almond-6">{locale === 'en' ? 'Price:' : '価格:'}</span>
+                        <span className="text-2xl font-bold text-cosmos-500">
                             &yen;{product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                         </span>
                     </div>
@@ -226,15 +226,15 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                 </div>
 
                 {/* Product Details */}
-                <div className="border-t border-gray-200 pt-6">
-                    <h3 className="text-lg font-semibold mb-4">{t('shopping.productInfo')}</h3>
+                <div className="border-t border-almond-3 pt-6">
+                    <h3 className="text-lg font-semibold mb-4 text-almond-10">{t('shopping.productInfo')}</h3>
                     <div className="space-y-2">
                         <div className="flex justify-between">
-                            <span className="text-gray-600">{t('shopping.productCode')}:</span>
-                            <span className="font-medium">SP{product.id.toString().padStart(3, '0')}</span>
+                            <span className="text-almond-7">{t('shopping.productCode')}:</span>
+                            <span className="font-medium text-almond-10">SP{product.id.toString().padStart(3, '0')}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-gray-600">{t('shopping.stockStatus')}:</span>
+                            <span className="text-almond-7">{t('shopping.stockStatus')}:</span>
                             <span className={`font-medium ${getStockStatus(product.quantity).color}`}>{getStockStatus(product.quantity).text}<span className="ml-1">({product.quantity})</span></span>
                         </div>
                     </div>
@@ -242,8 +242,8 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
 
                 {/* Ingredients */}
                 {((product.ingredients && product.ingredients.length > 0) || (product.engIngredients && product.engIngredients.length > 0)) && (
-                    <div className="border-t border-gray-200 pt-6">
-                        <h3 className="text-lg font-semibold mb-4">{t('shopping.ingredients')}</h3>
+                    <div className="border-t border-almond-3 pt-6">
+                        <h3 className="text-lg font-semibold mb-4 text-almond-10">{t('shopping.ingredients')}</h3>
                         <div className="flex flex-wrap gap-2">
                             {(locale === 'en' && product.engIngredients ? product.engIngredients : product.ingredients)?.map((ingredient, index) => (
                                 <span
@@ -259,24 +259,24 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
 
                 {/* Allergens */}
                 {((product.allergens && product.allergens.length > 0) || (product.engAllergens && product.engAllergens.length > 0)) && (
-                    <div className="border-t border-gray-200 pt-6">
-                        <h3 className="text-lg font-semibold mb-4">{t('shopping.allergens')}</h3>
-                        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                    <div className="border-t border-almond-3 pt-6">
+                        <h3 className="text-lg font-semibold mb-4 text-almond-10">{t('shopping.allergens')}</h3>
+                        <div className="bg-cosmos-50 border-l-4 border-cosmos-300 p-4 rounded">
                             <div className="flex">
                                 <div className="flex-shrink-0">
-                                    <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <svg className="h-5 w-5 text-cosmos-400" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                                     </svg>
                                 </div>
                                 <div className="ml-3">
-                                    <h4 className="text-sm font-medium text-yellow-800">
+                                    <h4 className="text-sm font-medium text-cosmos-800">
                                         {t('shopping.allergensWarning')}
                                     </h4>
                                     <div className="mt-2 flex flex-wrap gap-2">
                                         {(locale === 'en' && product.engAllergens ? product.engAllergens : product.allergens)?.map((allergen, index) => (
                                             <span
                                                 key={index}
-                                                className="px-2 py-1 bg-red-100 text-red-800 rounded text-sm font-medium"
+                                                className="px-2 py-1 bg-cosmos-200 text-cosmos-900 rounded text-sm font-medium"
                                             >
                                                 {allergen}
                                             </span>

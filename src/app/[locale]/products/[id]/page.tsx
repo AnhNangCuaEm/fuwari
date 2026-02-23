@@ -39,44 +39,44 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                     >
                         {t('common.home')}
                     </Link>
-                    <span className="text-gray-500 mr-2">/</span>
+                    <span className="text-almond-5 mr-2">/</span>
                     <Link
                         href="/products"
                         className="text-almond-6 hover:text-almond-8 mr-2"
                     >
                         {t('products.title')}
                     </Link>
-                    <span className="text-gray-500 mr-2">/</span>
-                    <span className="text-gray-700">{t('products.detail')}</span>
+                    <span className="text-almond-5 mr-2">/</span>
+                    <span className="text-almond-8">{t('products.detail')}</span>
                 </nav>
 
                 <ProductDetailClient product={product} locale={locale} relatedProducts={relatedProducts} />
 
                 {/* Related Products Section - Shown on mobile only */}
-                <div className="lg:hidden mt-12 border-t border-gray-200 pt-8">
-                    <h2 className="text-2xl font-bold mb-6">{locale === 'en' ? 'Related Products' : '関連商品'}</h2>
+                <div className="lg:hidden mt-12 border-t border-almond-3 pt-8">
+                    <h2 className="text-2xl font-bold mb-6 text-almond-11">{locale === 'en' ? 'Related Products' : '関連商品'}</h2>
                     {relatedProducts.length > 0 ? (
                         <div className="grid grid-cols-3 gap-3">
                             {relatedProducts.map((related) => (
                                 <Link
                                     key={related.id}
                                     href={`/${locale}/products/${related.id}`}
-                                    className="group block bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300"
+                                    className="group block bg-white rounded-lg shadow-sm border border-almond-3 overflow-hidden hover:shadow-md transition-shadow duration-300"
                                 >
-                                    <div className="aspect-square overflow-hidden bg-gray-50">
+                                    <div className="aspect-square overflow-hidden bg-almond-1">
                                         <Image
                                             src={related.image}
                                             alt={locale === 'en' ? related.engName : related.name}
                                             width={200}
                                             height={200}
-                                            className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
                                     </div>
                                     <div className="p-2">
-                                        <p className="text-xs font-medium text-gray-800 line-clamp-2 mb-1">
+                                        <p className="text-xs font-medium text-almond-10 line-clamp-2 mb-1">
                                             {locale === 'en' ? related.engName : related.name}
                                         </p>
-                                        <p className="text-xs font-bold text-cosmos-400">
+                                        <p className="text-xs font-bold text-cosmos-500">
                                             &yen;{related.price.toLocaleString()}
                                         </p>
                                     </div>
@@ -87,7 +87,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                         <div className="text-center py-8">
                             <Link
                                 href="/products"
-                                className="inline-block bg-blue-100 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-200 transition-colors duration-300"
+                                className="inline-block bg-almond-2 text-almond-8 px-6 py-3 rounded-lg hover:bg-almond-3 transition-colors duration-300"
                             >
                                 {locale === 'en' ? 'View all products' : 'すべての製品を見る'}
                             </Link>

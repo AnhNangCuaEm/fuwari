@@ -29,11 +29,11 @@ export default async function ProductsPage() {
                     >
                         {t('common.home')}
                     </Link>
-                    <span className="text-gray-500 mr-2">/</span>
-                    <span className="text-gray-700">{t('products.title')}</span>
+                    <span className="text-almond-5 mr-2">/</span>
+                    <span className="text-almond-8">{t('products.title')}</span>
                 </nav>
 
-                <h1 className="text-3xl font-bold text-center mb-8">
+                <h1 className="text-3xl font-bold text-center mb-8 text-almond-11">
                     {locale === 'en' ? 'Products' : '商品'}
                 </h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -64,10 +64,10 @@ export default async function ProductsPage() {
                                     {getLocalizedText(product.description, product.engDescription)}
                                 </p>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-lg font-bold text-cosmos-400">
+                                    <span className="text-lg font-bold text-cosmos-500">
                                         &yen;{product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                                     </span>
-                                    <span className={`text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                    <span className={`text-sm ${product.quantity > 0 ? 'text-cosmos-600' : 'text-cosmos-800'}`}>
                                         {product.quantity > 0
                                             ? `${locale === 'en' ? 'Stock' : '在庫'}: ${product.quantity}`
                                             : (locale === 'en' ? 'Sold Out' : '売り切れ')
