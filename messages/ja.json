@@ -21,7 +21,10 @@
     "selectLanguage": "言語を選択",
     "search": "検索",
     "stock": "在庫",
-    "lowStock": "在庫少数"
+    "lowStock": "在庫少数",
+    "notification": "通知",
+    "nonoti": "通知はありません",
+    "close": "閉じる"
   },
   "home": {
     "subtitle": "一口ごとに喜びを、あなたの一日を甘くする！",

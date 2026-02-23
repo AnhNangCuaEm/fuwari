@@ -21,7 +21,10 @@
     "selectLanguage": "Select Language",
     "search": "Search",
     "stock": "Stock",
-    "lowStock": "Low Stock"
+    "lowStock": "Low Stock",
+    "notification": "Notification",
+    "nonoti": "No Notification",
+    "close": "Close"
   },
   "home": {
     "subtitle": "Delight in Every Bite, Sweeten Your Day!",

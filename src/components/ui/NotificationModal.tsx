@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createPortal } from 'react-dom'
 import type { NotificationWithStatus } from '@/lib/notifications'
+import { useTranslations } from 'next-intl'
 
 const typeConfig: Record<string, { label: string; color: string; bg: string }> = {
     general: { label: 'General', color: 'text-cosmos-600', bg: 'bg-cosmos-50' },
@@ -27,6 +28,7 @@ interface Props {
 
 export default function NotificationModal({ notification, onClose }: Props) {
     const isOpen = !!notification
+    const t = useTranslations()
 
     useEffect(() => {
         if (isOpen) document.body.style.overflow = 'hidden'
@@ -108,7 +110,7 @@ export default function NotificationModal({ notification, onClose }: Props) {
                                     onClick={onClose}
                                     className="px-4 py-2 bg-cosmos-400 hover:bg-cosmos-500 text-white text-sm font-semibold rounded-xl transition-colors"
                                 >
-                                    Close
+                                    {t("common.close")}
                                 </button>
                             </div>
                         </div>

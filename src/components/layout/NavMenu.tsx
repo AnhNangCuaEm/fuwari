@@ -441,7 +441,7 @@ export default function NavMenu() {
                                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-cosmos-100/60">
                                     <div className="flex items-center gap-2">
                                         <BellIcon/>
-                                        <span className="font-bold text-sm text-almond-10">Notifications</span>
+                                        <span className="font-bold text-sm text-almond-10">{t("common.notification")}</span>
                                         {notifications.length > 0 && (
                                             <span className="text-[10px] bg-cosmos-100 text-cosmos-600 px-1.5 py-0.5 rounded-full font-semibold">
                                                 {notifications.length}
@@ -463,7 +463,7 @@ export default function NavMenu() {
                                     {notifications.length === 0 ? (
                                         <li className="flex flex-col items-center justify-center py-10 text-almond-5">
                                             <BellIcon/>
-                                            <span className="text-xs">No notifications</span>
+                                            <span className="text-xs">{t("common.nonoti")}</span>
                                         </li>
                                     ) : (
                                         notifications.map((notif, i) => (
