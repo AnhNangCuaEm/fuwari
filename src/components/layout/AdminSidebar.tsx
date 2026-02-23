@@ -134,7 +134,9 @@ export default function AdminSidebar() {
     }
 
     const isActiveRoute = (href: string) => {
-        const strippedPathname = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, '') || '/'
+        // Strip locale prefix nếu có (vd: /en/admin/dashboard -> /admin/dashboard)
+        // Regex yêu cầu sau locale phải là / hoặc end-of-string để tránh match /admin -> /adm...
+        const strippedPathname = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?(\/|$)/, '/') || '/'
         return strippedPathname === href || strippedPathname.startsWith(href + '/')
     }
 
@@ -178,7 +180,7 @@ export default function AdminSidebar() {
                     <li>
                         <button
                             onClick={backHomeAlert}
-                            className={`w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${pathname === '/' || pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, '') === '/'
+                            className={`w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${pathname === '/' || pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?(\/|$)/, '/') === '/'
                                 ? 'bg-gray-700 text-blue-400 font-semibold border-l-4 border-blue-400 pl-2'
                                 : 'border-l-4 border-transparent pl-2'
                                 } ${isExpanded ? 'justify-start' : 'justify-center'}`}
