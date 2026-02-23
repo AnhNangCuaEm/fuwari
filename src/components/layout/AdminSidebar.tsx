@@ -134,7 +134,8 @@ export default function AdminSidebar() {
     }
 
     const isActiveRoute = (href: string) => {
-        return pathname === href || pathname.startsWith(href + '/')
+        const strippedPathname = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, '') || '/'
+        return strippedPathname === href || strippedPathname.startsWith(href + '/')
     }
 
     return (
@@ -177,7 +178,9 @@ export default function AdminSidebar() {
                     <li>
                         <button
                             onClick={backHomeAlert}
-                            className={`w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${pathname === '/' ? 'bg-gray-700 text-blue-400' : ''
+                            className={`w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${pathname === '/' || pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, '') === '/'
+                                ? 'bg-gray-700 text-blue-400 font-semibold border-l-4 border-blue-400 pl-2'
+                                : 'border-l-4 border-transparent pl-2'
                                 } ${isExpanded ? 'justify-start' : 'justify-center'}`}
                         >
                             <HomeIcon className="w-5 h-5" />
@@ -194,7 +197,9 @@ export default function AdminSidebar() {
                             <li key={item.name}>
                                 <Link
                                     href={item.href}
-                                    className={`flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${isActive ? 'bg-gray-700 text-blue-400' : ''
+                                    className={`flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors ${isActive
+                                        ? 'bg-gray-700 text-blue-400 font-semibold border-l-4 border-blue-400 pl-2'
+                                        : 'border-l-4 border-transparent pl-2'
                                         } ${isExpanded ? 'justify-start' : 'justify-center'}`}
                                 >
                                     <Icon className="w-5 h-5" />
