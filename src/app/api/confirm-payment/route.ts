@@ -40,25 +40,21 @@ export async function POST(request: NextRequest) {
     }
 
     // The order may already exist (webhook was fast) or still being created.
-    // Poll DB for up to ~9 seconds (3 retries × 3s) to find the order by paymentIntentId.
+    // Poll DB for up to ~5 seconds to find the order by paymentIntentId.
     const { getOrderByPaymentIntentId } = await import('@/lib/orders');
     let order = await getOrderByPaymentIntentId(paymentIntentId);
 
     if (!order) {
-      // Webhook might be slightly behind — retry up to 3 times with 3s delay each
-      for (let attempt = 0; attempt < 3 && !order; attempt++) {
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        order = await getOrderByPaymentIntentId(paymentIntentId);
-      }
+      // Webhook might be slightly behind — wait briefly and retry once
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      order = await getOrderByPaymentIntentId(paymentIntentId);
     }
 
     if (!order) {
-      // Webhook hasn't fired yet — return success with a pending flag and the paymentIntentId
-      // so the client can still redirect to a meaningful success page.
+      // Webhook hasn't fired yet — return success with a pending flag.
       return NextResponse.json({
         success: true,
         pending: true,
-        paymentIntentId,
         message: 'Payment confirmed. Order is being processed.',
       });
     }
