@@ -139,7 +139,8 @@
     "stock": {
       "stock": "Stock",
       "inStock": "In Stock",
-      "outOfStock": "Out of Stock"
+      "outOfStock": "Out of Stock",
+      "lowStock": "Only {count} left"
     },
     "productInfo": "Product Information",
     "productCode": "Product Code",

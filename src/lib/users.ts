@@ -80,8 +80,8 @@ export async function createUser(userData: RegisterData): Promise<User> {
         newUser.status,
       ]
     );
-    // Send mandatory notifications to new user
-    await sendMandatoryNotificationsToNewUser(newUser.id).catch(err =>
+    // Send mandatory notifications in the background — don't block the registration response
+    void sendMandatoryNotificationsToNewUser(newUser.id).catch(err =>
       console.error('Failed to send mandatory notifications:', err)
     );
     return newUser;
@@ -138,8 +138,8 @@ export async function createGoogleUser(profile: { email: string; name: string; p
         newUser.image,
       ]
     );
-    // Send mandatory notifications to new Google user
-    await sendMandatoryNotificationsToNewUser(newUser.id).catch(err =>
+    // Send mandatory notifications in the background — don't block the registration response
+    void sendMandatoryNotificationsToNewUser(newUser.id).catch(err =>
       console.error('Failed to send mandatory notifications:', err)
     );
     return newUser;

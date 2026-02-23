@@ -72,34 +72,52 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      // First sign-in: user object is present — seed the token directly from
+      // the authorize() / signIn() result, no extra DB call needed.
       if (user) {
         token.id = user.id!
         token.role = user.role!
+        // Persist the OAuth provider so we can surface it in the session
+        if (account?.provider) {
+          token.provider = account.provider as 'credentials' | 'google'
+        }
+        return token
       }
-      
-      // Always sync role and user data from database on every token refresh
-      if (token.id) {
+
+      // Subsequent requests: token already exists.
+      // Sync role from DB, but only once every 5 minutes to avoid hammering
+      // the database on every request.
+      const SYNC_INTERVAL_MS = 5 * 60 * 1000 // 5 minutes
+      const lastSync = (token.lastRoleSync as number) ?? 0
+      const now = Date.now()
+
+      if (token.id && now - lastSync > SYNC_INTERVAL_MS) {
         try {
           const { findUserById } = await import("@/lib/users")
           const dbUser = await findUserById(token.id as string)
           if (dbUser) {
-            token.role = dbUser.role // Always sync role from database
+            token.role = dbUser.role
             token.name = dbUser.name
             token.email = dbUser.email
             token.picture = dbUser.image
           }
+          token.lastRoleSync = now
         } catch (error) {
-          console.error("Error fetching user data in JWT callback:", error)
+          console.error("Error syncing user data in JWT callback:", error)
         }
       }
-      
+
       return token
     },
     async session({ session, token }) {
       if (token.id) {
         session.user.id = token.id as string
         session.user.role = token.role as string
+        if (token.provider) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ;(session.user as any).provider = token.provider
+        }
       }
       return session
     },

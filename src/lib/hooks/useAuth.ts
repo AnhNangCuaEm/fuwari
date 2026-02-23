@@ -13,7 +13,8 @@ export function useCurrentUser() {
     name: session.user.name || '',
     email: session.user.email || '',
     role: session.user.role as 'user' | 'admin',
-    provider: 'credentials' as const,
+    // provider is set in the JWT by the signIn callback; fall back for old sessions
+    provider: (session.user.provider ?? 'credentials') as 'credentials' | 'google',
     image: session.user.image || undefined,
     createdAt: '',
     updatedAt: ''

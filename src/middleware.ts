@@ -99,27 +99,27 @@ export async function middleware(request: NextRequest) {
       const redirectRes = NextResponse.redirect(
         new URL(`/${locale === 'ja' ? '' : locale + '/'}maintenance`, request.url)
       )
-      // Stamp the cookie onto the redirect response so future requests skip the DB fetch
+      // Short TTL — re-check DB every 60s so toggling OFF takes effect quickly
       if (cookieValue === null) {
         redirectRes.cookies.set('fuwari-maintenance', 'true', {
           path: '/',
           httpOnly: true,
           sameSite: 'lax',
-          maxAge: 60 * 60 * 24 * 365,
+          maxAge: 60,
           secure: isProduction,
         })
       }
       return redirectRes
     }
 
-    // If cookie was missing but DB says false, set the cookie to 'false' so
-    // we skip the DB fetch on every subsequent request.
+    // If cookie was missing but DB says false, set a short-lived cookie
+    // so we skip the DB fetch on subsequent requests within the TTL window.
     if (cookieValue === null) {
       response.cookies.set('fuwari-maintenance', 'false', {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 365,
+        maxAge: 60,
         secure: isProduction,
       })
     }

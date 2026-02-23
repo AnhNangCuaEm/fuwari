@@ -1,85 +1,62 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createOrder } from '@/lib/orders';
-import { CreateOrderData } from '@/types/order';
-import { updateStock, rollbackStock, CartStockItem } from '@/lib/stock';
-import { auth } from '@/lib/auth';
+import Stripe from 'stripe';
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-08-27.basil',
+})
+
+/**
+ * POST /api/confirm-payment
+ *
+ * Called by the client AFTER stripe.confirmCardPayment() succeeds on the browser.
+ * We verify the PaymentIntent status directly with Stripe — never trust the client.
+ * The actual order creation happens in the Stripe Webhook (/api/stripe/webhook).
+ *
+ * This endpoint only returns the orderId so the client can redirect to the
+ * success page. We look it up from the database using the paymentIntentId.
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { paymentIntentId, cartItems, customerInfo, totals, deliveryDate }: {
-      paymentIntentId: string;
-      cartItems: CreateOrderData['items'];
-      customerInfo: CreateOrderData['customerInfo'];
-      totals: CreateOrderData['totals'];
-      deliveryDate: string;
-    } = body;
-    
-    // Get user session if available (for authenticated users)
-    const session = await auth();
+    const { paymentIntentId } = body as { paymentIntentId: string };
 
-    // Validate required fields
-    if (!paymentIntentId || !cartItems || !customerInfo || !totals || !deliveryDate) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+    if (!paymentIntentId) {
+      return NextResponse.json({ error: 'Missing paymentIntentId' }, { status: 400 });
     }
 
-    if (!cartItems.length) {
-      return NextResponse.json(
-        { error: 'Cart items cannot be empty' },
-        { status: 400 }
-      );
-    }
-
-    // Validate customer info
-    if (!customerInfo.email || !customerInfo.fullName) {
-      return NextResponse.json(
-        { error: 'Customer email and full name are required' },
-        { status: 400 }
-      );
-    }
-
-    // Create order data
-    const orderData: CreateOrderData = {
-      items: cartItems,
-      totals,
-      customerInfo,
-      stripePaymentIntentId: paymentIntentId,
-      userId: session?.user?.id || null, // Pass user ID if logged in, null for guest
-      deliveryDate: deliveryDate,
-    };
-
-    // Convert cart items to stock format
-    const stockItems: CartStockItem[] = cartItems.map(item => ({
-      id: item.id,
-      quantity: item.quantity,
-      name: item.name
-    }));
-
-    // Update stock first
-    const stockUpdated = await updateStock(stockItems);
-    if (!stockUpdated) {
-      return NextResponse.json(
-        { error: 'Failed to update stock. Please contact support.' },
-        { status: 500 }
-      );
-    }
-
-    // Save order to file
-    let order;
+    // Verify with Stripe that this PaymentIntent actually succeeded
+    let paymentIntent: Stripe.PaymentIntent;
     try {
-      order = await createOrder(orderData);
-    } catch (orderError) {
-      // If order creation fails, rollback stock
-      console.error('Order creation failed, rolling back stock:', orderError);
-      await rollbackStock(stockItems);
-      
+      paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    } catch {
+      return NextResponse.json({ error: 'Invalid paymentIntentId' }, { status: 400 });
+    }
+
+    if (paymentIntent.status !== 'succeeded') {
       return NextResponse.json(
-        { error: 'Failed to create order' },
-        { status: 500 }
+        { error: `Payment not completed. Status: ${paymentIntent.status}` },
+        { status: 402 }
       );
+    }
+
+    // The order may already exist (webhook was fast) or still being created.
+    // Poll DB for up to ~5 seconds to find the order by paymentIntentId.
+    const { getOrderByPaymentIntentId } = await import('@/lib/orders');
+    let order = await getOrderByPaymentIntentId(paymentIntentId);
+
+    if (!order) {
+      // Webhook might be slightly behind — wait briefly and retry once
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      order = await getOrderByPaymentIntentId(paymentIntentId);
+    }
+
+    if (!order) {
+      // Webhook hasn't fired yet — return success with a pending flag.
+      return NextResponse.json({
+        success: true,
+        pending: true,
+        message: 'Payment confirmed. Order is being processed.',
+      });
     }
 
     return NextResponse.json({
@@ -93,13 +70,9 @@ export async function POST(request: NextRequest) {
         itemCount: order.items.length,
       },
     });
-
   } catch (error) {
-    console.error('Error confirming payment:', error);
-    
-    return NextResponse.json(
-      { error: 'Failed to create order' },
-      { status: 500 }
-    );
+    console.error('Error in confirm-payment:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+

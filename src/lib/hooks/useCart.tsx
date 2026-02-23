@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react'
+import { useSession } from 'next-auth/react'
 
 interface CartItem {
     id: number
@@ -19,28 +20,41 @@ interface CartContextType {
     clearCart: () => void
     getTotalItems: () => number
     getTotalPrice: () => number
-    debugCartState: () => void
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
+// ─── Helper: persist cart to DB (fire-and-forget) ─────────────────────────────
+function syncCartToDB(items: CartItem[]) {
+    fetch('/api/user/cart', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            items: items.map(i => ({ product_id: i.id, quantity: i.quantity })),
+        }),
+    }).catch(err => console.error('Failed to sync cart to DB:', err))
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
     const [cartItems, setCartItems] = useState<CartItem[]>([])
     const [isLoaded, setIsLoaded] = useState(false)
+    const { data: session, status: sessionStatus } = useSession()
+    // Track whether we have already merged the DB cart for this session
+    const dbMergedRef = useRef(false)
 
-    // Load cart from localStorage on mount
+    // ── Step 1: Load cart from localStorage on mount ──────────────────────────
     useEffect(() => {
         try {
             let savedCart = localStorage.getItem('fuwari-cart')
-            
-            // Check for backup cart data (from language switching)
+
+            // Restore backup cart created during language switching
             const backupCart = localStorage.getItem('fuwari-cart-backup')
             if (backupCart && (!savedCart || savedCart === '[]')) {
                 savedCart = backupCart
                 localStorage.setItem('fuwari-cart', backupCart)
                 localStorage.removeItem('fuwari-cart-backup')
             }
-            
+
             if (savedCart) {
                 const parsedCart = JSON.parse(savedCart)
                 setCartItems(parsedCart)
@@ -53,18 +67,86 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setIsLoaded(true)
     }, [])
 
-    // Save cart to localStorage whenever it changes (only after initial load)
+    // ── Step 2: When user logs in, merge localStorage cart with DB cart ───────
     useEffect(() => {
-        if (isLoaded) {
-            try {
-                localStorage.setItem('fuwari-cart', JSON.stringify(cartItems))
-            } catch (error) {
-                console.error('Error saving cart to localStorage:', error)
-            }
+        if (!isLoaded) return
+        if (sessionStatus === 'loading') return
+        if (!session?.user?.id) {
+            // User logged out — reset merge flag so it runs again on next login
+            dbMergedRef.current = false
+            return
+        }
+        if (dbMergedRef.current) return // already merged for this session
+
+        dbMergedRef.current = true
+
+        fetch('/api/user/cart')
+            .then(res => (res.ok ? res.json() : { items: [] }))
+            .then(({ items: dbItems }: { items: { product_id: number; quantity: number }[] }) => {
+                setCartItems(prev => {
+                    // dbItems only carry product_id + quantity; convert to CartItem stubs
+                    // Local items already have full metadata — preserve them
+                    const remoteAsCartItems: CartItem[] = dbItems
+                        .filter(d => !prev.some(p => p.id === d.product_id))
+                        .map(d => ({
+                            id: d.product_id,
+                            name: '',
+                            description: '',
+                            price: 0,
+                            image: '',
+                            quantity: d.quantity,
+                        }))
+
+                    // Add remote-only quantities to existing local items
+                    const merged: CartItem[] = prev.map(localItem => {
+                        const remote = dbItems.find(d => d.product_id === localItem.id)
+                        if (remote && remote.quantity !== localItem.quantity) {
+                            // Keep the higher quantity (user may have added on another device)
+                            return { ...localItem, quantity: Math.max(localItem.quantity, remote.quantity) }
+                        }
+                        return localItem
+                    })
+
+                    const finalCart = [...merged, ...remoteAsCartItems]
+
+                    // Persist the merged result back to DB
+                    syncCartToDB(finalCart)
+                    return finalCart
+                })
+            })
+            .catch(err => console.error('Failed to fetch DB cart:', err))
+    }, [isLoaded, session?.user?.id, sessionStatus])
+
+    // ── Step 3: Save cart to localStorage whenever it changes ────────────────
+    useEffect(() => {
+        if (!isLoaded) return
+        try {
+            localStorage.setItem('fuwari-cart', JSON.stringify(cartItems))
+        } catch (error) {
+            console.error('Error saving cart to localStorage:', error)
         }
     }, [cartItems, isLoaded])
 
-    // Listen for storage events to sync cart across tabs and handle external changes
+    // ── Step 4: Persist to DB on changes (only when logged in) ───────────────
+    // We use a debounce-like approach: only sync after the cart settles to avoid
+    // hammering the API on every keystroke.
+    const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    useEffect(() => {
+        if (!isLoaded) return
+        if (!session?.user?.id) return
+        if (!dbMergedRef.current) return // don't sync before the initial merge
+
+        if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current)
+        syncTimeoutRef.current = setTimeout(() => {
+            syncCartToDB(cartItems)
+        }, 1000)
+
+        return () => {
+            if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current)
+        }
+    }, [cartItems, isLoaded, session?.user?.id])
+
+    // ── Step 5: Cross-tab sync via storage events ─────────────────────────────
     useEffect(() => {
         const handleStorageChange = (e: StorageEvent) => {
             if (e.key === 'fuwari-cart' && e.newValue !== null) {
@@ -78,7 +160,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
 
         const handleBeforeUnload = () => {
-            // Ensure cart is saved before page unloads
             try {
                 localStorage.setItem('fuwari-cart', JSON.stringify(cartItems))
             } catch (error) {
@@ -95,10 +176,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
     }, [cartItems])
 
+    // ─── Cart mutation helpers ────────────────────────────────────────────────
+
     const addToCart = (item: Omit<CartItem, 'quantity'>) => {
         setCartItems(prevItems => {
             const existingItem = prevItems.find(cartItem => cartItem.id === item.id)
-            
+
             if (existingItem) {
                 return prevItems.map(cartItem =>
                     cartItem.id === item.id
@@ -116,7 +199,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             removeFromCart(id)
             return
         }
-        
+
         setCartItems(prevItems =>
             prevItems.map(item =>
                 item.id === id ? { ...item, quantity } : item
@@ -140,17 +223,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)
     }
 
-    const debugCartState = () => {
-        console.log('Cart Debug Info:', {
-            cartItems,
-            itemCount: cartItems.length,
-            totalItems: getTotalItems(),
-            totalPrice: getTotalPrice(),
-            localStorage: localStorage.getItem('fuwari-cart'),
-            backup: localStorage.getItem('fuwari-cart-backup')
-        })
-    }
-
     const value: CartContextType = {
         cartItems,
         addToCart,
@@ -159,7 +231,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         clearCart,
         getTotalItems,
         getTotalPrice,
-        debugCartState
     }
 
     return (

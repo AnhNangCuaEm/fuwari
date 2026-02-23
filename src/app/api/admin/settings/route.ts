@@ -52,15 +52,14 @@ export async function PUT(request: NextRequest) {
 
         const apiResponse = NextResponse.json({ message: 'Settings saved successfully', updatedCount: result.updatedCount });
 
-        // Sync maintenance mode into a cookie so middleware can read it on every request.
-        // We always SET (never delete) so the cookie persists; the value is 'true' or 'false'.
+        // Short TTL so the cache expires quickly when toggled back
         if ('maintenance_mode' in updates) {
             const isMaintenanceOn = updates.maintenance_mode === 'true';
             apiResponse.cookies.set('fuwari-maintenance', isMaintenanceOn ? 'true' : 'false', {
                 path: '/',
-                httpOnly: true,   // Edge middleware reads via request.cookies — httpOnly is fine
+                httpOnly: true,
                 sameSite: 'lax',
-                maxAge: 60 * 60 * 24 * 365, // always 1 year — value change handles the toggle
+                maxAge: 60, // 60 seconds — re-reads DB after TTL expires
                 secure: process.env.NODE_ENV === 'production',
             });
         }

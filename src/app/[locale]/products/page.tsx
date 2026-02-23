@@ -7,6 +7,9 @@ import { Product } from '@/types/product';
 import { getTranslations, getLocale } from 'next-intl/server';
 import AddToCartButton from '@/components/products/AddToCartButton';
 
+// Revalidate every 60 seconds so product data stays fresh without a full DB hit on every request
+export const revalidate = 60;
+
 export default async function ProductsPage() {
     const products = await getAllProducts();
     const t = await getTranslations();
@@ -68,9 +71,11 @@ export default async function ProductsPage() {
                                         &yen;{product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                                     </span>
                                     <span className={`text-sm ${product.quantity > 0 ? 'text-cosmos-600' : 'text-cosmos-800'}`}>
-                                        {product.quantity > 0
-                                            ? `${locale === 'en' ? 'Stock' : '在庫'}: ${product.quantity}`
-                                            : (locale === 'en' ? 'Sold Out' : '売り切れ')
+                                        {product.quantity === 0
+                                            ? (locale === 'en' ? 'Sold Out' : '売り切れ')
+                                            : product.quantity < 5
+                                                ? (locale === 'en' ? `Only ${product.quantity} left` : `残り${product.quantity}個`)
+                                                : (locale === 'en' ? 'In Stock' : '在庫あり')
                                         }
                                     </span>
                                     <AddToCartButton

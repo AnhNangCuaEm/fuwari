@@ -120,9 +120,11 @@ export default async function CategoryPage({ params }: PageProps) {
                                         &yen;{product.price.toLocaleString(locale === 'en' ? 'en-US' : 'ja-JP')}
                                     </span>
                                     <span className={`text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {product.quantity > 0
-                                            ? `${locale === 'en' ? 'Stock' : '在庫'}: ${product.quantity}`
-                                            : (locale === 'en' ? 'Sold Out' : '売り切れ')
+                                        {product.quantity === 0
+                                            ? (locale === 'en' ? 'Sold Out' : '売り切れ')
+                                            : product.quantity < 5
+                                                ? (locale === 'en' ? `Only ${product.quantity} left` : `残り${product.quantity}個`)
+                                                : (locale === 'en' ? 'In Stock' : '在庫あり')
                                         }
                                     </span>
                                     <AddToCartButton

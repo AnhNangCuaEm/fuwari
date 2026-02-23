@@ -15,10 +15,12 @@ export async function getCurrentUser(): Promise<User | null> {
       name: session.user.name || '',
       email: session.user.email || '',
       role: session.user.role as 'user' | 'admin',
-      provider: 'credentials', // This could be enhanced to track actual provider
+      // provider is stored in the JWT since the signIn callback sets it.
+      // Fall back to 'credentials' for sessions created before this fix.
+      provider: session.user.provider ?? 'credentials',
       image: session.user.image || undefined,
       status: 'active',
-      createdAt: '', // These would need to be fetched from user store if needed
+      createdAt: '',
       updatedAt: ''
     }
   } catch (error) {

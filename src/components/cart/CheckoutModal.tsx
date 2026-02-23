@@ -141,7 +141,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
         throw new Error('Please fill in all required fields');
       }
 
-      // Create payment intent
+      // Create payment intent (embed all order data in metadata for the webhook)
       const response = await fetch('/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -149,6 +149,8 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
           amount: totals.total,
           items: cartItems,
           customerInfo,
+          totals,
+          deliveryDate: deliveryDate.toISOString(),
         }),
       });
 
@@ -182,17 +184,11 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
         throw new Error(result.error.message || 'Payment failed');
       }
 
-      // Payment succeeded - create order
+      // Payment succeeded — ask server to verify with Stripe and return the orderId
       const confirmResponse = await fetch('/api/confirm-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          paymentIntentId,
-          cartItems,
-          customerInfo,
-          totals,
-          deliveryDate: deliveryDate.toISOString(),
-        }),
+        body: JSON.stringify({ paymentIntentId }),
       });
 
       const confirmData = await confirmResponse.json();

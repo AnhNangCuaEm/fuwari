@@ -145,7 +145,11 @@ export default function FavoriteProducts() {
                   {locale === 'en' ? product.engName : product.name}
                 </h4>
                 <p className="text-sm">
-                  {product.quantity > 0 ? t('shopping.stock.inStock') : t('shopping.stock.outOfStock')}
+                  {product.quantity === 0
+                    ? t('shopping.stock.outOfStock')
+                    : product.quantity < 5
+                      ? t('shopping.stock.lowStock', { count: product.quantity })
+                      : t('shopping.stock.inStock')}
                 </p>
               </div>
               <span className="text-cosmos-400 font-bold">&yen;{product.price.toLocaleString()}</span>

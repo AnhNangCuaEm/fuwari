@@ -44,9 +44,9 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                 text: locale === 'en' ? 'Out of Stock' : '在庫なし',
                 color: 'text-red-600'
             };
-        } else if (quantity < 10) {
+        } else if (quantity < 5) {
             return {
-                text: locale === 'en' ? 'Limited Stock' : '残りわずか',
+                text: locale === 'en' ? `Only ${quantity} left` : `残り${quantity}個`,
                 color: 'text-orange-500'
             };
         } else {
@@ -235,7 +235,7 @@ export default function ProductDetailClient({ product, locale, relatedProducts =
                         </div>
                         <div className="flex justify-between">
                             <span className="text-almond-7">{t('shopping.stockStatus')}:</span>
-                            <span className={`font-medium ${getStockStatus(product.quantity).color}`}>{getStockStatus(product.quantity).text}<span className="ml-1">({product.quantity})</span></span>
+                            <span className={`font-medium ${getStockStatus(product.quantity).color}`}>{getStockStatus(product.quantity).text}</span>
                         </div>
                     </div>
                 </div>

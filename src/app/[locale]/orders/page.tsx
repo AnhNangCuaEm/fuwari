@@ -8,37 +8,7 @@ import { Link } from '@/i18n/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useTranslations, useLocale } from 'next-intl';
-
-interface Order {
-    id: string;
-    customerId: string;
-    customerEmail: string;
-    items: Array<{
-        id: number;
-        name: string;
-        description: string;
-        price: number;
-        image: string;
-        quantity: number;
-    }>;
-    subtotal: number;
-    tax: number;
-    shipping: number;
-    total: number;
-    status: string;
-    stripePaymentIntentId: string;
-    shippingAddress: {
-        fullName: string;
-        email: string;
-        phone: string;
-        address: string;
-        city: string;
-        postalCode: string;
-        country: string;
-    };
-    createdAt: string;
-    updatedAt: string;
-}
+import type { Order } from '@/types/order';
 
 export default function OrdersPage() {
     const { data: session, status } = useSession();

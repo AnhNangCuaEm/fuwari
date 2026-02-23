@@ -1,5 +1,5 @@
 
-import { requireAdmin } from "@/lib/auth-utils"
+import { auth } from "@/lib/auth"
 import { getDashboardStats } from "@/lib/dashboard"
 import { Link } from "@/i18n/navigation"
 import Image from "next/image"
@@ -63,10 +63,15 @@ function RevenueBar({ days }: { days: { date: string; revenue: number; orders: n
 }
 
 export default async function AdminDashboard() {
-    const [adminUser, stats] = await Promise.all([
-        requireAdmin(),
+    // The admin layout already guards this route via middleware + AdminLayout requireAdmin().
+    // We only need the session here to display the welcome name — no extra DB call.
+    const [session, stats] = await Promise.all([
+        auth(),
         getDashboardStats(),
     ])
+    const adminName = session?.user?.name ?? 'Admin'
+    const adminEmail = session?.user?.email ?? ''
+    const adminRole = session?.user?.role ?? 'admin'
 
     const revenueGrowth = stats.previousMonthRevenue > 0
         ? (((stats.currentMonthRevenue - stats.previousMonthRevenue) / stats.previousMonthRevenue) * 100).toFixed(1)
@@ -79,7 +84,7 @@ export default async function AdminDashboard() {
                 <div>
                     <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
                     <p className="text-sm text-gray-500 mt-0.5">
-                        Welcome back, <strong className="text-gray-700">{adminUser.name}</strong> · {new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+                        Welcome back, <strong className="text-gray-700">{adminName}</strong> · {new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -398,9 +403,9 @@ export default async function AdminDashboard() {
                     {/* Admin info */}
                     <div className="mt-5 pt-4 border-t border-gray-100">
                         <p className="text-xs text-gray-400 mb-2 font-medium uppercase tracking-wide">Signed in as</p>
-                        <p className="text-sm font-semibold text-gray-800 truncate">{adminUser.name}</p>
-                        <p className="text-xs text-gray-500 truncate">{adminUser.email}</p>
-                        <span className="inline-block mt-2 px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">{adminUser.role}</span>
+                        <p className="text-sm font-semibold text-gray-800 truncate">{adminName}</p>
+                        <p className="text-xs text-gray-500 truncate">{adminEmail}</p>
+                        <span className="inline-block mt-2 px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">{adminRole}</span>
                     </div>
                 </div>
             </div>

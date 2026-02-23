@@ -137,3 +137,24 @@ export async function updateOrderStatus(orderId: string, status: Order['status']
     return null;
   }
 }
+
+// Get order by Stripe PaymentIntent ID (used after webhook creates the order)
+export async function getOrderByPaymentIntentId(paymentIntentId: string): Promise<Order | null> {
+  try {
+    const order = await queryOne<RowDataPacket & Order>(
+      'SELECT * FROM orders WHERE "stripePaymentIntentId" = $1',
+      [paymentIntentId]
+    );
+    if (order) {
+      return {
+        ...order,
+        items: typeof order.items === 'string' ? JSON.parse(order.items) : order.items,
+        shippingAddress: typeof order.shippingAddress === 'string' ? JSON.parse(order.shippingAddress) : order.shippingAddress,
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching order by paymentIntentId:', error);
+    return null;
+  }
+}

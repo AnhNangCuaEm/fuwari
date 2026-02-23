@@ -139,7 +139,8 @@
     "stock": {
       "stock": "在庫",
       "inStock": "在庫あり",
-      "outOfStock": "在庫なし"
+      "outOfStock": "在庫なし",
+      "lowStock": "残り{count}個"
     },
     "productInfo": "商品情報",
     "productCode": "商品コード",

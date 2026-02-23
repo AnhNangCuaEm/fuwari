@@ -32,7 +32,7 @@ export const getProductById = async (id: number): Promise<Product | null> => {
 export const searchProductsByName = async (searchTerm: string): Promise<Product[]> => {
     try {
         const products = await query<(RowDataPacket & Product)[]>(
-            'SELECT * FROM products WHERE name LIKE $1 ORDER BY created_at DESC',
+            'SELECT * FROM products WHERE name ILIKE $1 ORDER BY created_at DESC',
             [`%${searchTerm}%`]
         );
         return products;
@@ -54,13 +54,13 @@ export const searchProducts = async (
         const params: any[] = [];
         let paramIndex = 1;
 
-        // Text search
+        // Text search — use ILIKE for case-insensitive matching without needing a pg_trgm index
         if (searchTerm) {
             sql += ` AND (
-                name LIKE $${paramIndex} OR 
-                "engName" LIKE $${paramIndex + 1} OR 
-                description LIKE $${paramIndex + 2} OR 
-                "engDescription" LIKE $${paramIndex + 3}
+                name ILIKE $${paramIndex} OR 
+                "engName" ILIKE $${paramIndex + 1} OR 
+                description ILIKE $${paramIndex + 2} OR 
+                "engDescription" ILIKE $${paramIndex + 3}
             )`;
             const searchPattern = `%${searchTerm}%`;
             params.push(searchPattern, searchPattern, searchPattern, searchPattern);
@@ -103,11 +103,11 @@ export const getProductsByPriceRange = async (minPrice: number, maxPrice: number
     }
 };
 
-// Get featured products (4 products with lowest stock)
+// Get featured products (4 newest in-stock products)
 export const getFeaturedProducts = async (): Promise<Product[]> => {
     try {
         const products = await query<(RowDataPacket & Product)[]>(
-            'SELECT id, name, "engName", price, image, quantity FROM products WHERE quantity > 0 ORDER BY quantity ASC LIMIT 4'
+            'SELECT id, name, "engName", price, image, quantity FROM products WHERE quantity > 0 ORDER BY created_at DESC LIMIT 4'
         );
         return products;
     } catch (error) {
@@ -116,15 +116,15 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
     }
 };
 
-// Get favorited products ( 6 products with highest stock )
+// Get popular/new products for the carousel (6 random in-stock products)
 export const getFavoriteProducts = async (): Promise<Product[]> => {
     try {
         const products = await query<(RowDataPacket & Product)[]>(
-            'SELECT id, name, "engName", price, image, quantity FROM products WHERE quantity > 0 ORDER BY quantity DESC LIMIT 6'
+            'SELECT id, name, "engName", price, image, quantity FROM products WHERE quantity > 0 ORDER BY RANDOM() LIMIT 6'
         );
         return products;
     } catch (error) {
-        console.error('Error fetching favorite products:', error);
+        console.error('Error fetching popular products:', error);
         return [];
     }
 };

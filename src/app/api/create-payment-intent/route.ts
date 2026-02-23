@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { CartItem } from '@/types/order';
+import { CartItem, OrderTotals, ShippingAddress } from '@/types/order';
+import { auth } from '@/lib/auth';
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set');
@@ -13,12 +14,18 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { amount, items, customerInfo } = body;
+    const { amount, items, customerInfo, totals, deliveryDate }: {
+      amount: number;
+      items: CartItem[];
+      customerInfo: ShippingAddress;
+      totals: OrderTotals;
+      deliveryDate: string;
+    } = body;
 
     // Validate required fields
-    if (!amount || !items || !customerInfo) {
+    if (!amount || !items || !customerInfo || !totals || !deliveryDate) {
       return NextResponse.json(
-        { error: 'Missing required fields: amount, items, customerInfo' },
+        { error: 'Missing required fields: amount, items, customerInfo, totals, deliveryDate' },
         { status: 400 }
       );
     }
@@ -31,20 +38,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get session to embed userId in metadata (optional)
+    const session = await auth();
+    const userId = session?.user?.id ?? null;
+
+    // Stripe metadata values must be strings and total size ≤ 8KB.
+    // We embed all order data here so the webhook can reconstruct the order
+    // without trusting the client again.
+    const itemsMetadata = JSON.stringify(items.map((item: CartItem) => ({
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      quantity: item.quantity,
+      price: item.price,
+      image: item.image,
+    })));
+
+    const customerInfoMetadata = JSON.stringify(customerInfo);
+    const totalsMetadata = JSON.stringify(totals);
+
     // Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount),
       currency: 'jpy',
       metadata: {
-        items: JSON.stringify(items.map((item: CartItem) => ({
-          id: item.id,
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price
-        }))),
-        customerEmail: customerInfo.email,
-        totalItems: items.length.toString(),
-        environment: 'development'
+        items: itemsMetadata,
+        customerInfo: customerInfoMetadata,
+        totals: totalsMetadata,
+        deliveryDate,
+        userId: userId ?? '',
+        environment: process.env.NODE_ENV,
       },
       description: `Fuwari Sweet Shop - ${items.length} items`,
     });
