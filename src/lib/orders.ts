@@ -6,7 +6,7 @@ import { query, queryOne, RowDataPacket } from './db';
 export async function getOrders(): Promise<Order[]> {
   try {
     const orders = await query<(RowDataPacket & Order)[]>(
-      'SELECT * FROM orders ORDER BY createdAt DESC'
+      'SELECT * FROM orders ORDER BY "createdAt" DESC'
     );
     // Parse JSON fields
     return orders.map(order => ({
