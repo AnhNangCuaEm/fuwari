@@ -40,37 +40,68 @@ export default function OrderSuccessPage() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
+  const [resolvedOrderId, setResolvedOrderId] = useState<string | null>(null);
 
   const paymentIntentId = searchParams.get('payment_intent');
-  const orderId = searchParams.get('order');
+  const rawOrderId = searchParams.get('order');
+  // If orderId is actually a paymentIntentId (pending case fallback), treat it as undefined
+  const orderId = rawOrderId && !rawOrderId.startsWith('pi_') ? rawOrderId : null;
   const t = useTranslations();
   const locale = useLocale();
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
-      if (orderId) {
-        try {
-          // Fetch order details from API
+      try {
+        // Case 1: We have a real orderId — look up directly from user orders
+        if (orderId) {
           const response = await fetch('/api/user/orders');
           if (response.ok) {
             const data = await response.json();
             const order = data.orders.find((o: OrderDetails) => o.id === orderId);
             if (order) {
               setOrderDetails(order);
+              setResolvedOrderId(order.id);
+              return;
             }
           }
-        } catch (error) {
-          console.error('Error fetching order details:', error);
-        } finally {
-          setLoading(false);
         }
-      } else {
+
+        // Case 2: No orderId or not found — try to resolve via paymentIntentId
+        if (paymentIntentId) {
+          // Poll confirm-payment to get the orderId once webhook has processed it
+          for (let attempt = 0; attempt < 5; attempt++) {
+            const res = await fetch('/api/confirm-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ paymentIntentId }),
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (data.orderId) {
+                setResolvedOrderId(data.orderId);
+                // Now fetch the actual order details
+                const ordersRes = await fetch('/api/user/orders');
+                if (ordersRes.ok) {
+                  const ordersData = await ordersRes.json();
+                  const order = ordersData.orders.find((o: OrderDetails) => o.id === data.orderId);
+                  if (order) setOrderDetails(order);
+                }
+                return;
+              }
+            }
+            // Wait 2s before retrying
+            if (attempt < 4) await new Promise(resolve => setTimeout(resolve, 2000));
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching order details:', error);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchOrderDetails();
-  }, [orderId]);
+  }, [orderId, paymentIntentId]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -86,7 +117,7 @@ export default function OrderSuccessPage() {
                 </svg>
               <h1 className="text-3xl font-bold text-gray-900">{t('payment.processing')}</h1>
             </div>
-          ) : paymentIntentId && orderId ? (
+          ) : paymentIntentId ? (
             <div className="space-y-8">
               {/* Success section */}
               <div className="text-center space-y-4">
@@ -107,7 +138,11 @@ export default function OrderSuccessPage() {
                 <div className="space-y-2 text-sm text-green-700 mb-4">
                   <div className="flex justify-between">
                     <span>{t('payment.orderId')}:</span>
-                    <span className="font-mono">#{orderId?.slice(-8).toUpperCase()}</span>
+                    <span className="font-mono">
+                      {resolvedOrderId
+                        ? `#${resolvedOrderId.slice(-8).toUpperCase()}`
+                        : '—'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span>{t('payment.date')}:</span>

@@ -226,7 +226,7 @@ export default function CheckoutModal({ isOpen, cartItems, totals, deliveryDate,
         console.log('Could not update profile:', error);
       }
 
-      onSuccess(paymentIntentId, confirmData.orderId);
+      onSuccess(paymentIntentId, confirmData.orderId ?? confirmData.paymentIntentId ?? paymentIntentId);
 
     } catch (err) {
       console.error('Payment error:', err);
