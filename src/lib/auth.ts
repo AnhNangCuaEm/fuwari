@@ -72,14 +72,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true
     },
-    async jwt({ token, user, account, trigger }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id!
         token.role = user.role!
       }
       
-      // For Google OAuth or when token needs refresh, get the latest user data from database
-      if ((account?.provider === "google" || trigger === "update") && token.id) {
+      // Always sync role and user data from database on every token refresh
+      if (token.id) {
         try {
           const { findUserById } = await import("@/lib/users")
           const dbUser = await findUserById(token.id as string)
