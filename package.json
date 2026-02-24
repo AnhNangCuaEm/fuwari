@@ -37,6 +37,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-easy-crop": "^5.5.0",
+    "recharts": "^3.7.0",
     "stripe": "^18.5.0",
     "tailwind-merge": "^3.4.0",
     "three": "^0.182.0",

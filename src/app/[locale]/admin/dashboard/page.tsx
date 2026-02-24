@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { getDashboardStats } from "@/lib/dashboard"
 import { Link } from "@/i18n/navigation"
 import Image from "next/image"
+import RevenueChart from "@/components/admin/RevenueChart"
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
     paid:        { label: "Paid",        color: "text-emerald-700", bg: "bg-emerald-100" },
@@ -28,38 +29,6 @@ function formatCurrency(value: number) {
 
 function formatDate(iso: string) {
     return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
-}
-
-function RevenueBar({ days }: { days: { date: string; revenue: number; orders: number }[] }) {
-    const max = Math.max(...days.map(d => d.revenue), 1)
-    return (
-        <div className="flex items-end gap-2 h-32">
-            {days.map((d) => {
-                const height = Math.max((d.revenue / max) * 100, 2)
-                return (
-                    <div key={d.date} className="flex-1 flex flex-col items-center gap-1 group">
-                        <div className="relative w-full">
-                            {/* Tooltip */}
-                            <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col items-center z-10">
-                                <div className="bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
-                                    <div>{formatCurrency(d.revenue)}</div>
-                                    <div className="text-gray-300">{d.orders} orders</div>
-                                </div>
-                                <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800" />
-                            </div>
-                            <div
-                                className="w-full bg-indigo-500 hover:bg-indigo-400 rounded-t transition-all cursor-default"
-                                style={{ height: `${height}%`, minHeight: "4px" }}
-                            />
-                        </div>
-                        <span className="text-[10px] text-gray-400 truncate w-full text-center">
-                            {new Date(d.date).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}
-                        </span>
-                    </div>
-                )
-            })}
-        </div>
-    )
 }
 
 export default async function AdminDashboard() {
@@ -197,7 +166,7 @@ export default async function AdminDashboard() {
                         <span className="text-xs text-gray-400">Cancelled orders excluded</span>
                     </div>
                     {stats.revenueByDay.length > 0 ? (
-                        <RevenueBar days={stats.revenueByDay} />
+                        <RevenueChart days={stats.revenueByDay} />
                     ) : (
                         <div className="h-32 flex items-center justify-center text-sm text-gray-400">No order data yet</div>
                     )}
