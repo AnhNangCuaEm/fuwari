@@ -42,13 +42,12 @@ export async function POST(request: NextRequest) {
     const session = await auth();
     const userId = session?.user?.id ?? null;
 
-    // Stripe metadata values must be strings and total size ≤ 8KB.
-    // We embed all order data here so the webhook can reconstruct the order
-    // without trusting the client again.
+    // Stripe metadata values must be strings and total size ≤ 8KB (each value ≤ 500 chars).
+    // We embed all order data here so the confirm-payment route can reconstruct the order.
+    // NOTE: description is intentionally omitted to keep the metadata short.
     const itemsMetadata = JSON.stringify(items.map((item: CartItem) => ({
       id: item.id,
       name: item.name,
-      description: item.description,
       quantity: item.quantity,
       price: item.price,
       image: item.image,
