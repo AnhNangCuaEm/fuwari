@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { createOrder, getOrderByPaymentIntentId } from '@/lib/orders';
+import { getOrderByPaymentIntentId } from '@/lib/orders';
 import { updateStock, rollbackStock, CartStockItem } from '@/lib/stock';
 import { CartItem } from '@/types/order';
 
@@ -13,8 +13,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  *
  * Called by the client AFTER stripe.confirmCardPayment() succeeds on the browser.
  * 1. Verify the PaymentIntent status directly with Stripe.
- * 2. If the order already exists (e.g. duplicate call), return it immediately.
- * 3. Otherwise, create the order from the metadata embedded in the PaymentIntent.
+ * 2. If the order already exists (idempotency), return it immediately.
+ * 3. Otherwise, mark the pending order (created in create-payment-intent) as 'paid'
+ *    and update stock. No order data is read from Stripe metadata.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -40,9 +41,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Idempotency: if order was already created (e.g. duplicate request), return it
+    // Idempotency: if order was already marked paid (e.g. duplicate request), return it
     const existingOrder = await getOrderByPaymentIntentId(paymentIntentId);
-    if (existingOrder) {
+    if (existingOrder && existingOrder.status !== 'pending') {
       return NextResponse.json({
         success: true,
         orderId: existingOrder.id,
@@ -50,30 +51,21 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Parse order data from PaymentIntent metadata
-    let cartItems: CartItem[] = [];
-    let customerInfo = null;
-    let totals = null;
-    let deliveryDate: string | null = null;
-    let userId: string | null = null;
-
-    try {
-      cartItems = JSON.parse(paymentIntent.metadata.items || '[]');
-      customerInfo = JSON.parse(paymentIntent.metadata.customerInfo || 'null');
-      totals = JSON.parse(paymentIntent.metadata.totals || 'null');
-      deliveryDate = paymentIntent.metadata.deliveryDate || null;
-      userId = paymentIntent.metadata.userId || null;
-    } catch {
-      console.error('Failed to parse PaymentIntent metadata:', paymentIntent.metadata);
-      return NextResponse.json({ error: 'Invalid payment metadata' }, { status: 400 });
+    // Get orderId from Stripe metadata (set in create-payment-intent)
+    const orderId = paymentIntent.metadata.orderId;
+    if (!orderId) {
+      return NextResponse.json({ error: 'Missing orderId in payment metadata' }, { status: 400 });
     }
 
-    if (!customerInfo || !totals || !deliveryDate || cartItems.length === 0) {
-      return NextResponse.json({ error: 'Missing required order data in payment metadata' }, { status: 400 });
+    // Load the pending order from DB
+    const { getOrderById, updateOrderStatus } = await import('@/lib/orders');
+    const pendingOrder = existingOrder ?? await getOrderById(orderId);
+    if (!pendingOrder) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
     // Update stock
-    const stockItems: CartStockItem[] = cartItems.map(item => ({
+    const stockItems: CartStockItem[] = pendingOrder.items.map((item: CartItem) => ({
       id: item.id,
       quantity: item.quantity,
       name: item.name,
@@ -82,24 +74,14 @@ export async function POST(request: NextRequest) {
     const stockResult = await updateStock(stockItems);
     if (!stockResult.isAvailable) {
       console.error('Insufficient stock for PaymentIntent:', paymentIntentId, stockResult.unavailableItems);
-      // Payment already went through, so still create the order and flag for manual review
+      // Payment already went through — still mark paid and flag for manual review
     }
 
-    // Create the order
-    let order;
-    try {
-      order = await createOrder({
-        items: cartItems,
-        totals,
-        customerInfo,
-        stripePaymentIntentId: paymentIntent.id,
-        userId: userId || null,
-        deliveryDate,
-      });
-    } catch (err) {
-      console.error('Order creation failed, rolling back stock:', err);
+    // Mark the order as paid
+    const order = await updateOrderStatus(orderId, 'paid');
+    if (!order) {
       await rollbackStock(stockItems);
-      return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to update order status' }, { status: 500 });
     }
 
     return NextResponse.json({

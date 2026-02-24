@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { CartItem, OrderTotals, ShippingAddress } from '@/types/order';
 import { auth } from '@/lib/auth';
+import { createOrder } from '@/lib/orders';
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set');
@@ -42,34 +43,36 @@ export async function POST(request: NextRequest) {
     const session = await auth();
     const userId = session?.user?.id ?? null;
 
-    // Stripe metadata values must be strings and total size ≤ 8KB (each value ≤ 500 chars).
-    // We embed all order data here so the confirm-payment route can reconstruct the order.
-    // NOTE: description is intentionally omitted to keep the metadata short.
-    const itemsMetadata = JSON.stringify(items.map((item: CartItem) => ({
-      id: item.id,
-      name: item.name,
-      quantity: item.quantity,
-      price: item.price,
-      image: item.image,
-    })));
+    // Create the order in DB with status 'pending' BEFORE charging.
+    // This avoids stuffing order data into Stripe metadata (500-char limit per field).
+    const order = await createOrder({
+      items,
+      totals,
+      customerInfo,
+      stripePaymentIntentId: '', // will be updated below
+      userId,
+      deliveryDate,
+    });
 
-    const customerInfoMetadata = JSON.stringify(customerInfo);
-    const totalsMetadata = JSON.stringify(totals);
-
-    // Create payment intent
+    // Create payment intent — only store the orderId in metadata (always short)
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount),
       currency: 'jpy',
       metadata: {
-        items: itemsMetadata,
-        customerInfo: customerInfoMetadata,
-        totals: totalsMetadata,
-        deliveryDate,
+        orderId: order.id,
         userId: userId ?? '',
         environment: process.env.NODE_ENV,
       },
       description: `Fuwari Sweet Shop - ${items.length} items`,
     });
+
+    // Patch the order with the real paymentIntentId now that we have it
+    await import('@/lib/db').then(({ query }) =>
+      query(
+        'UPDATE orders SET "stripePaymentIntentId" = $1, "updatedAt" = NOW() WHERE id = $2',
+        [paymentIntent.id, order.id]
+      )
+    );
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
