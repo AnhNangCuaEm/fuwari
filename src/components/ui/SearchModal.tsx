@@ -429,7 +429,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                     </div>
 
                                     {/* Product Info Overlay */}
-                                    <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-between p-3 bg-white/50 backdrop-blur-sm">
+                                    <div className="absolute bottom-0 left-0 right-0 rounded-lg flex flex-col justify-between p-3 bg-white/50 backdrop-blur-sm">
                                         <h3 className="text-lg font-semibold mb-2 text-gray-900">
                                             {product.name}
                                         </h3>
