@@ -186,7 +186,9 @@
     "removeConfirmTitle": "商品をカートから削除しますか？",
     "removeConfirmMsg": "この操作は元に戻せません。",
     "removeConfirm": "削除",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "maxQuantity": "在庫上限",
+    "maxQuantityReached": "在庫上限に達しました"
   },
   "payment": {
     "title": "チェックアウト",

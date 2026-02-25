@@ -7,6 +7,8 @@ import { useCart } from '@/lib/hooks/useCart'
 import AlertModal from "@/components/ui/AlertModal";
 import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
+import type { Product } from "@/types/product"
+
 interface CartDrawerProps {
     isOpen: boolean
     onClose: () => void
@@ -18,10 +20,23 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     const [showRemoveAlert, setShowRemoveAlert] = useState(false);
     const [itemToRemove, setItemToRemove] = useState<number | null>(null);
     const [mounted, setMounted] = useState(false);
+    const [stockMap, setStockMap] = useState<Map<number, number>>(new Map());
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // Fetch stock quantities once on mount
+    useEffect(() => {
+        fetch('/api/products')
+            .then(r => r.ok ? r.json() : [])
+            .then((products: Product[]) => {
+                setStockMap(new Map(products.map(p => [p.id, Math.min(p.quantity, 99)])));
+            })
+            .catch(() => { /* keep empty map — no cap */ });
+    }, []);
+
+    const getMaxQuantity = (itemId: number): number => stockMap.get(itemId) ?? 99;
 
     // Handle remove confirmation
     const handleRemoveClick = (itemId: number) => {
@@ -110,11 +125,17 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                                                 <span className="w-8 text-center font-medium">{item.quantity}</span>
                                                 <button
                                                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                    className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-semibold"
+                                                    disabled={item.quantity >= getMaxQuantity(item.id)}
+                                                    className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-semibold disabled:bg-gray-100 disabled:text-gray-400"
                                                 >
                                                     +
                                                 </button>
                                             </div>
+                                            {item.quantity >= getMaxQuantity(item.id) && (
+                                                <span className="text-xs font-medium text-cosmos-500 bg-cosmos-50 border border-cosmos-200 px-1.5 py-0.5 rounded">
+                                                    {t("cart.maxQuantity")}
+                                                </span>
+                                            )}
                                             <button
                                                 onClick={() => handleRemoveClick(item.id)}
                                                 className="text-red-500 hover:text-red-700 text-sm font-medium"

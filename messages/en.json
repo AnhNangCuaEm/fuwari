@@ -186,7 +186,9 @@
     "removeConfirmTitle": "Remove Item",
     "removeConfirmMsg": "Are you sure you want to remove this item from your cart?",
     "removeConfirm": "Remove",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "maxQuantity": "Max stock",
+    "maxQuantityReached": "Maximum stock reached"
   },
   "payment": {
     "title": "Checkout",

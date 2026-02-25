@@ -34,7 +34,7 @@ export default function CartPage() {
     const t = useTranslations();
     const locale = useLocale();
     const router = useRouter();
-    const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart();
+    const { cartItems, updateQuantity, removeFromCart, clearCart, getTotalItems, getTotalPrice } = useCart();
 
     const [showCheckout, setShowCheckout] = useState(false);
     const [isCheckingStock, setIsCheckingStock] = useState(false);
@@ -88,6 +88,12 @@ export default function CartPage() {
             name: item.name,
             description: item.description
         };
+    };
+
+    // Returns the available stock for a cart item (capped at 99 as a hard upper limit)
+    const getMaxQuantity = (itemId: number): number => {
+        const product = products.find(p => p.id === itemId);
+        return product ? Math.min(product.quantity, 99) : 99;
     };
 
     const getSubtotal = () => {
@@ -180,8 +186,8 @@ export default function CartPage() {
 
     // Handle successful payment
     const handlePaymentSuccess = (paymentIntentId: string, orderId: string) => {
-        // Clear cart
-        cartItems.forEach(item => removeFromCart(item.id));
+        // Clear cart immediately (also wipes DB synchronously)
+        clearCart();
 
         // Clear any stock errors
         setStockError(null);
@@ -256,15 +262,21 @@ export default function CartPage() {
                                                             <span className="font-medium">{item.quantity}</span>
                                                             <button
                                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                                className="w-8 h-8 rounded-full bg-almond-2 hover:bg-almond-3 flex items-center justify-center"
+                                                                disabled={item.quantity >= getMaxQuantity(item.id)}
+                                                                className="w-8 h-8 rounded-full bg-almond-2 hover:bg-almond-3 flex items-center justify-center disabled:bg-almond-1 disabled:text-almond-4"
                                                             >
                                                                 +
                                                             </button>
+                                                            {item.quantity >= getMaxQuantity(item.id) && (
+                                                                <span className="text-xs font-medium text-cosmos-500 bg-cosmos-50 border border-cosmos-200 px-1.5 py-0.5 rounded">
+                                                                    {t("cart.maxQuantity")}
+                                                                </span>
+                                                            )}
                                                         </div>
 
                                                         <div className="flex items-center space-x-4">
                                                             <span className="text-lg font-bold text-cosmos-500">
-                                                                &yen;{item.price}
+                                                                &yen;{item.price.toLocaleString()}
                                                             </span>
                                                             <button
                                                                 onClick={() => handleRemoveClick(item.id)}

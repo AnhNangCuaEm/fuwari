@@ -24,6 +24,28 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
+const LS_CART_KEY = 'fuwari-cart'
+const LS_CART_BACKUP_KEY = 'fuwari-cart-backup'
+const LS_CART_USER_KEY = 'fuwari-cart-user'
+
+// ─── Helper: read guest cart from localStorage (returns [] on error) ──────────
+function readGuestCart(): CartItem[] {
+    try {
+        const raw = localStorage.getItem(LS_CART_KEY)
+        if (!raw) return []
+        return JSON.parse(raw) as CartItem[]
+    } catch {
+        return []
+    }
+}
+
+// ─── Helper: clear guest cart from localStorage ───────────────────────────────
+function clearLocalStorageCart() {
+    localStorage.removeItem(LS_CART_KEY)
+    localStorage.removeItem(LS_CART_BACKUP_KEY)
+    localStorage.removeItem(LS_CART_USER_KEY)
+}
+
 // ─── Helper: persist cart to DB (fire-and-forget) ─────────────────────────────
 function syncCartToDB(items: CartItem[]) {
     fetch('/api/user/cart', {
@@ -37,153 +59,180 @@ function syncCartToDB(items: CartItem[]) {
 
 export function CartProvider({ children }: { children: ReactNode }) {
     const [cartItems, setCartItems] = useState<CartItem[]>([])
+    // isLoaded: true once the initial cart (guest or user) has been resolved
     const [isLoaded, setIsLoaded] = useState(false)
     const { data: session, status: sessionStatus } = useSession()
-    // Track whether we have already merged the DB cart for this session
-    const dbMergedRef = useRef(false)
+    // Track the userId whose DB cart has already been loaded into state
+    const loadedUserIdRef = useRef<string | null>(null)
+    // Ref mirror of isLoaded — avoids stale closure in the auth effect since
+    // that effect intentionally omits isLoaded from its dependency array.
+    const isLoadedRef = useRef(false)
+    // Prevent DB syncs while the initial merge is still in-flight
+    const mergeInProgressRef = useRef(false)
+    const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-    // ── Step 1: Load cart from localStorage on mount ──────────────────────────
-    useEffect(() => {
-        try {
-            let savedCart = localStorage.getItem('fuwari-cart')
-
-            // Restore backup cart created during language switching
-            const backupCart = localStorage.getItem('fuwari-cart-backup')
-            if (backupCart && (!savedCart || savedCart === '[]')) {
-                savedCart = backupCart
-                localStorage.setItem('fuwari-cart', backupCart)
-                localStorage.removeItem('fuwari-cart-backup')
-            }
-
-            if (savedCart) {
-                const parsedCart = JSON.parse(savedCart)
-                setCartItems(parsedCart)
-            }
-        } catch (error) {
-            console.error('Error loading cart from localStorage:', error)
-            localStorage.removeItem('fuwari-cart')
-            localStorage.removeItem('fuwari-cart-backup')
-        }
+    // Helper that keeps both the React state and the ref in sync
+    const markLoaded = () => {
+        isLoadedRef.current = true
         setIsLoaded(true)
-    }, [])
+    }
 
-    // ── Step 2: When user logs in, merge localStorage cart with DB cart ───────
+    // ── Effect: React to auth state changes ───────────────────────────────────
     useEffect(() => {
-        if (!isLoaded) return
         if (sessionStatus === 'loading') return
-        if (!session?.user?.id) {
-            // User logged out — reset merge flag so it runs again on next login
-            dbMergedRef.current = false
+
+        const userId = session?.user?.id ?? null
+
+        // ── Case A: User logged out ────────────────────────────────────────────
+        if (!userId) {
+            if (loadedUserIdRef.current !== null) {
+                // Previously logged in — clear everything so the next user starts fresh
+                loadedUserIdRef.current = null
+                clearLocalStorageCart()
+                setCartItems([])
+                markLoaded()
+            } else if (!isLoadedRef.current) {
+                // Very first render and no session — load guest cart from localStorage
+                try {
+                    // Restore backup cart created during language switching
+                    let savedCart = localStorage.getItem(LS_CART_KEY)
+                    const backupCart = localStorage.getItem(LS_CART_BACKUP_KEY)
+                    if (backupCart && (!savedCart || savedCart === '[]')) {
+                        savedCart = backupCart
+                        localStorage.setItem(LS_CART_KEY, backupCart)
+                        localStorage.removeItem(LS_CART_BACKUP_KEY)
+                    }
+                    if (savedCart) setCartItems(JSON.parse(savedCart))
+                } catch {
+                    localStorage.removeItem(LS_CART_KEY)
+                }
+                markLoaded()
+            }
             return
         }
-        if (dbMergedRef.current) return // already merged for this session
 
-        dbMergedRef.current = true
+        // ── Case B: Same user already loaded — nothing to do ──────────────────
+        if (loadedUserIdRef.current === userId) return
+
+        // ── Case C: New user logging in (fresh login or account switch) ───────
+        // Capture guest cart *before* we overwrite anything. If this is an account
+        // switch the "guest cart" is actually the previous user's cart — we must NOT
+        // merge it into the new user's DB. We detect this by checking whether the
+        // localStorage cart was owned by a different user.
+        const previousOwnerId = localStorage.getItem(LS_CART_USER_KEY)
+        const guestCart: CartItem[] =
+            previousOwnerId === null  // cart was built while not logged in → treat as guest
+                ? readGuestCart()
+                : []                  // cart belonged to a different user → discard
+
+        // Mark that we're loading this user's cart
+        loadedUserIdRef.current = userId
+        mergeInProgressRef.current = true
 
         fetch('/api/user/cart')
             .then(res => (res.ok ? res.json() : { items: [] }))
             .then(async ({ items: dbItems }: { items: { product_id: number; quantity: number }[] }) => {
-                // Determine which product IDs are missing from localStorage
-                setCartItems(prev => {
-                    const missingIds = dbItems
-                        .filter(d => !prev.some(p => p.id === d.product_id))
-                        .map(d => d.product_id)
 
-                    if (missingIds.length === 0) {
-                        // All items already have full metadata locally — just merge quantities
-                        const merged: CartItem[] = prev.map(localItem => {
-                            const remote = dbItems.find(d => d.product_id === localItem.id)
-                            if (remote && remote.quantity !== localItem.quantity) {
-                                return { ...localItem, quantity: Math.max(localItem.quantity, remote.quantity) }
-                            }
-                            return localItem
-                        })
-                        syncCartToDB(merged)
-                        return merged
-                    }
+                // Fetch all active products once — used to hydrate DB-only items AND
+                // to validate that guest cart items still exist in the catalogue.
+                const productsRes = await fetch('/api/products')
+                const allProducts: {
+                    id: number; name: string; description: string; price: number; image: string
+                }[] = productsRes.ok ? await productsRes.json() : []
+                const productMap = new Map(allProducts.map(p => [p.id, p]))
 
-                    // There are remote-only items — we need to fetch their product info.
-                    // Return merged cart with stubs for now; a follow-up effect will
-                    // hydrate the stubs once the product fetch completes.
-                    const remoteStubs: CartItem[] = dbItems
-                        .filter(d => !prev.some(p => p.id === d.product_id))
-                        .map(d => ({
-                            id: d.product_id,
-                            name: '',
-                            description: '',
-                            price: 0,
-                            image: '',
-                            quantity: d.quantity,
-                        }))
+                // Drop any guest cart items for products that no longer exist
+                const validatedGuestCart = guestCart.filter(item => productMap.has(item.id))
 
-                    const merged: CartItem[] = prev.map(localItem => {
-                        const remote = dbItems.find(d => d.product_id === localItem.id)
-                        if (remote && remote.quantity !== localItem.quantity) {
-                            return { ...localItem, quantity: Math.max(localItem.quantity, remote.quantity) }
-                        }
-                        return localItem
+                // Find which DB item IDs are not present in the (validated) guest cart
+                const dbOnlyItems = dbItems
+                    .filter(d => !validatedGuestCart.some(g => g.id === d.product_id))
+                    .map(d => ({ id: d.product_id, quantity: d.quantity }))
+
+                // Hydrate DB-only items using the already-fetched product map
+                const hydratedDbOnly: CartItem[] = dbOnlyItems
+                    .map(item => {
+                        const p = productMap.get(item.id)
+                        if (!p) return null
+                        return { id: p.id, name: p.name, description: p.description, price: p.price, image: p.image, quantity: item.quantity }
                     })
+                    .filter((item): item is CartItem => item !== null)
 
-                    const cartWithStubs = [...merged, ...remoteStubs]
+                // Build merged cart:
+                //   • For items in both: DB quantity wins (DB is the source of truth for logged-in users)
+                //   • Guest-only items: keep them (user added while browsing before login)
+                //   • DB-only items: add them (fully hydrated)
+                const mergedMap = new Map<number, CartItem>()
 
-                    // Fetch full product info for the missing items and hydrate the stubs.
-                    // We do NOT return cartWithStubs yet — instead we wait for the product
-                    // fetch to complete so we never persist empty stubs to localStorage.
-                    fetch('/api/products')
-                        .then(r => (r.ok ? r.json() : []))
-                        .then((allProducts: { id: number; name: string; engName: string; description: string; engDescription: string; price: number; image: string }[]) => {
-                            const productMap = new Map(allProducts.map(p => [p.id, p]))
-                            // Replace stubs with fully-hydrated items in one atomic update
-                            const hydratedCart = cartWithStubs.map(item => {
-                                if (item.name !== '' && item.price !== 0) return item // already has metadata
-                                const product = productMap.get(item.id)
-                                if (!product) return item // unknown product id — leave as-is
-                                return {
-                                    ...item,
-                                    name: product.name,
-                                    description: product.description,
-                                    price: product.price,
-                                    image: product.image,
-                                }
-                            })
-                            // De-duplicate by id just in case (safety net)
-                            const seen = new Set<number>()
-                            const deduped = hydratedCart.filter(item => {
-                                if (seen.has(item.id)) return false
-                                seen.add(item.id)
-                                return true
-                            })
-                            setCartItems(deduped)
-                            syncCartToDB(deduped)
-                        })
-                        .catch(err => console.error('Failed to hydrate cart item metadata:', err))
+                // Start with validated guest cart items as base
+                for (const item of validatedGuestCart) {
+                    mergedMap.set(item.id, item)
+                }
 
-                    // Return merged+stubs so UI can show the items (quantity visible)
-                    // while the name/price/image are being fetched.
-                    return cartWithStubs
-                })
+                // Override/add with DB items (DB quantity wins for conflicts)
+                for (const dbItem of dbItems) {
+                    const existing = mergedMap.get(dbItem.product_id)
+                    if (existing) {
+                        // Item exists in both: use DB quantity as the authoritative value
+                        mergedMap.set(dbItem.product_id, { ...existing, quantity: dbItem.quantity })
+                    }
+                }
+
+                // Add DB-only hydrated items
+                for (const item of hydratedDbOnly) {
+                    mergedMap.set(item.id, item)
+                }
+
+                const finalCart = Array.from(mergedMap.values())
+
+                // Persist merged result to DB (makes guest-only items permanent)
+                syncCartToDB(finalCart)
+
+                // Save to localStorage and tag it with the current user id
+                try {
+                    localStorage.setItem(LS_CART_KEY, JSON.stringify(finalCart))
+                    localStorage.setItem(LS_CART_USER_KEY, userId)
+                } catch { /* ignore */ }
+
+                mergeInProgressRef.current = false
+                setCartItems(finalCart)
+                markLoaded()
             })
-            .catch(err => console.error('Failed to fetch DB cart:', err))
-    }, [isLoaded, session?.user?.id, sessionStatus])
+            .catch(err => {
+                console.error('Failed to load cart from DB:', err)
+                // Fallback: use whatever we have locally (only if it was a true guest cart)
+                mergeInProgressRef.current = false
+                setCartItems(guestCart)
+                markLoaded()
+            })
 
-    // ── Step 3: Save cart to localStorage whenever it changes ────────────────
+    }, [session?.user?.id, sessionStatus])
+
+    // ── Save cart to localStorage whenever it changes (logged-in users only) ──
     useEffect(() => {
         if (!isLoaded) return
+        if (!session?.user?.id) return   // guest cart is saved separately below
         try {
-            localStorage.setItem('fuwari-cart', JSON.stringify(cartItems))
-        } catch (error) {
-            console.error('Error saving cart to localStorage:', error)
-        }
-    }, [cartItems, isLoaded])
+            localStorage.setItem(LS_CART_KEY, JSON.stringify(cartItems))
+            localStorage.setItem(LS_CART_USER_KEY, session.user.id)
+        } catch { /* ignore */ }
+    }, [cartItems, isLoaded, session?.user?.id])
 
-    // ── Step 4: Persist to DB on changes (only when logged in) ───────────────
-    // We use a debounce-like approach: only sync after the cart settles to avoid
-    // hammering the API on every keystroke.
-    const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    // ── Save guest cart to localStorage whenever it changes ──────────────────
+    useEffect(() => {
+        if (!isLoaded) return
+        if (session?.user?.id) return   // handled above
+        try {
+            localStorage.setItem(LS_CART_KEY, JSON.stringify(cartItems))
+            localStorage.removeItem(LS_CART_USER_KEY)
+        } catch { /* ignore */ }
+    }, [cartItems, isLoaded, session?.user?.id])
+
+    // ── Debounced DB sync on cart changes (only when logged in & merge done) ──
     useEffect(() => {
         if (!isLoaded) return
         if (!session?.user?.id) return
-        if (!dbMergedRef.current) return // don't sync before the initial merge
+        if (mergeInProgressRef.current) return
 
         if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current)
         syncTimeoutRef.current = setTimeout(() => {
@@ -195,35 +244,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
     }, [cartItems, isLoaded, session?.user?.id])
 
-    // ── Step 5: Cross-tab sync via storage events ─────────────────────────────
+    // ── Cross-tab sync via storage events ─────────────────────────────────────
+    // Only accept cart updates from tabs running under the same user (or both guest)
     useEffect(() => {
         const handleStorageChange = (e: StorageEvent) => {
-            if (e.key === 'fuwari-cart' && e.newValue !== null) {
-                try {
-                    const newCartItems = JSON.parse(e.newValue)
-                    setCartItems(newCartItems)
-                } catch (error) {
-                    console.error('Error parsing cart from storage event:', error)
-                }
-            }
-        }
-
-        const handleBeforeUnload = () => {
+            if (e.key !== LS_CART_KEY || e.newValue === null) return
+            // Validate that the tab which wrote the cart belongs to the same user
+            const ownerInOtherTab = localStorage.getItem(LS_CART_USER_KEY)
+            const currentUserId = loadedUserIdRef.current
+            if (ownerInOtherTab !== currentUserId) return  // different user — ignore
             try {
-                localStorage.setItem('fuwari-cart', JSON.stringify(cartItems))
-            } catch (error) {
-                console.error('Error saving cart before unload:', error)
-            }
+                setCartItems(JSON.parse(e.newValue))
+            } catch { /* ignore */ }
         }
-
         window.addEventListener('storage', handleStorageChange)
-        window.addEventListener('beforeunload', handleBeforeUnload)
-
-        return () => {
-            window.removeEventListener('storage', handleStorageChange)
-            window.removeEventListener('beforeunload', handleBeforeUnload)
-        }
-    }, [cartItems])
+        return () => window.removeEventListener('storage', handleStorageChange)
+    }, [])
 
     // ─── Cart mutation helpers ────────────────────────────────────────────────
 
@@ -262,6 +298,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     const clearCart = () => {
         setCartItems([])
+        // Immediately wipe DB so a closed tab can't resurrect a completed cart
+        if (session?.user?.id) {
+            syncCartToDB([])
+        }
     }
 
     const getTotalItems = () => {
